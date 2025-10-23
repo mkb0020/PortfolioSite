@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Resume - MK Barriault{% endblock %}
+{% block content %}
+<h1>Resume</h1>
+
+<div class="about-section">
+
+    
+    <div class="summary-section text-center mb-4"> <!-- PROFESSIONAL SUMMARY ON TOP -->
+        <h4>Summary</h4>
+        <p>
+            Spreadsheet-enthusiast with an obsession for Process Improvement by creating automation tools. 
+            Passionate about manipulating, analyzing, and visualizing data. 
+            Familiarity utilizing and interpreting data analytics metrics (R2, Coefficients, MSE, MAE, etc.) 
+            and creating regression plots to predict trends. 
+            Experienced in cross-functional collaboration to minimize silos. 
+            Focused on optimizing the Customer Experience journey and building trust through empathy, insight, and innovation.
+            <br> 
+            <br>Hover over each item below to see more!
+        </p>
+    </div>
+
+    <div class="resume-grid"> <!-- 2x2 GRID FOR TOOL TIPS -->
+        <div class="resume-item"
+             data-bs-toggle="tooltip" 
+             data-bs-html="true"
+             data-bs-placement="auto"
+             title="<div class='tooltip-title'>WORK EXPERIENCE</div>
+                    <div class='tooltip-body'>• SMARTnet and Subscriptions Senior Specialist - D&H Distributing, Harrisburg, PA (Aug 2022 – Jun 2025)<br>
+                    • Corporate / Healthcare Account Manager - Southern Computer Warehouse, Marietta, GA (Mar 2016 – Aug 2022)</div>">
+             <h4>💼 Experience</h4>
+        </div>
+        
+        <div class="resume-item"
+             data-bs-toggle="tooltip" 
+             data-bs-html="true"
+             data-bs-placement="auto"
+             title="<div class='tooltip-title'>EDUCATION</div>
+                    <div class='tooltip-body'>• B.S. in Industrial and Systems Engineering (2011–2015)</div>">
+            <h4>🎓 Education</h4>
+        </div>
+
+        <div class="resume-item"
+             data-bs-toggle="tooltip" 
+             data-bs-html="true"
+             data-bs-placement="auto"
+             title="<div class='tooltip-title'>CERTIFICATES</div>
+                    <div class='tooltip-body'>• Cisco Black Belt: Distribution Success Stage 1</div>">
+            <h4>🏅 Certificates</h4>
+        </div>
+        
+        <div class="resume-item"
+             data-bs-toggle="tooltip"
+             data-bs-html="true" 
+             data-bs-placement="auto"
+             title="<div class='tooltip-title'>SKILLS & AREAS OF INTEREST</div>
+                    <div class='tooltip-body'>• Process Development, Documentation, and Improvement
+                        <br>• Data Analysis & Visualization
+                        <br>• Visual Basic (Microsoft Excel)
+                        <br>• Python: pandas, Matplotlib, scikit-learn, tkinter, numpy, seaborn
+                        <br>• Website Development: Flask, Bootstrap, HTML, CSS
+                        <br>• Subscription Management (Renewals, Modifications, True Ups)
+                        <br>• Cross-Functional Ops (Sales, AP, IT, Engineering)
+                        <br>• Enablement & Training
+                        <br>• Customer Experience Lifecycle Management
+                        <br>• API Integration
+                        <br>• Microsoft Office Suite, CRM, ERP, and channel quoting tools</div>">
+            <h4>⚙️ Skills</h4>
+        </div>
+    </div>
+</div>
+
+<!-- TOOL TIPS -->
+<script>
+document.addEventListener('DOMContentLoaded', function() { 
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            html: true
+        });
+    });
+});
+</script>
+{% endblock %}
