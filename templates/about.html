@@ -1,0 +1,79 @@
+<!-- ===== about.html ===== -->
+{% extends "base.html" %}
+{% block title %}About Me - MK Barriault{% endblock %}
+{% block content %}
+
+
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="profile-circle">
+            <img src="/static/images/about/headshot1.JPEG" alt="This is me"> <!-- HEADSHOT -->
+        </div>
+
+        <!-- LINES (TEMPORARILY REMOVING)
+        <svg class="connecting-lines" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line x1="37.5%" y1="15%" x2="64%" y2="15%" class="pink-line" />
+            <line x1="44%" y1="50%" x2="64%" y2="50%" class="pink-line" />
+            <line x1="37.5%" y1="85%" x2="64%" y2="85%" class="pink-line" />
+        </svg>
+        -->
+        
+        <div class="info-circles">
+            <div class="info-item welcome-item"
+                 data-bs-toggle="tooltip" 
+                 data-bs-html="true"
+                 data-bs-placement="auto"
+                 title="Thanks for stopping by!">
+                <div class="icon-circle">
+                    <img src="/static/images/about/icon3.jpg" alt="Welcome">
+                </div>
+                <h2>WELCOME!</h2>
+            </div>
+            
+            <div class="info-item" 
+                 data-bs-toggle="tooltip" 
+                 data-bs-html="true"
+                 data-bs-placement="auto"
+                 title="<strong>About This Site</strong><br>This site is both my portfolio and part of my portfolio. Using Python, Flask, JavaScript, Bootstrap, HTML, and CSS, I built it to showcase my work across coding, art, and design — blending the technical with the creative.
+                    <br>
+                    <br>Each section highlights a different side of what I do: my coding projects, my jewelry and art (which I’ve styled as a mock storefront to show I can build interactive, e-commerce-style pages), and my resume for a deeper dive into my experience.
+                    <br>
+                    <br>Even the site’s functionality is a demo of my skills — from custom layouts and interactive elements to a contact form that automatically sends me an email and logs submissions in a Parquet file. It’s a living example of how I combine design, data, and automation to create thoughtful, functional experiences.">
+                <div class="icon-circle">
+                    <img src="/static/images/about/icon1.jpg" alt="About">
+                </div>
+                <h2>ABOUT THIS SITE</h2>
+            </div>
+            
+            <div class="info-item"
+                 data-bs-toggle="tooltip" 
+                 data-bs-html="true"
+                 data-bs-placement="auto"
+                 title="<strong>About Me</strong><br>Hello World! I’m MK — a coder, artist, and perpetual creator based in Atlanta, GA – which is my favorite place in the world!
+                    <br>
+                    <br>I thrive on building things — whether it’s a web app, a piece of jewelry, a data-driven dashboard, or an automation that makes life a little easier. I’m passionate about coding, process improvement, spreadsheets (yes, really!), and exploring how AI can integrate with the human experience.
+                    <br>
+                    <br>Outside of tech, I love art, jewelry-making, yoga, fitness, and nutrition — anything that keeps me grounded and inspired. I’m always learning new skills and diving into new challenges, whether that’s mastering a framework, experimenting with a fresh creative idea, or getting going down an internet rabbit-hole about random topics that pique my interest. 
+                    <br>
+                    <br>If you’ve got a project or idea you’d like to bring to life, I’d love to collaborate! Give me a shout and let’s create together 💡
+                    ">
+                <div class="icon-circle">
+                    <img src="/static/images/about/icon2.jpg" alt="About me">
+                </div>
+                <h2>ABOUT ME</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            html: true
+        });
+    });
+});
+</script>
+{% endblock %}
