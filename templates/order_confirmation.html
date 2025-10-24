@@ -1,0 +1,16 @@
+<!-- ===== order_confirmation.html ===== -->
+{% extends "base.html" %}
+{% block title %}Order Confirmation - MK Barriault{% endblock %}
+{% block content %}
+<div class="text-center" style="padding: 50px 0;">
+    <div class="about-section">
+        <h1>🎉 Order Confirmed!</h1>
+        <p style="font-size: 1.2rem; margin-top: 20px;">Thank you for your order! This was a demo checkout.</p>
+        <p>A confirmation email has been sent (to me, since this is a demo!).</p>
+        <p style="margin-top: 30px;">
+            <a href="{{ url_for('jewelry') }}" class="btn btn-primary" style="margin-right: 10px;">Continue Shopping Jewelry</a>
+            <a href="{{ url_for('art') }}" class="btn btn-primary">Continue Shopping Art</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
