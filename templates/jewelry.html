@@ -8,41 +8,220 @@
 
 <div class="portfolio-grid">
     
-<div class="portfolio-card">
-    <div class="portfolio-card-img">
-        <img src="/static/images/art/JewelryBeigeLightning2.jpg" alt="TEST">
-    </div>
-    <div class="portfolio-card-body">
-        <h3>ROLL FOR FASHION</h3>
-        <p><strong>Materials:</strong> Beads, D20 Dice, Lightning Charm, Pearls</p>
-        <p><strong>Price:</strong> $30.00</p>
-        <p>Unique. Nerdy. Iconic.</p>
-    </div>
-</div>
-    
 
-<div class="portfolio-card">
+
+
+
+
+
+
+
+
+
+<div class="portfolio-card"> <!-- BRACELET 51-->
     <div class="portfolio-card-img">
-        <img src="/static/images/art/JewelryAlien.jpg" alt="TEST">
+        <img src="/static/images/art/Bracelet513.jpg" alt="BRACELET-51">
     </div>
     <div class="portfolio-card-body">
         <h3>BRACELET-51</h3>
-        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Foam Clay, </p>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Foam Clay</p>
         <p><strong>Price:</strong> $30.00</p>
         <p>An out-of-this-world set of UAP-inspired bracelets.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="BRACELET-51">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/Bracelet513.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="portfolio-card">  <!--BUTTERFLY EFFECT-->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/ButterflyEffect3.jpg" alt="BUTTERFLY EFFECT">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>BUTTERFLY EFFECT</h3>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Gold Chain, Rose Quarts Beads, Kuromi Charm, Butterfly Charm, Candy Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>Make an unpredictable difference in someone's life and buy them this bracelet set.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="BUTTERFLY EFFECT">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/ButterflyEffect3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+    
+<div class="portfolio-card"><!-- CHAOTIC COUTURE-->
+        <div class="portfolio-card-img">
+        <img src="/static/images/art/ChaoticCouture3.jpg" alt="CHAOTIC COUTURE">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>CHAOTIC COUTURE</h3>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Gummy Bear Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>Bring some entropy into your style.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="CHAOTIC COUTURE">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/ChaoticCouture3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="portfolio-card"> <!-- CHAOTIC NEUTRALLY CHARGED-->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/ChaoticNeutral3.jpg" alt="CHAOTIC NEUTRALLY CHARGED">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>CHAOTIC NEUTRALLY CHARGED</h3>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Lollipop Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>The chaotic classical counterpart.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="CHAOTIC NEUTRALLY CHARGED">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/ChaoticNeutral3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="portfolio-card"><!-- CHARM QUARK-->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/CharmQuark3.png" alt="CHARM QUARK">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>CHARM QUARK</h3>
+        <p><strong>Materials:</strong> Glass Beads, Lollipop Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>It's charming. It's quarky. It could be yours!</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="CHARM QUARK">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/CharmQuark3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="portfolio-card"> <!-- DECOHERENCE GARDEN -->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/DecoherenceGarden3.jpg" alt="DECOHERENCE GARDEN ">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>DECOHERENCE GARDEN</h3>
+        <p><strong>Materials:</strong> Glass Beads, Foam Clay, Butterfly Charm, Heart Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>Fairy-core inspired.  The rose was handmade by me using foam clay and fingernail polish.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="DECOHERENCE GARDEN">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/DecoherenceGarden3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
     </div>
 </div>
     
 
-<div class="portfolio-card">
+<div class="portfolio-card"> <!-- QUANTUM ROYALE-->
     <div class="portfolio-card-img">
-        <img src="/static/images/art/JewelryBlueLolli2.jpg" alt="TEST">
+        <img src="/static/images/art/QuantumRoyale4.jpg" alt="QUANTUM ROYALE">
     </div>
     <div class="portfolio-card-body">
-        <h3>CANDY LAND</h3>
+        <h3>QUANTUM ROYALE</h3>
+        <p><strong>Materials:</strong> Glass Beads, Gold Moon Charm, Lightning Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>The Quantum Quarter Pounder (does not actually weigh a quarter pound).</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="QUANTUM ROYALE">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/QuantumRoyale4.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="portfolio-card"> <!-- SCHRODINGER'S TRINKETS -->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/ShrodingersTrinkets3.jpg" alt="SCHRODINGER'S TRINKETS">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>SCHRODINGER'S TRINKETS</h3>
+        <p><strong>Materials:</strong> Glass Beads, Rose Charm, Hello Kitty Charm, Black Chain</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>The only way to find out if this set exists is the purchase it. The rose was handmade by me using foam clay and fingernail polish.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="SCHRODINGER'S TRINKETS">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/ShrodingersTrinkets3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="portfolio-card"> <!-- SINGULARITY -->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/Singulartiy3.jpg" alt="SINGULARITY">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>SINGULARITY</h3>
         <p><strong>Materials:</strong> Glass Beads</p>
-        <p><strong>Price:</strong> $15.00</p>
-        <p>Perfect set for anyone with a sweet tooth!</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>Infinite style.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="SINGULARITY">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/Singulartiy3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="portfolio-card"> <!-- SUGAR SUPERPOSITION -->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/SugarSuperposition3.jpg" alt="SUGAR SUPERPOSITION">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>SUGAR SUPERPOSITION </h3>
+        <p><strong>Materials:</strong> Glass Beads, Lollipop Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>When you have a sweet tooth but you're not hungry.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="SUGAR SUPERPOSITION ">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/SugarSuperposition3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+<div class="portfolio-card"> <!-- UNCERTAINTY POP -->
+    <div class="portfolio-card-img">
+        <img src="/static/images/art/UncertaintyPop3.jpg" alt="UNCERTAINTY POP">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>UNCERTAINTY POP</h3>
+        <p><strong>Materials:</strong> Glass Beads, Lollipop Charm, Purple Chain</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>You can rock it better than Heisenberg.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="UNCERTAINTY POP">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/UncertaintyPop3.jpg">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
     </div>
 </div>
     
