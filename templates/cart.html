@@ -1,0 +1,33 @@
+<!-- ===== cart.html ===== -->
+{% extends "base.html" %}
+{% block title %}Shopping Cart - MK Barriault{% endblock %}
+{% block content %}
+<h1>Shopping Cart</h1>
+
+{% if cart_items %}
+<div class="about-section">
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-item-img">
+            <div class="cart-item-details">
+                <h3>{{ item.name }}</h3>
+                <p class="cart-item-price">${{ "%.2f"|format(item.price) }}</p>
+            </div>
+            <a href="{{ url_for('remove_from_cart', index=loop.index0) }}" class="btn btn-danger btn-sm">Remove</a>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="cart-total">
+        <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+        <a href="{{ url_for('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+</div>
+{% else %}
+<div class="about-section text-center">
+    <h3>Your cart is empty!</h3>
+    <p>Check out our <a href="{{ url_for('jewelry') }}">jewelry</a> or <a href="{{ url_for('art') }}">art</a> to add items.</p>
+</div>
+{% endif %}
+{% endblock %}
