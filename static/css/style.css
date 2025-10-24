@@ -541,3 +541,90 @@ textarea.form-control {
     border-color: #dc3545;
     color: #721c24;
 }
+
+
+/* ----------------   SHOPPING CART ----------------------*/
+.cart-items {
+    margin-bottom: 30px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: rgba(70, 80, 90, 0.4);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.cart-item-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-details h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.cart-item-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4edf79;
+    margin: 0;
+}
+
+.cart-total {
+    text-align: right;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.cart-total h3 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* CHECKOUT PAGE */
+.checkout-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checkout-total {
+    padding-top: 15px;
+    font-size: 1.3rem;
+    text-align: right;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+/* ADD TO CART BUTTON */
+.btn-success {
+    background-color: #4edf79;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #3bc45f;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
