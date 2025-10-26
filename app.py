@@ -188,8 +188,8 @@ def contact():
     success = request.args.get("success", False)
     return render_template("contact.html", success=success)
 
-# CART ROUTES
-@app.route("/add_to_cart", methods=["POST"])
+
+@app.route("/add_to_cart", methods=["POST"]) # CART ROUTES
 def add_to_cart():
     item_name = request.form.get("item_name")
     item_price = float(request.form.get("item_price"))
@@ -245,8 +245,7 @@ def checkout():
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         
-        # Save order to parquet
-        try:
+        try: #SAVE ORDER TO PARQUET
             df = pd.read_parquet(ORDERS_FILE)
         except (FileNotFoundError, Exception):
             df = pd.DataFrame()
@@ -267,11 +266,9 @@ def checkout():
         df = pd.concat([df, pd.DataFrame([order_record])], ignore_index=True)
         df.to_parquet(ORDERS_FILE, index=False)
         
-        # Send order email
-        OrderEmailAsync(order_data)
+        OrderEmailAsync(order_data) #SEND ORDER EMAIL
         
-        # Clear cart
-        session['cart'] = []
+        session['cart'] = [] #CLEAR CART
         session.modified = True
         
         return redirect(url_for('order_confirmation'))
