@@ -31,7 +31,11 @@
 <div class="row mt-3">
     <div class="col-md-6">
         <div class="contact-info">
-            <h5>Interested in my work? Whether you'd like to purchase art or jewelry, request a desktop application, or have other inquiries, I'd love to hear from you!</h5>
+            <h5> 📢 Give me a shout if you would like to: 
+                <br><br> 💎 Purchase Art Prints or Jewelry 
+                <br> 💻 Request a Desktop Application or Website 
+                <br> ✨ Or have other inquiries 
+                <br><br> 🤍 I'd love to hear from you!</h5>
 
         </div>
     </div>
@@ -39,7 +43,7 @@
 
     <div class="col-md-6">
         <div class="contact-info">
-            <h3>Slide into my DM's</h3>
+            <h3> 📧 Contact Me:</h3>
             <form method="POST">
                 <div class="form-group">  <!-- NAME OF HUMAN SUBMITTING FORM -->
                     <label for="name" class="form-label">Name</label>
@@ -54,7 +58,7 @@
                     <select class="form-control" id="Request" name="Request" required onchange="updateFormFields()">
                         <option value="">Select an option</option>
                         <option value="Purchase Art / Jewelry">Purchase Art / Jewelry</option>
-                        <option value="Request a Desktop Application">Request a Desktop Application</option>
+                        <option value="Request a Desktop Application or Website">Request a Desktop Application or Website</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
@@ -74,14 +78,14 @@
 
                 <div class="form-group" id="app-section" style="display: none;"> <!-- CONDITIONAL FIELD - APP REQUIREMENTS -->
                     <label for="AppRequest" class="form-label">Please provide a brief description of the required functionality:</label>
-                    <textarea class="form-control" id="AppRequest" name="AppRequest" placeholder="Describe what you'd like your application to do..."></textarea>
+                    <textarea class="form-control" id="AppRequest" name="AppRequest" placeholder="Describe what you'd like your application to do / your dream website..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="message" class="form-label">Message</label>
                     <textarea class="form-control" id="message" name="message" required placeholder="Tell me more about your inquiry..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Full Send</button>
+                <button type="submit" class="btn btn-primary">Send</button>
             </form>
         </div>
     </div>
@@ -98,7 +102,7 @@ function updateFormFields() { // UPDATE FORM FIELDS
     
     if (Request === 'Purchase Art / Jewelry') { // SHOW APPROPRIATE SECTION BASED ON SELECTION
         productSection.style.display = 'block';
-    } else if (inquiryType === 'Request a Desktop Application') {
+    } else if (inquiryType === 'Request a Desktop Application or Website') {
         appSection.style.display = 'block';
     }
 }
