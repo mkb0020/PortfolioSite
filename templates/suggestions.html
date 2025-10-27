@@ -1,0 +1,65 @@
+<!-- ===== suggestions.html ===== -->
+{% extends "base.html" %}
+{% block title %}Suggestions Box - MK Barriault{% endblock %}
+{% block content %}
+<h1>💡 Suggestions Box</h1>
+
+{% if success %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Thank you for your suggestion! I love hearing ideas from visitors.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+{% endif %}
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="contact-info">
+            <h5>Got ideas for improving this site?</h5>
+            <p>I'd love to hear your suggestions! Whether it's:</p>
+            <ul style="color: rgba(255, 255, 255, 0.95); line-height: 1.8;">
+                <li><strong>Design changes</strong> - colors, layout, aesthetics</li>
+                <li><strong>New features</strong> - functionality you'd like to see</li>
+                <li><strong>Technical improvements</strong> - ways to showcase my skills better</li>
+                <li><strong>Content ideas</strong> - what you'd like to know more about</li>
+            </ul>
+            <p>Your feedback helps me grow as a developer and designer! 🚀</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="contact-info">
+            <h3>Share Your Ideas</h3>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name (Optional)</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Anonymous">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email (Optional)</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="suggestion_type" class="form-label">Suggestion Type</label>
+                    <select class="form-control" id="suggestion_type" name="suggestion_type" required>
+                        <option value="">Select a type</option>
+                        <option value="Design/Aesthetics">Design/Aesthetics</option>
+                        <option value="New Feature">New Feature</option>
+                        <option value="Technical Improvement">Technical Improvement</option>
+                        <option value="Content">Content</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="suggestion" class="form-label">Your Suggestion</label>
+                    <textarea class="form-control" id="suggestion" name="suggestion" required placeholder="Tell me your idea..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Suggestion</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
