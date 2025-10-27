@@ -1,0 +1,54 @@
+
+
+<!-- ===== guestbook.html ===== -->
+{% extends "base.html" %}
+{% block title %}Guestbook - MK Barriault{% endblock %}
+{% block content %}
+<h1>📖 Guestbook</h1>
+<h5>Leave your mark! Sign the guestbook and share your thoughts.</h5>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="contact-info">
+            <h3>Sign the Guestbook</h3>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Your name (or stay anonymous!)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" required placeholder="Leave a comment, say hi, or share your thoughts!" style="min-height: 120px;"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="contact-info">
+            <h3>Recent Comments ({{ comments|length }})</h3>
+            
+            {% if comments %}
+                <div class="guestbook-comments">
+                    {% for comment in comments %}
+                    <div class="guestbook-comment">
+                        <div class="comment-header">
+                            <strong>{{ comment.name }}</strong>
+                            <span class="comment-date">{{ comment.timestamp }}</span>
+                        </div>
+                        <p class="comment-text">{{ comment.message }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align: center; padding: 40px 0; color: rgba(255, 255, 255, 0.6);">
+                    No comments yet. Be the first to sign the guestbook! 
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
