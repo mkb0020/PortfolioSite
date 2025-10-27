@@ -724,3 +724,64 @@ textarea.form-control {
 .btn-danger:hover {
     background-color: #c82333;
 }
+
+
+
+
+
+/* ----------------   GUESTBOOK ----------------------*/
+.guestbook-comments {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.guestbook-comment {
+    background: rgba(70, 80, 90, 0.4);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid #7722df;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-header strong {
+    color: #4edf79;
+    font-size: 1.1rem;
+}
+
+.comment-date {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+.comment-text {
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Scrollbar styling for guestbook */
+.guestbook-comments::-webkit-scrollbar {
+    width: 8px;
+}
+
+.guestbook-comments::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.guestbook-comments::-webkit-scrollbar-thumb {
+    background: rgba(114, 34, 223, 0.6);
+    border-radius: 4px;
+}
+
+.guestbook-comments::-webkit-scrollbar-thumb:hover {
+    background: rgba(114, 34, 223, 0.8);
+}
