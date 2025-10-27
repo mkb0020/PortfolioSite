@@ -15,125 +15,132 @@ ORDERS_FILE = os.path.join(os.path.dirname(__file__), 'data', 'orders.parquet')
 SUGGESTIONS_FILE = os.path.join(os.path.dirname(__file__), 'data', 'suggestions.parquet')
 GUESTBOOK_FILE = os.path.join(os.path.dirname(__file__), 'data', 'guestbook.parquet')
 
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL")  # e.g. your Gmail address or SendGrid from-address
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")  # app password or API key depending on provider
+RECEIVE_INBOX = os.environ.get("RECEIVE_EMAIL", "MK.BARRIAULT@outlook.com")
+
+
 os.makedirs(os.path.dirname(SUBMISSIONS_FILE), exist_ok=True)
 
-def SendEmail(UserInput):
-    """Send an email notification when a new submission is received"""
-    try:
-        print(f"DEBUG: Starting email send for {UserInput['HumanName']}...")
-        
-        SenderEmail = "MKultra0020@gmail.com"
-        EmailPW = "wddp qncb brnd zwai"
-        ReceiveInbox = "MK.BARRIAULT@outlook.com"
-        
-        print(f"DEBUG: Connecting to Gmail SMTP...")
-        
-        message = MIMEMultipart("alternative")
-        message["Subject"] = f"New Request from Portfolio: {UserInput['Request']}"
-        message["From"] = SenderEmail
-        message["To"] = ReceiveInbox
-        
-        text = f"""
-New submission from your portfolio website!
+import os
+from flask import Flask, render_template, request, redirect, url_for, session
+import pandas as pd
+from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from threading import Thread
 
-Name: {UserInput['HumanName']}
-Email: {UserInput['EmailAddy']}
-Inquiry Type: {UserInput['Request']}
-Product Request: {UserInput['ProductRequest'] if UserInput['ProductRequest'] else 'N/A'}
-App Request: {UserInput['AppRequest'] if UserInput['AppRequest'] else 'N/A'}
-Message: {UserInput['message']}
-Timestamp: {UserInput['timestamp']}
-        """
-        
+# App init and config
+app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-in-prod")
+
+# Files (use __file__ so paths are correct)
+BASE_DIR = os.path.dirname(__file__)
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
+
+SUBMISSIONS_FILE = os.path.join(DATA_DIR, "submissions.parquet")
+ORDERS_FILE = os.path.join(DATA_DIR, "orders.parquet")
+SUGGESTIONS_FILE = os.path.join(DATA_DIR, "suggestions.parquet")
+GUESTBOOK_FILE = os.path.join(DATA_DIR, "guestbook.parquet")
+
+# Email config from environment variables
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL")  # e.g. your Gmail address or SendGrid from-address
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")  # app password or API key depending on provider
+RECEIVE_INBOX = os.environ.get("RECEIVE_EMAIL", "MK.BARRIAULT@outlook.com")
+
+def _send_smtp_message(message):
+    """Internal helper: try 587 then 465."""
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
+        server.starttls()
+        server.login(SENDER_EMAIL, EMAIL_PASSWORD)
+        server.sendmail(message["From"], message["To"], message.as_string())
+        server.quit()
+        return True, None
+    except Exception as e1:
+        try:
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
+            server.login(SENDER_EMAIL, EMAIL_PASSWORD)
+            server.sendmail(message["From"], message["To"], message.as_string())
+            server.quit()
+            return True, None
+        except Exception as e2:
+            return False, f"587 error: {e1}; 465 error: {e2}"
+
+def SendEmail(UserInput):
+    try:
+        print(f"DEBUG: Starting email send for {UserInput.get('HumanName')}...")
+        if not SENDER_EMAIL or not EMAIL_PASSWORD:
+            raise RuntimeError("Email settings not configured (SENDER_EMAIL and EMAIL_PASSWORD required).")
+
+        message = MIMEMultipart("alternative")
+        subject = f"New Request from Portfolio: {UserInput.get('Request', 'Contact')}"
+        message["Subject"] = subject
+        message["From"] = SENDER_EMAIL
+        message["To"] = RECEIVE_INBOX
+
+        text = (
+            f"New submission from your portfolio website!\n\n"
+            f"Name: {UserInput.get('HumanName')}\n"
+            f"Email: {UserInput.get('EmailAddy')}\n"
+            f"Inquiry Type: {UserInput.get('Request')}\n"
+            f"Product Request: {UserInput.get('ProductRequest') or 'N/A'}\n"
+            f"App Request: {UserInput.get('AppRequest') or 'N/A'}\n"
+            f"Message: {UserInput.get('message')}\n"
+            f"Timestamp: {UserInput.get('timestamp')}\n"
+        )
         part = MIMEText(text, "plain")
         message.attach(part)
-        
-        print(f"DEBUG: Logging in and sending...")
-        try:
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-            server.starttls()
-            server.login(SenderEmail, EmailPW)
-            server.sendmail(SenderEmail, ReceiveInbox, message.as_string())
-            server.quit()
-        except Exception as e1:
-            print(f"DEBUG: Port 587 failed ({e1}), trying port 465...")
-            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
-            server.login(SenderEmail, EmailPW)
-            server.sendmail(SenderEmail, ReceiveInbox, message.as_string())
-            server.quit()
-        
-        print(f"✅ Email sent successfully for submission from {UserInput['HumanName']}")
+
+        ok, err = _send_smtp_message(message)
+        if ok:
+            print(f"✅ Email sent successfully for submission from {UserInput.get('HumanName')}")
+        else:
+            print(f"❌ Email Error: {err}")
     except Exception as e:
         print(f"❌ Email Error: {type(e).__name__}: {e}")
 
 def SendOrderEmail(order_data):
-    """Send order confirmation email"""
     try:
-        print(f"DEBUG: Starting order email send...")
-        
-        SenderEmail = "MKultra0020@gmail.com"
-        EmailPW = "wddp qncb brnd zwai"
-        ReceiveInbox = "MK.BARRIAULT@outlook.com"
-        
+        print("DEBUG: Starting order email send...")
+        if not SENDER_EMAIL or not EMAIL_PASSWORD:
+            raise RuntimeError("Email settings not configured (SENDER_EMAIL and EMAIL_PASSWORD required).")
+
         message = MIMEMultipart("alternative")
-        message["Subject"] = f"{'🛍️ REAL PURCHASE REQUEST' if order_data.get('real_purchase') else '🛒 Demo Order'} from {order_data['name']}"
-        message["From"] = SenderEmail
-        message["To"] = ReceiveInbox
-        
-        # Build items list
-        items_text = "\n".join([f"- {item['name']} (${item['price']:.2f})" for item in order_data['items']])
-        
-        purchase_status = "⚠️ CUSTOMER WANTS TO ACTUALLY PURCHASE! Contact them to arrange payment." if order_data.get('real_purchase') else "ℹ️ This is a demo order - customer is just testing the site."
-        
-        text = f"""
-{'🛍️ REAL PURCHASE REQUEST!' if order_data.get('real_purchase') else '🛒 Demo Order Received'}
+        message["Subject"] = f"{'REAL PURCHASE REQUEST' if order_data.get('real_purchase') else 'Demo Order'} from {order_data.get('name')}"
+        message["From"] = SENDER_EMAIL
+        message["To"] = RECEIVE_INBOX
 
-{purchase_status}
+        items_text = "\n".join([f"- {item['name']} (${item['price']:.2f})" for item in order_data.get("items", [])])
+        purchase_status = "CUSTOMER WANTS TO ACTUALLY PURCHASE! Contact them to arrange payment." if order_data.get("real_purchase") else "This is a demo order - customer is just testing the site."
 
-Customer Info:
-Name: {order_data['name']}
-Email: {order_data['email']}
-Phone: {order_data['phone']}
-
-Shipping Address:
-{order_data['address']}
-{order_data['city']}, {order_data['state']} {order_data['zip']}
-
-Order Details:
-{items_text}
-
-Total: ${order_data['total']:.2f}
-
-Order Date: {order_data['timestamp']}
-        """
-        
+        text = (
+            f"{'REAL PURCHASE REQUEST!' if order_data.get('real_purchase') else 'Demo Order Received'}\n\n"
+            f"{purchase_status}\n\n"
+            f"Customer Info:\nName: {order_data.get('name')}\nEmail: {order_data.get('email')}\nPhone: {order_data.get('phone')}\n\n"
+            f"Shipping Address:\n{order_data.get('address')}\n{order_data.get('city')}, {order_data.get('state')} {order_data.get('zip')}\n\n"
+            f"Order Details:\n{items_text}\n\n"
+            f"Total: ${order_data.get('total', 0):.2f}\nOrder Date: {order_data.get('timestamp')}\n"
+        )
         part = MIMEText(text, "plain")
         message.attach(part)
-        
-        try:
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-            server.starttls()
-            server.login(SenderEmail, EmailPW)
-            server.sendmail(SenderEmail, ReceiveInbox, message.as_string())
-            server.quit()
-        except Exception as e1:
-            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
-            server.login(SenderEmail, EmailPW)
-            server.sendmail(SenderEmail, ReceiveInbox, message.as_string())
-            server.quit()
-        
-        print(f"✅ Order email sent successfully!")
+
+        ok, err = _send_smtp_message(message)
+        if ok:
+            print("✅ Order email sent successfully!")
+        else:
+            print(f"❌ Order Email Error: {err}")
     except Exception as e:
         print(f"❌ Order Email Error: {type(e).__name__}: {e}")
 
 def EmailAsync(submission):
-    """Send email in background thread"""
     thread = Thread(target=SendEmail, args=(submission,))
     thread.daemon = True
     thread.start()
 
 def OrderEmailAsync(order_data):
-    """Send order email in background thread"""
     thread = Thread(target=SendOrderEmail, args=(order_data,))
     thread.daemon = True
     thread.start()
