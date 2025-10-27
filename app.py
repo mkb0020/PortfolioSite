@@ -159,9 +159,28 @@ def art():
     return render_template("art.html")
 
 #TEST
-@app.route("/guestbook")
-def art():
-    return render_template("guestbook.html")
+@app.route("/guestbook", methods=["GET", "POST"])
+def guestbook():
+    try:
+        df = pd.read_parquet(GUESTBOOK_FILE)
+    except (FileNotFoundError, Exception):
+        df = pd.DataFrame(columns=["name", "message", "timestamp"])
+
+    if request.method == "POST":
+        name = request.form.get("name", "Anonymous")
+        message = request.form.get("message")
+        new_entry = {
+            "name": name if name else "Anonymous",
+            "message": message,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        df = pd.concat([df, pd.DataFrame([new_entry])], ignore_index=True)
+        df.to_parquet(GUESTBOOK_FILE, index=False)
+        return redirect(url_for("guestbook"))
+
+    comments = df.to_dict(orient="records")[::-1]  # newest first
+    return render_template("guestbook.html", comments=comments)
+
 #END TEST
 
 @app.route("/contact", methods=["GET", "POST"])
@@ -200,9 +219,28 @@ def contact():
 
 
 #TEST
-@app.route("/suggestions")
-def art():
-    return render_template("suggestions.html")
+@app.route("/suggestions", methods=["GET", "POST"])
+def suggestions():
+    try:
+        df = pd.read_parquet(SUGGESTIONS_FILE)
+    except (FileNotFoundError, Exception):
+        df = pd.DataFrame(columns=["name", "email", "suggestion_type", "suggestion", "timestamp"])
+
+    if request.method == "POST":
+        new_suggestion = {
+            "name": request.form.get("name", "Anonymous"),
+            "email": request.form.get("email", ""),
+            "suggestion_type": request.form.get("suggestion_type"),
+            "suggestion": request.form.get("suggestion"),
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        df = pd.concat([df, pd.DataFrame([new_suggestion])], ignore_index=True)
+        df.to_parquet(SUGGESTIONS_FILE, index=False)
+        return redirect(url_for("suggestions", success=True))
+
+    success = request.args.get("success", False)
+    return render_template("suggestions.html", success=success)
+
 #END TEST
 
 # CART ROUTES
