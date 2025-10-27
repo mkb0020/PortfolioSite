@@ -8,11 +8,12 @@ from email.mime.multipart import MIMEMultipart
 from threading import Thread
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
-
+app.secret_key = 'your-secret-key-here-change-this'  # CHANGE THIS TO A RANDOM STRING
 
 SUBMISSIONS_FILE = os.path.join(os.path.dirname(__file__), 'data', 'submissions.parquet')
 ORDERS_FILE = os.path.join(os.path.dirname(__file__), 'data', 'orders.parquet')
+SUGGESTIONS_FILE = os.path.join(os.path.dirname(__file__), 'data', 'suggestions.parquet')
+GUESTBOOK_FILE = os.path.join(os.path.dirname(__file__), 'data', 'guestbook.parquet')
 
 os.makedirs(os.path.dirname(SUBMISSIONS_FILE), exist_ok=True)
 
@@ -21,8 +22,8 @@ def SendEmail(UserInput):
     try:
         print(f"DEBUG: Starting email send for {UserInput['HumanName']}...")
         
-        SenderEmail = os.getenv("SENDER_EMAIL", "MKultra0020@gmail.com")
-        EmailPW = os.getenv("EMAIL_PASSWORD")  
+        SenderEmail = "MKultra0020@gmail.com"
+        EmailPW = "wddp qncb brnd zwai"
         ReceiveInbox = "MK.BARRIAULT@outlook.com"
         
         print(f"DEBUG: Connecting to Gmail SMTP...")
@@ -70,23 +71,26 @@ def SendOrderEmail(order_data):
     try:
         print(f"DEBUG: Starting order email send...")
         
-        SenderEmail = os.getenv("SENDER_EMAIL", "MKultra0020@gmail.com")
-        EmailPW = os.getenv("EMAIL_PASSWORD") 
+        SenderEmail = "MKultra0020@gmail.com"
+        EmailPW = "wddp qncb brnd zwai"
         ReceiveInbox = "MK.BARRIAULT@outlook.com"
         
         message = MIMEMultipart("alternative")
-        message["Subject"] = f"New Order from {order_data['name']}"
+        message["Subject"] = f"{'🛍️ REAL PURCHASE REQUEST' if order_data.get('real_purchase') else '🛒 Demo Order'} from {order_data['name']}"
         message["From"] = SenderEmail
         message["To"] = ReceiveInbox
         
-       
-        items_text = "\n".join([f"- {item['name']} (${item['price']:.2f})" for item in order_data['items']]) #BUILD ITEMS LIST
+        # Build items list
+        items_text = "\n".join([f"- {item['name']} (${item['price']:.2f})" for item in order_data['items']])
+        
+        purchase_status = "⚠️ CUSTOMER WANTS TO ACTUALLY PURCHASE! Contact them to arrange payment." if order_data.get('real_purchase') else "ℹ️ This is a demo order - customer is just testing the site."
         
         text = f"""
-🛒 NEW ORDER RECEIVED!
+{'🛍️ REAL PURCHASE REQUEST!' if order_data.get('real_purchase') else '🛒 Demo Order Received'}
+
+{purchase_status}
 
 Customer Info:
-Real Purchase: {order_data['real_purchase']}
 Name: {order_data['name']}
 Email: {order_data['email']}
 Phone: {order_data['phone']}
@@ -188,8 +192,8 @@ def contact():
     success = request.args.get("success", False)
     return render_template("contact.html", success=success)
 
-
-@app.route("/add_to_cart", methods=["POST"]) # CART ROUTES
+# CART ROUTES
+@app.route("/add_to_cart", methods=["POST"])
 def add_to_cart():
     item_name = request.form.get("item_name")
     item_price = float(request.form.get("item_price"))
@@ -245,7 +249,8 @@ def checkout():
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         
-        try: #SAVE ORDER TO PARQUET
+        # Save order to parquet
+        try:
             df = pd.read_parquet(ORDERS_FILE)
         except (FileNotFoundError, Exception):
             df = pd.DataFrame()
@@ -260,15 +265,18 @@ def checkout():
             'zip': order_data['zip'],
             'items': str(cart_items),
             'total': total,
+            'real_purchase': real_purchase,
             'timestamp': order_data['timestamp']
         }
         
         df = pd.concat([df, pd.DataFrame([order_record])], ignore_index=True)
         df.to_parquet(ORDERS_FILE, index=False)
         
-        OrderEmailAsync(order_data) #SEND ORDER EMAIL
+        # Send order email
+        OrderEmailAsync(order_data)
         
-        session['cart'] = [] #CLEAR CART
+        # Clear cart
+        session['cart'] = []
         session.modified = True
         
         return redirect(url_for('order_confirmation'))
@@ -282,3 +290,10 @@ def order_confirmation():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
+
+
+
+
+
+
