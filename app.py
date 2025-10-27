@@ -158,6 +158,12 @@ def jewelry():
 def art():
     return render_template("art.html")
 
+#TEST
+@app.route("/guestbook")
+def art():
+    return render_template("guestbook.html")
+#END TEST
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
@@ -191,6 +197,13 @@ def contact():
     
     success = request.args.get("success", False)
     return render_template("contact.html", success=success)
+
+
+#TEST
+@app.route("/suggestions")
+def art():
+    return render_template("suggestions.html")
+#END TEST
 
 # CART ROUTES
 @app.route("/add_to_cart", methods=["POST"])
