@@ -44,25 +44,8 @@
     </div>
 </div>
 
-<div class="portfolio-card"> <!-- QUANTUM COUTURE-->
-        <div class="portfolio-card-img">
-        <img src="/static/images/art/ChaoticCouture.png" alt="QUANTUM COUTURE">
-    </div>
-    <div class="portfolio-card-body">
-        <h3>QUANTUM COUTURE</h3>
-        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Gummy Bear Charm</p>
-        <p><strong>Price:</strong> $30.00</p>
-        <p>Bring some entropy into your style.</p>
-        <form method="POST" action="{{ url_for('add_to_cart') }}">
-            <input type="hidden" name="item_name" value="QUANTUM COUTURE">
-            <input type="hidden" name="item_price" value="30.00">
-            <input type="hidden" name="item_image" value="/static/images/art/ChaoticCouture.png">
-            <button type="submit" class="btn btn-success">Add to Cart</button>
-        </form>
-    </div>
-</div>
 
-<div class="portfolio-card"> <!-- CHAOTIC NEUTRALLY CHARGED-->
+<div class="portfolio-card"> <!-- CHAOTIC NEUTRAL-->
     <div class="portfolio-card-img">
         <img src="/static/images/art/ChaoticNeutral.png" alt="CHAOTIC NEUTRAL">
     </div>
@@ -115,7 +98,45 @@
         </form>
     </div>
 </div> 
-    
+ 
+
+<div class="portfolio-card"> <!-- LAWFUL CUTE-->
+        <div class="portfolio-card-img">
+        <img src="/static/images/art/LawfulCute.png" alt="LAWFUL CUTE">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>LAWFUL CUTE</h3>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Gummy Bear Charm, Lollipop Charm, Butterfly Charm, Silver Chain, Popcicle Charm</p>
+        <p><strong>Price:</strong> $35.00</p>
+        <p>Be your girl's knight in shining armor and get her this cute set.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="LAWFUL CUTE">
+            <input type="hidden" name="item_price" value="35.00">
+            <input type="hidden" name="item_image" value="/static/images/art/static/LawfulCute.png">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="portfolio-card"> <!-- QUANTUM COUTURE-->
+        <div class="portfolio-card-img">
+        <img src="/static/images/art/ChaoticCouture.png" alt="QUANTUM COUTURE">
+    </div>
+    <div class="portfolio-card-body">
+        <h3>QUANTUM COUTURE</h3>
+        <p><strong>Materials:</strong> Glass Beads, D20 Dice, Gummy Bear Charm</p>
+        <p><strong>Price:</strong> $30.00</p>
+        <p>Bring some entropy into your style.</p>
+        <form method="POST" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="item_name" value="QUANTUM COUTURE">
+            <input type="hidden" name="item_price" value="30.00">
+            <input type="hidden" name="item_image" value="/static/images/art/ChaoticCouture.png">
+            <button type="submit" class="btn btn-success">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
 <div class="portfolio-card"> <!-- QUANTUM ROYALE-->
     <div class="portfolio-card-img">
         <img src="/static/images/art/QuantumRoyale.png" alt="QUANTUM ROYALE">
