@@ -1,0 +1,146 @@
+<!-- templates/admin_real_purchases.html -->
+{% extends "base.html" %}
+{% block title %}Real Purchases - Admin{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>🔥 Real Purchase Requests ({{ orders|length }})</h1>
+        <div>
+            <a href="{{ url_for('admin_orders') }}" class="btn btn-info">View All Orders</a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    {% if orders|length > 0 %}
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">⚠️ Action Required!</h4>
+        <p>These customers checked the box indicating they want to actually purchase. Contact them to arrange payment and shipping!</p>
+    </div>
+    {% endif %}
+
+    {% if orders %}
+    <div class="about-section">
+    {% for order in orders %}
+    <div class="card mb-4" style="background: rgba(220, 53, 69, 0.15); border: 3px solid #dc3545;">
+        <div class="card-header" style="background: rgba(220, 53, 69, 0.3);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h4 style="color: white; margin: 0;">
+                        🔥 Order #{{ order.order_number }}
+                        <span class="badge bg-danger">REAL PURCHASE</span>
+                    </h4>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span style="color: rgba(255, 255, 255, 0.9); font-weight: bold;">
+                        {{ order.order_date.strftime('%Y-%m-%d %H:%M') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="row">
+                <!-- Customer Info - Highlighted for real purchases -->
+                <div class="col-md-6">
+                    <div style="background: rgba(78, 223, 121, 0.1); padding: 15px; border-radius: 8px; border: 2px solid #4edf79;">
+                        <h5 style="color: #4edf79;">📞 Contact This Customer!</h5>
+                        <p style="color: white; margin-bottom: 8px; font-size: 1.1rem;">
+                            <strong>Name:</strong> {{ order.customer_name }}
+                        </p>
+                        <p style="color: white; margin-bottom: 8px; font-size: 1.1rem;">
+                            <strong>Email:</strong> 
+                            <a href="mailto:{{ order.customer_email }}" style="color: #4edf79; font-weight: bold;">
+                                {{ order.customer_email }}
+                            </a>
+                        </p>
+                        {% if order.customer_phone %}
+                        <p style="color: white; margin-bottom: 8px; font-size: 1.1rem;">
+                            <strong>Phone:</strong> {{ order.customer_phone }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <h5 style="color: #6495ED;">📦 Shipping Address</h5>
+                        <p style="color: white; margin-bottom: 5px; line-height: 1.6;">
+                            {{ order.address }}<br>
+                            {{ order.city }}, {{ order.state }} {{ order.zip_code }}
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Order Items -->
+                <div class="col-md-6">
+                    <h5 style="color: #ffc107;">🛍️ Items Requested</h5>
+                    <ul style="color: white; font-size: 1.05rem; line-height: 1.8;">
+                        {% for item in order["items"] %}
+                        <li>
+                            <strong>{{ item.item_name }}</strong> - ${{ "%.2f"|format(item.item_price) }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <div style="background: rgba(220, 53, 69, 0.2); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <h3 style="color: #ffc107; margin: 0;">
+                            Total: ${{ "%.2f"|format(order.total_amount) }}
+                        </h3>
+                    </div>
+                    
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-top: 15px; font-style: italic;">
+                        💡 Remember to check inventory - if this includes one-of-a-kind jewelry, mark it as sold after confirming payment!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-footer" style="background: rgba(0, 0, 0, 0.2);">
+            <div class="d-flex justify-content-between align-items-center">
+                <small style="color: rgba(255, 255, 255, 0.7);">
+                    Order Status: <span class="badge bg-warning text-dark">{{ order.order_status }}</span>
+                </small>
+                
+                <!-- Quick Status Update Buttons -->
+                <div class="btn-group btn-group-sm" role="group">
+                    {% if order.order_status != 'processing' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='processing') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-info">Mark as Processing</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'shipped' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='shipped') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">Mark as Shipped</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'completed' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='completed') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Mark as Completed</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-success">
+        <h4>🎉 No pending real purchase requests!</h4>
+        <p>When customers check the "I want to actually purchase" box, their orders will appear here with their contact information.</p>
+        <p>For now, all orders are demo/test orders. Keep creating awesome art and jewelry! 🎨💎</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .badge {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+</style>
+
+{% endblock %}

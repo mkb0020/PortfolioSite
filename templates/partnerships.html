@@ -1,0 +1,159 @@
+<!-- templates/partnerships.html -->
+{% extends "base.html" %}
+{% block title %}Wholesale & Partnerships - MK Barriault{% endblock %}
+{% block content %}
+
+<h1>🤝 Wholesale & Partnership Opportunities</h1>
+
+<!-- {% if success %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Thank you for your interest! I'll get back to you within 24-48 hours to discuss partnership opportunities.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+{% endif %} -->
+
+<div class="row mt-3">
+    <!-- LEFT SIDE - INFO -->
+    <!--<div class="col-md-6">>-->
+    <div class="text-left mb-4">
+        <div class="about-section">
+            <h3>💎 Partner With Me!</h3>
+            <p style="line-height: 1.8;">
+            I love connecting with fellow creatives, makers, and small business owners who believe in supporting local art. If you’re an Atlanta-based vendor, boutique, or market seller interested in carrying my art or handmade jewelry, I’d love to collaborate!
+            <br><br><strong>What I Offer </strong>
+            <br>🖼️ Original Art & Prints – Vibrant, one-of-a-kind pieces that bring color and personality to any space.
+            <br>💎 Handcrafted Jewelry – Playful, expressive designs made to spark conversation and connection.
+            <br>💫 Custom Orders & Market Exclusives – Let’s create pieces tailored to your audience or event theme.
+            <br><br><strong>Why Partner With Me</strong>
+            <br>Competitive bulk and wholesale pricing.
+            <br>Local pickup or delivery options within the Atlanta area.
+            <br>Flexible order sizes — perfect for testing what sells best with your customers.
+            <br><br><strong>Let's Connect!</strong>
+            <br>If you’re interested in becoming a retail or market partner, please click on the "Contact" drop down menu and select "Contact Me" to shoot me a message!
+            <br><br>Please Include the following:
+            <br>Your business name & location
+            <br>The types of items you’re interested in (art, jewelry, or both)
+            <br>Any upcoming markets or events you’re part of
+            <br><br>Let’s bring a little more color and creativity to Atlanta together 💕
+            </p>
+                <!-- Are you an Atlanta-area vendor selling at local markets? I'd love to collaborate! 
+                I create unique, handmade jewelry and art prints that would be perfect for:
+            </p>
+            
+            <ul style="line-height: 2; color: rgba(255, 255, 255, 0.9);">
+                <li><strong>Market Vendors</strong> - Stand out with one-of-a-kind jewelry pieces</li>
+                <li><strong>Boutique Shops</strong> - Curated art and accessories for your customers</li>
+                <li><strong>Pop-Up Events</strong> - Eye-catching items that sell</li>
+                <li><strong>Gift Shops</strong> - Unique pieces people actually want</li>
+            </ul>
+
+            <h4 style="color: #4edf79; margin-top: 30px;">Why Partner?</h4>
+            <ul style="line-height: 2; color: rgba(255, 255, 255, 0.9);">
+                <li>🎨 <strong>Unique Designs</strong> - Handmade, one-of-a-kind pieces</li>
+                <li>💰 <strong>Wholesale Pricing</strong> - Competitive bulk rates</li>
+                <li>📦 <strong>Flexible Options</strong> - Wholesale or consignment available</li>
+                <li>🚀 <strong>Growing Collection</strong> - New designs regularly</li>
+                <li>🤝 <strong>Local Partnership</strong> - Supporting Atlanta creators</li>
+            </ul>
+
+            <h4 style="color: #ffc107; margin-top: 30px;">📍 Atlanta Markets</h4>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.8;">
+                I'm specifically looking to partner with vendors at:
+            </p>
+            <ul style="line-height: 1.8; color: rgba(255, 255, 255, 0.85);">
+                <li>Ponce City Market</li>
+                <li>Krog Street Market</li>
+                <li>East Atlanta Village markets</li>
+                <li>Little Five Points vendors</li>
+                <li>Underground Atlanta</li>
+                <li>And other local Atlanta markets!</li>
+            </ul>
+
+            <p style="margin-top: 20px; padding: 15px; background: rgba(78, 223, 121, 0.1); border-left: 4px solid #4edf79; border-radius: 4px;">
+                <strong>💡 My Goal:</strong> I want to focus on creating while you handle the sales! 
+                Let's build something awesome together.
+            </p> -->
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE - FORM --><!--
+    <div class="col-md-6">
+        <div class="about-section">
+            <h3>📋 Partnership Inquiry Form</h3>
+            <p style="color: rgba(255, 255, 255, 0.8);">
+                Interested in carrying my work? Fill out the form below and let's chat!
+            </p>
+            
+            <form method="POST">
+                <div class="form-group">
+                    <label for="business_name" class="form-label">Business Name *</label>
+                    <input type="text" class="form-control" id="business_name" name="business_name" required placeholder="Your shop or market booth name">
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_name" class="form-label">Your Name *</label>
+                    <input type="text" class="form-control" id="contact_name" name="contact_name" required placeholder="Contact person">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_email" class="form-label">Email *</label>
+                    <input type="email" class="form-control" id="contact_email" name="contact_email" required placeholder="your@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" placeholder="(555) 555-5555">
+                </div>
+
+                <div class="form-group">
+                    <label for="business_type" class="form-label">Business Type *</label>
+                    <select class="form-control" id="business_type" name="business_type" required>
+                        <option value="">Select type</option>
+                        <option value="Market Vendor">Market Vendor</option>
+                        <option value="Boutique/Retail Shop">Boutique/Retail Shop</option>
+                        <option value="Pop-Up Events">Pop-Up Events</option>
+                        <option value="Online Store">Online Store</option>
+                        <option value="Gift Shop">Gift Shop</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="market_locations" class="form-label">Where do you sell? *</label>
+                    <textarea class="form-control" id="market_locations" name="market_locations" required placeholder="e.g., Ponce City Market every Saturday, Little Five Points pop-ups, etc."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="interest_type" class="form-label">Partnership Interest *</label>
+                    <select class="form-control" id="interest_type" name="interest_type" required>
+                        <option value="">Select option</option>
+                        <option value="Wholesale">Wholesale (buy in bulk)</option>
+                        <option value="Consignment">Consignment (pay after items sell)</option>
+                        <option value="Both">Open to both options</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="estimated_quantity" class="form-label">Estimated Quantity Needed *</label>
+                    <select class="form-control" id="estimated_quantity" name="estimated_quantity" required>
+                        <option value="">Select range</option>
+                        <option value="5-10 pieces">5-10 pieces</option>
+                        <option value="10-25 pieces">10-25 pieces</option>
+                        <option value="25-50 pieces">25-50 pieces</option>
+                        <option value="50+ pieces">50+ pieces</option>
+                        <option value="Not sure yet">Not sure yet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="additional_info" class="form-label">Additional Information</label>
+                    <textarea class="form-control" id="additional_info" name="additional_info" placeholder="Tell me about your business, what types of items you're interested in, your typical customer base, etc."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Partnership Inquiry</button>
+            </form>
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}
