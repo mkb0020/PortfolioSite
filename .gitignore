@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 data/
 venv/
-
- 
+db_helpers.py
+create_portfolio_tables.py
+add_partnership_table.py 
  
