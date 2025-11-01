@@ -172,29 +172,29 @@ def art():
 def partnerships():
     return render_template("partnerships.html")
 
-#@app.route("/partnerships", methods=["GET", "POST"]) # PARTNERSHIP PAGE
-#def partnerships():
-#    if request.method == "POST":
-#        new_inquiry = {
-#            "business_name": request.form.get("business_name"),
-#            "contact_name": request.form.get("contact_name"),
-#            "contact_email": request.form.get("contact_email"),
-#            "contact_phone": request.form.get("contact_phone"),
-#            "business_type": request.form.get("business_type"),
-#            "market_locations": request.form.get("market_locations"),
-#            "interest_type": request.form.get("interest_type"),
-#            "estimated_quantity": request.form.get("estimated_quantity"),
-#            "additional_info": request.form.get("additional_info")
-#        }
+@app.route("/partnerships", methods=["GET", "POST"]) # PARTNERSHIP PAGE
+def partnerships():
+    if request.method == "POST":
+        new_inquiry = {
+            "business_name": request.form.get("business_name"),
+            "contact_name": request.form.get("contact_name"),
+            "contact_email": request.form.get("contact_email"),
+            "contact_phone": request.form.get("contact_phone"),
+            "business_type": request.form.get("business_type"),
+            "market_locations": request.form.get("market_locations"),
+            "interest_type": request.form.get("interest_type"),
+            "estimated_quantity": request.form.get("estimated_quantity"),
+            "additional_info": request.form.get("additional_info")
+        }
         
-        #if add_partnership_inquiry(new_inquiry):
+        if add_partnership_inquiry(new_inquiry):
             # TODO: Send email notification
-        #    return redirect(url_for("partnerships", success=True))
-        #else:
-        #    return "Error saving partnership inquiry", 500
+            return redirect(url_for("partnerships", success=True))
+        else:
+            return "Error saving partnership inquiry", 500
     
-    #success = request.args.get("success", False)
-    #return render_template("partnerships.html", success=success)
+    success = request.args.get("success", False)
+    return render_template("partnerships.html", success=success)
 
 # ============================================  GUESTBOOK ============================================
 @app.route("/guestbook", methods=["GET", "POST"])
@@ -429,21 +429,21 @@ def update_order_status_route(order_id, status):
 
 
 
-#@app.route("/admin/partners")
-#@AdminRequired
-#def admin_partners():
-#    """View all partnership inquiries"""
-#    partners = get_all_partnership_inquiries()
-#    return render_template("admin_partners.html", partners=partners)
+@app.route("/admin/partners")
+@AdminRequired
+def admin_partners():
+    """View all partnership inquiries"""
+    partners = get_all_partnership_inquiries()
+    return render_template("admin_partners.html", partners=partners)
 
-#@app.route("/admin/partnership/update-status/<int:inquiry_id>/<status>", methods=["POST"])
-#@AdminRequired
-#def update_partnership_status_route(inquiry_id, status):
-#    """Update partnership inquiry status"""
-#    if update_partnership_status(inquiry_id, status):
-#        return redirect(url_for('admin_partners'))
-#    else:
-#        return "Error updating status", 500
+@app.route("/admin/partnership/update-status/<int:inquiry_id>/<status>", methods=["POST"])
+@AdminRequired
+def update_partnership_status_route(inquiry_id, status):
+    """Update partnership inquiry status"""
+    if update_partnership_status(inquiry_id, status):
+        return redirect(url_for('admin_partners'))
+    else:
+        return "Error updating status", 500
 
 # ============================================ MAIN ============================================
 if __name__ == "__main__":
