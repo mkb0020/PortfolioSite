@@ -1,40 +1,163 @@
-{% extends "base.html" %} {% block title %}Partnership Inquiries - Admin{% endblock %} {% block content %}
-🤝 Partnership Inquiries ({{ partners|length }})
-← Back to Dashboard
-{% if partners %}
-{% for partner in partners %}
-🏪 {{ partner.business_name }} {{ partner.status }}
-{{ partner.business_type }}
+<!-- templates/admin_partners.html -->
+{% extends "base.html" %}
+{% block title %}Partnership Inquiries - Admin{% endblock %}
+{% block content %}
 
-{{ partner.submitted_at.strftime('%Y-%m-%d %H:%M') }}
-📞 Contact Information
-Contact Name: {{ partner.contact_name }}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Partnership Inquiries ({{ partners|length }})</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
 
-Email: {{ partner.contact_email }}
+    {% if partners %}
+    {% for partner in partners %}
+    <div class="about-section">
+        <div class="card mb-4 partner-card-{% if partner.status == 'new' %}new{% elif partner.status == 'partner' %}active{% else %}default{% endif %}">
+            <div class="card-header partner-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 style="color: #BA55D3; margin: 0;">
+                            🏪 {{ partner.business_name }}
+                            <span class="badge badge-partner-{{ partner.status }}">
+                                {{ partner.status }}
+                            </span>
+                        </h4>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin: 5px 0 0 0;">
+                            {{ partner.business_type }}
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <small style="color: rgba(255, 255, 255, 0.6);">
+                            {{ partner.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <!-- Contact Info -->
+                    <div class="col-md-6">
+                        <div style="background: rgba(78, 223, 121, 0.1); padding: 15px; border-radius: 8px; border: 2px solid #BA55D3; margin-bottom: 20px;"> <!-- MEDIUM ORCHID -->
+                            <h5 style="color: #D891EF; margin-bottom: 15px;">📞 Contact Information</h5> <!-- BRIGHT LILAC -->
+                            <p style="color: white; margin-bottom: 8px;">
+                                <strong>Contact Name:</strong> {{ partner.contact_name }}
+                            </p>
+                            <p style="color: white; margin-bottom: 8px;">
+                                <strong>Email:</strong> 
+                                <a href="mailto:{{ partner.contact_email }}" style="color: #6495ED;">
+                                    {{ partner.contact_email }}
+                                </a>
+                            </p>
+                            {% if partner.contact_phone %}
+                            <p style="color: white; margin-bottom: 8px;">
+                                <strong>Phone:</strong> 
+                                <a href="tel:{{ partner.contact_phone }}" style="color: #6495ED;">
+                                    {{ partner.contact_phone }}
+                                </a>
+                            </p>
+                            {% endif %}
+                        </div>
 
-{% if partner.contact_phone %}
-Phone: {{ partner.contact_phone }}
+                        <h5 style="color: #D891EF;">📍 Market Locations</h5> <!--BRIGHT LILAC-->
+                        <p style="color: white; white-space: pre-wrap; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 5px;">{{ partner.market_locations }}</p>
+                    </div>
+                    
+                    <div class="col-md-6"> <!-- PARTNERSHIP DETAILS -->
+                        <h5 style="color: #9874D3;"> Partnership Details</h5> <!-- LILAC BUSH -->
+                        
+                        <p style="color: white; margin-bottom: 10px;">
+                            <strong>Interest Type:</strong> 
+                            <span class="badge" style="background: #9874D3; color: white;">{{ partner.interest_type }}</span>
+                        </p>
+                        
+                        <p style="color: white; margin-bottom: 10px;">
+                            <strong>Estimated Quantity:</strong> 
+                            <span class="badge" style="background: #B784A7; color: white;">{{ partner.estimated_quantity }}</span>
+                        </p>
 
-{% endif %}
-📍 Market Locations
-{{ partner.market_locations }}
+                        {% if partner.additional_info %}
+                        <h6 style="color: rgba(255, 255, 255, 0.8); margin-top: 20px;">Additional Info:</h6>
+                        <p style="color: white; white-space: pre-wrap; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 5px;">{{ partner.additional_info }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Status Update Buttons -->
+                <div class="mt-4 pt-3" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h6 style="color: rgba(255, 255, 255, 0.8);">Update Status:</h6>
+                    <div class="btn-group" role="group">
+                        {% if partner.status != 'new' %}
+                        <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='new') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm" style="background: #D891EF; color: white; border: none;">New</button> <!--BRIGHT LILAC-->
+                        </form>
+                        {% endif %}
+                        
+                        {% if partner.status != 'contacted' %}
+                        <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='contacted') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm" style="background: #9874D3; color: white; border: none;">Contacted</button>
+                        </form>
+                        {% endif %}
+                        
+                        {% if partner.status != 'negotiating' %}
+                        <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='negotiating') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm" style="background: #B784A7; color: white; border: none;">Negotiating</button>
+                        </form>
+                        {% endif %}
+                        
+                        {% if partner.status != 'partner' %}
+                        <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='partner') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm" style="background: #D891EF; color: white; border: none;">✅ Active Partner</button> <!--BRIGHT LILAC-->
+                        </form>
+                        {% endif %}
+                        
+                        {% if partner.status != 'declined' %}
+                        <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='declined') }}" style="display: inline;">
+                            <button type="submit" class="btn btn-sm" style="background: #6c757d; color: white; border: none;">Declined</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No partnership inquiries yet!</h4>
+        <p>When vendors fill out the partnership form, they'll appear here.</p>
+    </div>
+    {% endif %}
+</div>
 
-💼 Partnership Details
-Interest Type: {{ partner.interest_type }}
+<style>
+    .badge {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Partner card styles */
+    .partner-card-new {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid #D473D4; /* DEEP MAUVE */
+    }
+    
+    .partner-card-active {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid #E0B0FF; /* #MAUVE */
+    }
+    
+    .partner-card-default {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .partner-header {
+        background: rgba(255, 255, 255, 0.05);
+    }
+</style>
 
-Estimated Quantity: {{ partner.estimated_quantity }}
-
-{% if partner.additional_info %}
-Additional Info:
-{{ partner.additional_info }}
-
-{% endif %}
-Update Status:
-{% if partner.status != 'new' %} New {% endif %} {% if partner.status != 'contacted' %} Contacted {% endif %} {% if partner.status != 'negotiating' %} Negotiating {% endif %} {% if partner.status != 'partner' %} ✅ Active Partner {% endif %} {% if partner.status != 'declined' %} Declined {% endif %}
-{% endfor %}
-{% else %}
-No partnership inquiries yet!
-When vendors fill out the partnership form, they'll appear here.
-
-{% endif %}
 {% endblock %}

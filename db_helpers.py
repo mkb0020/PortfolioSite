@@ -1,6 +1,5 @@
 # db_helpers.py
 import psycopg2
-#import psycopg2-binary 
 from psycopg2.extras import RealDictCursor
 import os
 from dotenv import load_dotenv

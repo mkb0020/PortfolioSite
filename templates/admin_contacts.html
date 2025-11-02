@@ -1,14 +1,12 @@
 <!-- templates/admin_contacts.html -->
-
-<!-- templates/admin_contacts.html -->
 {% extends "base.html" %}
 {% block title %}Contact Submissions - Admin{% endblock %}
 {% block content %}
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>📧 Contact Submissions ({{ contacts|length }})</h1>
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+        <h1 style="color: #BA55D3;">📧 Contact Submissions ({{ contacts|length }})</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-mauve">← Back to Dashboard</a>
     </div>
 
     {% if contacts %}

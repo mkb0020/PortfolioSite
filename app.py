@@ -169,9 +169,7 @@ def art():
     return render_template("art.html")
 
 
-@app.route("/partnerships")
-def partnerships():
-    return render_template("partnerships.html")
+
 
 @app.route("/partnerships", methods=["GET", "POST"]) # PARTNERSHIP PAGE
 def partnerships():
@@ -374,14 +372,26 @@ def admin_dashboard(): # MAIN ADMIN DASHBOARD WITH OVERVIEW
     suggestions = GetSuggestions()
     orders = GetOrders()
     real_orders = GetRealOrders()
+    partners = get_all_partnership_inquiries()
+    
+    # Count unread contacts
+    unread_contacts = sum(1 for c in contacts if c.get('status') == 'unread')
+    
+    # Count pending orders (not completed)
+    pending_orders = sum(1 for o in orders if o.get('order_status') != 'completed')
+    
+    # Count pending real purchases (real purchase AND not completed)
+    pending_real_purchases = sum(1 for o in real_orders if o.get('order_status') != 'completed')
     
     stats = {
-        'total_contacts': len(contacts),
+        'unread_contacts': unread_contacts,
         'total_suggestions': len(suggestions),
-        'total_orders': len(orders),
-        'real_purchases': len(real_orders),
-        'recent_contacts': contacts[:5],  # LAST 5
-        'recent_real_orders': real_orders[:5]  # LAST 5 REAL ORDERS
+        'pending_orders': pending_orders,
+        'pending_real_purchases': pending_real_purchases,
+        'total_partners': len(partners),
+        'recent_contacts': contacts[:5],
+        'recent_orders': orders[:10],  # Show recent orders (all types)
+        'recent_partners': partners[:5]
     }
     
     return render_template("admin_dashboard.html", stats=stats)

@@ -5,127 +5,124 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>🛒 All Orders ({{ orders|length }})</h1>
+        <h1 style="color: #BA55D3;">🛒 All Orders ({{ orders|length }})</h1>
         <div>
             <a href="{{ url_for('admin_real_purchases') }}" class="btn btn-danger">🔥 Real Purchases Only</a>
-            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn" style="background: linear-gradient(135deg, #A397B4, #B784A7); color: white; border: none;">← Back to Dashboard</a>
         </div>
     </div>
 
     {% if orders %}
     <div class="about-section">
-    {% for order in orders %}
-    <div class="card mb-4 {% if order.is_real_purchase %}real-purchase-card{% else %}demo-order-card{% endif %}">
-        <div class="card-header {% if order.is_real_purchase %}real-purchase-header{% else %}demo-order-header{% endif %}">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h4 class="order-title">
-                        Order #{{ order.order_number }}
-                        {% if order.is_real_purchase %}
-                        <span class="badge bg-danger">🔥 REAL PURCHASE</span>
-                        {% else %}
-                        <span class="badge bg-secondary">Demo Order</span>
-                        {% endif %}
-                    </h4>
-                </div>
-                <div class="col-md-6 text-end">
-                    <span class="order-date">
-                        {{ order.order_date.strftime('%Y-%m-%d %H:%M') }}
-                    </span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card-body">
-            <div class="row">
-                <!-- Customer Info -->
-                <div class="col-md-6">
-                    <h5 class="section-title">Customer Information</h5>
-                    <p class="info-text">
-                        <strong>Name:</strong> {{ order.customer_name }}
-                    </p>
-                    <p class="info-text">
-                        <strong>Email:</strong> 
-                        <a href="mailto:{{ order.customer_email }}" class="email-link">
-                            {{ order.customer_email }}
-                        </a>
-                    </p>
-                    {% if order.customer_phone %}
-                    <p class="info-text">
-                        <strong>Phone:</strong> {{ order.customer_phone }}
-                    </p>
-                    {% endif %}
-                    
-                    <h5 class="section-title mt-4">Shipping Address</h5>
-                    <p class="info-text">
-                        {{ order.address }}<br>
-                        {{ order.city }}, {{ order.state }} {{ order.zip_code }}
-                    </p>
-                </div>
-                
-                <!-- Order Items -->
-                <div class="col-md-6">
-                    <h5 class="section-title">Order Items</h5>
-                    <ul class="order-items-list">
-                        {% for item in order["items"] %}
-
-                        <li>
-                            <strong>{{ item.item_name }}</strong> - ${{ "%.2f"|format(item.item_price) }}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    
-                    <h4 class="order-total">
-                        Total: ${{ "%.2f"|format(order.total_amount) }}
-                    </h4>
-                    
-                    <p class="order-status">
-                        <strong>Status:</strong> 
-                        <span class="badge {% if order.order_status == 'real_pending' %}bg-danger{% else %}bg-info{% endif %}">
-                            {{ order.order_status }}
+        {% for order in orders %}
+        <div class="card mb-4 {% if order.is_real_purchase %}order-card-real{% else %}order-card-demo{% endif %}">
+            <div class="card-header" style="background: rgba(255, 255, 255, 0.05);">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h4 style="color: white; margin: 0;">
+                            Order #{{ order.order_number }}
+                            {% if order.is_real_purchase %}
+                            <span class="badge bg-danger">🔥 REAL PURCHASE</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Demo Order</span>
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <span style="color: rgba(255, 255, 255, 0.7);">
+                            {{ order.order_date.strftime('%Y-%m-%d %H:%M') }}
                         </span>
-                    </p>
-                    
-                    <!-- Status Update Buttons -->
-                    <div class="mt-3">
-                        <h6 style="color: rgba(255, 255, 255, 0.8);">Update Status:</h6>
-                        <div class="btn-group" role="group">
-                            {% if order.order_status != 'demo' %}
-                            <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='demo') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-secondary">Demo</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.order_status != 'real_pending' %}
-                            <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='real_pending') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-warning">Pending</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.order_status != 'processing' %}
-                            <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='processing') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-info">Processing</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.order_status != 'shipped' %}
-                            <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='shipped') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-primary">Shipped</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.order_status != 'completed' %}
-                            <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='completed') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-success">Completed</button>
-                            </form>
-                            {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <!-- Customer Information -->
+                    <div class="col-md-6">
+                        <h5 style="color: #BA55D3;">Customer Information</h5>
+                        <p style="color: white; margin-bottom: 5px;">
+                            <strong>Name:</strong> {{ order.customer_name }}
+                        </p>
+                        <p style="color: white; margin-bottom: 5px;">
+                            <strong>Email:</strong> 
+                            <a href="mailto:{{ order.customer_email }}" style="color: #4edf79;">
+                                {{ order.customer_email }}
+                            </a>
+                        </p>
+                        {% if order.customer_phone %}
+                        <p style="color: white; margin-bottom: 5px;">
+                            <strong>Phone:</strong> {{ order.customer_phone }}
+                        </p>
+                        {% endif %}
+                        
+                        <h5 style="color: #BA55D3; margin-top: 20px;">Shipping Address</h5>
+                        <p style="color: white; line-height: 1.6;">
+                            {{ order.address }}<br>
+                            {{ order.city }}, {{ order.state }} {{ order.zip_code }}
+                        </p>
+                    </div>
+                    
+                    <!-- Order Items -->
+                    <div class="col-md-6">
+                        <h5 style="color: #BA55D3;">Order Items</h5>
+                        <ul style="color: white;">
+                            {% for item in order["items"] %}
+                            <li>{{ item.item_name }} - ${{ "%.2f"|format(item.item_price) }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div style="background: rgba(186, 85, 211, 0.2); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <h4 style="color: #BA55D3; margin: 0;">
+                                Total: ${{ "%.2f"|format(order.total_amount) }}
+                            </h4>
+                        </div>
+                        
+                        <p style="color: white; margin-top: 15px;">
+                            <strong>Status:</strong> 
+                            <span class="badge {% if order.order_status == 'completed' %}bg-success{% else %}bg-warning text-dark{% endif %}">{{ order.order_status }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer" style="background: rgba(0, 0, 0, 0.2);">
+                <h6 style="color: rgba(255, 255, 255, 0.8);">Update Status:</h6>
+                <div class="btn-group btn-group-sm" role="group">
+                    {% if order.order_status != 'demo' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='demo') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary">Demo</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'real_pending' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='real_pending') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-warning">Pending</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'processing' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='processing') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-info">Processing</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'shipped' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='shipped') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">Shipped</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'completed' %}
+                    <form method="POST" action="{{ url_for('update_order_status_route', order_id=order.order_id, status='completed') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Completed</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
     {% else %}
     <div class="alert alert-info">
         <h4>No orders yet!</h4>
@@ -135,66 +132,22 @@
 </div>
 
 <style>
-    /* Card Styles */
-    .real-purchase-card {
-        background: rgba(0, 0, 0, 0.3);
-        border: 3px solid #dc3545;
-    }
-    
-    .demo-order-card {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .real-purchase-header {
-        background: rgba(220, 53, 69, 0.2);
-    }
-    
-    .demo-order-header {
-        background: rgba(255, 255, 255, 0.05);
-    }
-    
-    /* Text Styles */
-    .order-title {
-        color: white;
-        margin: 0;
-    }
-    
-    .order-date {
-        color: rgba(255, 255, 255, 0.7);
-    }
-    
-    .section-title {
-        color: #4edf79;
-        margin-top: 0;
-    }
-    
-    .info-text {
-        color: white;
-        margin-bottom: 5px;
-    }
-    
-    .email-link {
-        color: #6495ED;
-    }
-    
-    .order-items-list {
-        color: white;
-    }
-    
-    .order-total {
-        color: #4edf79;
-        margin-top: 20px;
-    }
-    
-    .order-status {
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 10px;
-    }
-    
     .badge {
         padding: 5px 10px;
         font-size: 0.85rem;
+    }
+    
+    /* Order card styles */
+    .order-card-real {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid #D473D4; /* DEEP MAUVE */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .order-card-demo {
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
 </style>
 
