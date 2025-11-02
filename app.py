@@ -24,8 +24,9 @@ from db_helpers import (
     GetOrders, # get_all_orders
     GetRealOrders, # get_real_purchase_orders 
     update_order_status,
-    #get_all_partnership_inquiries,
-    #update_partnership_status
+    add_partnership_inquiry,
+    get_all_partnership_inquiries,
+    update_partnership_status
 )
 
 app = Flask(__name__)
