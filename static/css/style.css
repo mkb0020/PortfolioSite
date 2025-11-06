@@ -1,5 +1,5 @@
- /* ----------------   GENERAL STYLING ----------------------*/
-
+/* static/style.css */
+/* ===============================   GENERAL STYLING =============================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-image: url('/static/images/background2.png'); /* BG IMAGE */
@@ -71,7 +71,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ----------------   NAV BAR ----------------------*/
+/* ===============================   NAV BAR =============================== */
 .navbar {
     background-color: rgba(33, 37, 41, 0.653) !important;
     backdrop-filter: blur(10px);
@@ -98,7 +98,7 @@ a:hover {
 }
 
 
-/* ----------------   TOOL TIPS ----------------------*/
+/* ===============================   TOOL TIPS =============================== */
 .tooltip-inner { /* TOOL TIPS - POP UP BUBLES WHEN YOU HOVER OVER STUFF */
     max-width: 1200px;   /* TOOL TIP WIDTH */
     white-space: normal; /* WRAP TEXT */
@@ -123,12 +123,14 @@ a:hover {
 }
 
 
-/* ----------------   ABOUT ME PAGE ----------------------*/
+/* ===============================   ABOUT ME PAGE =============================== */
 .about-section { /* ABOUT SECTION*/
-    background: rgba(52, 58, 64, 0.3);
+    /*background: rgba(52, 58, 64, 0.3);*/
+    background: rgba(168, 164, 224, 0.05);
     backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 8px;
+    border: 2px solid rgba(152, 116, 211, 0.5); /* LILAC BUSH */
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     line-height: 1.8;
     color: white;
@@ -146,9 +148,11 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: 25px 5px; /* DISCTANCE FROM NAV BAR TO BOX */
-    background: rgba(52, 58, 64, 0.041);
+    /*background: rgba(52, 58, 64, 0.041);*/
+    background: rgba(168, 164, 224, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 8px;
+    border: 2px solid rgba(152, 116, 211, 0.5); /* LILAC BUSH */
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     line-height: 1.8;
     color: white;
@@ -315,7 +319,7 @@ a:hover {
 }
 
 
-/* ----------------   RESUME PAGE ----------------------*/
+/* ===============================   RESUME PAGE =============================== */
 .resume-grid { /* GRID FOR RESUME SECTION PLACEMENT */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -353,7 +357,7 @@ a:hover {
 }
 
 
-/* ----------------   CODING PORTFOLIO - ONE COLUMN LAYOUT ----------------------*/
+/* ===============================   CODING PORTFOLIO - ONE COLUMN LAYOUT =============================== */
 .coding-projects {
     display: flex;
     flex-direction: column;
@@ -362,7 +366,7 @@ a:hover {
 }
 
 .project-card {
-    background: rgba(52, 58, 64, 0.85);
+    background: rgba(52, 58, 64, 0.7);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -407,7 +411,7 @@ a:hover {
 }
 
 .project-meta {
-    color: #E0B0FF; /* MAUVE */
+    color: #4edf79; 
     font-size: 1rem;
     margin-bottom: 20px;
     font-weight: 600;
@@ -427,7 +431,7 @@ a:hover {
 }
 
 .tag {
-    background: rgba(152, 116, 211, 0.6); /* #9874D3; /* LILAC BUSH */
+    background: #B879E2; 
     color: white;
     padding: 8px 16px;
     border-radius: 20px;
@@ -447,8 +451,7 @@ a:hover {
 }
 
 
-
-/* ----------------   PORTFOLIO (ART AND CODING) PAGES ----------------------*/
+/* ===============================   PORTFOLIO (ART AND CODING) PAGES   =============================== */
 .portfolio-card { /* CARDS FOR PORTFOLIO ITEMS */
     background: rgba(52, 58, 64, 0.85);
     backdrop-filter: blur(10px);
@@ -499,13 +502,13 @@ a:hover {
     gap: 30px; /* DISTANCE BETWEEN CARDS */
     margin-top: 50px; /* ADJUSTS DISTANCE BETWEEN NAV BAR AND TOP OF CARDS */
 }
-
-/* ----------------   CONTACT PAGE ----------------------*/
+/* ===============================   CONTACT PAGE  =============================== */
 .contact-info { /* CONTACT INFO SECTION */
-    background: rgba(52, 58, 64, 0.3);
+    background: rgba(168, 164, 224, 0.07);
     backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 8px;
+    border: 2px solid rgba(152, 116, 211, 0.5); /* LILAC BUSH */
     margin-top: 0px;
     color: white;
 }
@@ -597,7 +600,7 @@ textarea.form-control {
 }
 
 
-/* ----------------   SHOPPING CART ----------------------*/
+/* ===============================   SHOPPING CART =============================== */
 .cart-items {
     margin-bottom: 30px;
 }
@@ -666,28 +669,28 @@ textarea.form-control {
 
 /* ADD TO CART BUTTON */
 .btn-success {
-    background-color: #4edf79;
+    background-color: #4edf79; /* MINT GLOW  */
     color: white;
 }
 
 .btn-success:hover {
-    background-color: #3bc45f;
+    background-color: #12C572; /* DARK MINT GLOW  */
 }
 
 .btn-danger {
-    background-color: #dc3545;
+    background-color: #9f0e51; /* CLARET 2 */
     color: white;
 }
 
 .btn-danger:hover {
-    background-color: #c82333;
+    background-color: #730132; /* CLARET */
 }
 
 
 
 
 
-/* ----------------   GUESTBOOK ----------------------*/
+/* ===============================   GUESTBOOK  =============================== */
 .guestbook-comments {
     max-height: 600px;
     overflow-y: auto;
@@ -747,9 +750,7 @@ textarea.form-control {
 
 
 
-
-/* ----------------   IMAGE MODAL / LIGHTBOX ----------------------*/
-
+/* ===============================   IMAGE MODAL / LIGHTBOX =============================== */
 .image-modal {
     display: none;
     position: fixed;
@@ -823,4 +824,675 @@ textarea.form-control {
         right: 20px;
         font-size: 40px;
     }
+}
+ 
+ 
+
+ /* ===============================   ADMIN DASHBOARD STYLING =============================== */
+
+/* Page Titles */
+.admin-page-title {
+    color: #ffffff;
+}
+
+/* Back Button */
+.btn-back {
+    background-color: #616a8a; /*DARK DUSTY PERIWINKLE */
+    color: white;
+    border-radius: 1px;
+    border: #000000;
+}
+
+.btn-back:hover {
+    background-color: #4e556f;
+    color: white;
+}
+
+/* Action Buttons */
+.btn-action {
+    background: linear-gradient(135deg, #8F93BA, #8F93BA);
+    color: white;
+    border: none;
+}
+
+.btn-action:hover {
+    background: linear-gradient(135deg, #7379a0, #7379a0);
+    color: white;
+}
+
+/* Email Links */
+.email-link {
+    color: #686FFC; /* STATE BLUE */
+    /* font-weight: bold; */
+}
+
+.email-link:hover {
+    color: #A55AFF; /* AMETHYST */
+    font-weight: bold;
+}
+
+/* ================= ADMIN TABLE STYLING ================= */
+.admin-table {
+    color: white;
+}
+
+.table-dark {
+    --bs-table-bg: rgba(143, 147, 186, 0.2);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* ================= STATUS BADGES ================= */
+
+
+.badge-status-unread { /* CONTACT SUBMISSION BADGES */
+    background-color: #9f0e51; /* CLARET2 */
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-status-read { 
+    background-color: #12C572; /* MINT GLOW 2*/
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-order-demo { /* ORDER STATUS BADGES - DEMO */
+    background-color: #B879E2; /* BRIGHT LILAC */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-order-real_pending { /* ORDER STATUS BADGES - REAL / PENDING */
+    background-color: #A8A4E0; /* SOFT PERIWINKLE */
+    color: #000;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-order-processing { /* ORDER STATUS BADGES - REAL / PROCESSING */
+    background-color: #7098C0; /* BLUE GREY */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-order-shipped { /* ORDER STATUS BADGES - REAL / SHIPPED */
+    background-color: #388CA0; /* BLUE MUNSELL */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-order-completed { /* ORDER STATUS BADGES - REAL / COMPLETED */
+    background-color: #12C572; /* DARK MINT GLOW */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-real-purchase {
+    background-color: #730132; /* CLARET */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* Partnership Status Badges */
+.badge-partner-status-new {
+    background-color: #B879E2; /* BRIGHT LILAC */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-status-contacted {
+    background-color: #A8A4E0; /* SOFT PERIWINKLE */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-status-negotiating {
+    background-color: #7098C0; /* BLUE GREY */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-status-partner {
+    background-color: #428076; /* HOOKERS GREEN */
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-status-declined {
+    background-color: #6c757d; /* GREY */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-interest {
+    background: #A55AFF; /* AMEYTHST */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-partner-quantity {
+    background: #E0B0FF; /* MAUVE  */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* ================= STATUS UPDATE BUTTONS ================= */
+
+/* Order Status Update Buttons */
+.btn-status-demo {
+    background: linear-gradient(135deg, #B879E2, #B879E2); /* BRIGHT LILAC */
+    color: white;
+    border: none;
+}
+
+.btn-status-demo:hover {
+    background: linear-gradient(135deg, #a065d0, #a065d0);
+    color: white;
+}
+
+.btn-status-pending {
+    background: linear-gradient(135deg, #A8A4E0, #A8A4E0); /* SOFT PERIWINKLE */
+    color: white;
+    border: none;
+}
+
+.btn-status-pending:hover {
+    background: linear-gradient(135deg, #9590d0, #9590d0);
+    color: white;
+}
+
+.btn-status-processing {
+    background: linear-gradient(135deg, #7098C0, #7098C0); /* BLUE GREY */
+    color: white;
+    border: none;
+}
+
+.btn-status-processing:hover {
+    background: linear-gradient(135deg, #5f85ab, #5f85ab);
+    color: white;
+}
+
+.btn-status-shipped {
+    background: linear-gradient(135deg, #388CA0, #388CA0); /* BLUE MUNSELL */
+    color: white;
+    border: none;
+}
+
+.btn-status-shipped:hover {
+    background: linear-gradient(135deg, #2f778a, #2f778a);
+    color: white;
+}
+
+.btn-status-completed {
+    background: linear-gradient(135deg, #428076, #428076); /* HOOKERS GREEN */
+    color: white;
+    border: none;
+}
+
+.btn-status-completed:hover {
+    background: linear-gradient(135deg, #376b61, #376b61);
+    color: white;
+}
+
+/* Partnership Status Update Buttons */
+.btn-partner-new {
+    background: #c356e6; /* DARK BRIGHT LILAC */
+    color: white;
+    border: none;
+}
+
+.btn-partner-new:hover {
+    background: #ba3be3;
+    color: white;
+}
+
+.btn-partner-contacted {
+    background: #5a598c; 
+    color: white;
+    border: none;
+}
+
+.btn-partner-contacted:hover {
+    background: #5a598c;
+    color: white;
+}
+
+.btn-partner-negotiating {
+    background: #597396; /* BLUE GREY 2 */
+    color: white;
+    border: none;
+}
+
+.btn-partner-negotiating:hover {
+    background: #506786;
+    color: white;
+}
+
+.btn-partner-active {
+    background: #4edf79; /* MINT GLOW DARK */
+    color: white;
+    border: none;
+}
+
+.btn-partner-active:hover {
+    background: #25cb56;
+    color: white;
+}
+
+.btn-partner-declined {
+    background: #6c757d; /* GREY */
+    color: white;
+    border: none;
+}
+
+.btn-partner-declined:hover {
+    background: #6c757d;
+    color: white;
+}
+
+/* ================= ORDER CARD STYLING ================= */
+.order-card-real {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #8B3D80; /* PLUM */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.order-card-demo {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #644A8B; /* DEEP AMETHYST */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.order-card-header {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.order-title {
+    color: white;
+    margin: 0;
+}
+
+.order-date {
+    color: #FFFFFF; 
+    font-weight: bold;
+}
+
+.section-title {
+    color: #FFFFFF; 
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.section-title:first-child {
+    margin-top: 0;
+}
+
+.info-text {
+    color: white;
+    margin-bottom: 5px;
+}
+
+.address-text {
+    line-height: 1.6;
+}
+
+.order-items-list {
+    color: white;
+}
+
+.order-total-box {
+    background: rgba(168, 164, 224, 0.1); 
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #9874D3; /* LILAC BUSH */
+    margin-top: 20px;
+}
+
+.total-amount {
+    color: #4edf79; /* MINT GLOW */
+    margin: 0;
+}
+
+.order-status-text {
+    color: white;
+    margin-top: 15px;
+}
+
+.order-card-footer {
+    background: rgba(168, 164, 224, 0.1);
+}
+
+.update-status-title {
+    color: #FFFFFF; /* ELECTRIC LILAC */
+    font-weight: bold;
+}
+
+/* ================= ORDER SEARCH BOX ================= */
+.order-search-box {
+    background: rgba(168, 164, 224, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #9874D3; /* LILAC BUSH */
+}
+
+.search-title {
+    color: #FFFFFF; /* BRIGHT LILAC */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.search-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+.search-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px;
+}
+
+.search-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #D891EF; /* BRIGHT LILAC */
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(216, 145, 239, 0.25);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #9874D3, #B879E2); /* LILAC BUSH TO BRIGHT LILAC */
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-search:hover {
+    background: linear-gradient(135deg, #8661be, #a065d0);
+    color: white;
+}
+
+.btn-clear-search {
+    background: rgba(108, 117, 125, 0.5);
+    color: white;
+    border: none;
+}
+
+.btn-clear-search:hover {
+    background: rgba(108, 117, 125, 0.7);
+    color: white;
+}
+
+.search-results-text {
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+
+.search-results-text strong {
+    color: #D891EF; /* BRIGHT LILAC */
+}
+
+/* ================= TRACKING INFORMATION ================= */
+.tracking-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(168, 164, 224, 0.1);
+    border-radius: 8px;
+    border: 1px solid #9874D3; /* LILAC BUSH */
+}
+
+.tracking-display {
+    background: rgba(78, 223, 121, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 3px solid #4edf79; /* MINT GLOW */
+}
+
+.tracking-number {
+    color: #4edf79; /* MINT GLOW */
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.1rem;
+}
+
+.tracking-form {
+    margin-top: 10px;
+}
+
+.tracking-form .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.tracking-form .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #9874D3; /* LILAC BUSH */
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(152, 116, 211, 0.25);
+}
+
+.tracking-form .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.tracking-form select.form-control {
+    color: white;
+}
+
+.tracking-form select.form-control option {
+    background: #2c3e50;
+    color: white;
+}
+
+.btn-tracking-update {
+    background: linear-gradient(135deg, #9874D3, #B879E2); /* LILAC BUSH TO BRIGHT LILAC */
+    color: white;
+    border: none;
+}
+
+.btn-tracking-update:hover {
+    background: linear-gradient(135deg, #8661be, #a065d0);
+    color: white;
+}
+
+/* ================= REAL PURCHASES STYLING ================= */
+.alert-real-purchase {
+    background: rgba(168, 164, 224, 0.4);
+    border-left: 4px solid #9874D3; /* LILAC BUSH */
+    color: white;
+}
+
+.real-purchase-highlight-box {
+    background: rgba(212, 115, 212, 0.15);
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #9874D3; /* LILAC BUSH */
+    margin-bottom: 20px;
+}
+
+.contact-urgent-title {
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.inventory-reminder {
+    color: rgba(255, 255, 255);
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* ================= SUGGESTIONS CARD STYLING ================= */
+.suggestion-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: 2px solid #9874D3; /* LILAC BUSH */
+}
+
+.suggestion-name {
+    color: #FFFFFF; /* WHITE */
+    font-weight: bold;
+}
+
+.suggestion-email {
+    color: rgba(255, 255, 255, 0.7);
+    /* font-size: 0.9rem; **/
+}
+
+.suggestion-text {
+    color: white;
+    /* white-space: pre-wrap; */
+}
+
+.suggestion-date {
+    margin: 0;
+}
+
+.suggestion-date small {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Suggestion Type Badges */
+.badge-suggestion-type-design-aesthetics {
+    background-color: #B879E2; /* BRIGHT LILAC */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-suggestion-type-new-feature {
+    background-color: #428076; /* HOOKERS GREEN */
+    color: #ffffff;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-suggestion-type-technical-improvement {
+    background-color: #7098C0; /* BLUE GREY */
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.badge-suggestion-type-other {
+    background-color: #388CA0; /* BLUE MUNSELL */
+    color: #FFFFFF;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* ================= PARTNERSHIP CARD STYLING ================= */
+.partner-card-new {
+    background: rgba(0, 0, 0, 0.3);
+    border: 3px solid #9f0e51 ; /* CLARET2 */
+}
+
+.partner-card-active {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #12C572; /* MINT GLOW2 */
+}
+
+.partner-card-default {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #9874D3;
+}
+
+.partner-header {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.partner-title {
+    color: #FFFFFF; /* WHITE */
+    margin: 0;
+}
+
+.partner-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 5px 0 0 0;
+}
+
+.partner-date {
+    color: rgba(255, 255, 255);
+}
+
+.partner-contact-box {
+    background: rgba(168, 164, 224, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #9874D3; /* LILAC BUSH */
+    margin-bottom: 20px;
+}
+
+.contact-box-title {
+    color: #FFFFFF; /* ICY PERIWINKLE */
+    margin-bottom: 15px;
+}
+
+.section-title-alt {
+    color: #9874D3; /* LILAC BUSH */
+}
+
+.partner-info-box {
+    color: white;
+    white-space: pre-wrap;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.additional-info-title {
+    color: rgba(255, 255, 255);
+    margin-top: 20px;
+}
+
+.partner-status-update-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 1);
+}
+
+.status-update-label {
+    color: rgba(255, 255, 255);
 }

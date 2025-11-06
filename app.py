@@ -12,21 +12,23 @@ from threading import Thread
 from functools import wraps
 
 from db_helpers import (
-    NewContactSubmission, # add_contact_submission
+    NewContactSubmission, 
     update_contact_status,
-    NewSuggestion, # add_suggestion
-    NewGuestbook, # add_guestbook_entry
-    GetGuestbook, # get_guestbook_entries
-    CheckAvailability, # check_item_availability DecreaseInventory, NewOrderNumber
-    NewOrder, # create_order
-    GetContactSubmissions, # get_all_contact_submissions
-    GetSuggestions, # get_all_suggestions GetGuestbook, GetItemName
-    GetOrders, # get_all_orders
-    GetRealOrders, # get_real_purchase_orders 
+    NewSuggestion, 
+    NewGuestbook, 
+    GetGuestbook, 
+    CheckAvailability, 
+    NewOrder, 
+    GetContactSubmissions, 
+    GetSuggestions, 
+    GetOrders, 
+    GetRealOrders, 
     update_order_status,
     add_partnership_inquiry,
     get_all_partnership_inquiries,
-    update_partnership_status
+    update_partnership_status,
+    search_orders,
+    update_order_tracking
 )
 
 app = Flask(__name__)
@@ -48,7 +50,7 @@ def AdminRequired(f): # REQUIRE ADMIN LOGIN FOR DASHBOARD
     return Decorated
 
 # ============================================ EMAIL FUNCTIONS ============================================
-def SendSMTP(message): #_send_smtp_message / TRY 587 THEN 465
+def SendSMTP(message): # TRY 587 THEN 465
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
         server.starttls()
@@ -145,7 +147,7 @@ def OrderEmailAsync(order_data): # SEND ORDER CONFIRMATION EMAIL IN BACKGROUND T
 
 #============================================ PUBLIC PAGE ROUTES ============================================
 @app.route("/")
-def home():
+def home(): # ABOUT PAGE
     return render_template("about.html")
 
 @app.route("/resume")
@@ -156,10 +158,7 @@ def resume():
 def coding():
     return render_template("coding.html")
 
-
 # ============================================  ART ============================================
-
-
 @app.route("/jewelry")
 def jewelry():
     return render_template("jewelry.html")
@@ -167,9 +166,6 @@ def jewelry():
 @app.route("/art")
 def art():
     return render_template("art.html")
-
-
-
 
 @app.route("/partnerships", methods=["GET", "POST"]) # PARTNERSHIP PAGE
 def partnerships():
@@ -348,7 +344,7 @@ def order_confirmation():
 
 # ============================================ ADMIN ROUTES ============================================
 @app.route("/admin/login", methods=["GET", "POST"])
-def admin_login(): #admin_login
+def admin_login(): # LOG INTO ADMIN DASHBOARD
     if request.method == "POST":
         password = request.form.get("password")
         if password == ADMIN_PASSWORD:
@@ -360,7 +356,7 @@ def admin_login(): #admin_login
     return render_template("admin_login.html")
 
 @app.route("/admin/logout")
-def admin_logout(): #admin_logout
+def admin_logout(): # ADMIN LOG OUT
     session.pop('admin_logged_in', None)
     return redirect(url_for('home'))
 
@@ -374,14 +370,11 @@ def admin_dashboard(): # MAIN ADMIN DASHBOARD WITH OVERVIEW
     real_orders = GetRealOrders()
     partners = get_all_partnership_inquiries()
     
-    # Count unread contacts
-    unread_contacts = sum(1 for c in contacts if c.get('status') == 'unread')
+    unread_contacts = sum(1 for c in contacts if c.get('status') == 'unread') # COUND UNREAD CONTACTS
     
-    # Count pending orders (not completed)
-    pending_orders = sum(1 for o in orders if o.get('order_status') != 'completed')
+    pending_orders = sum(1 for o in orders if o.get('order_status') != 'completed') # COUNT ALL PENDING ORDERS (NOT COMPLETE)
     
-    # Count pending real purchases (real purchase AND not completed)
-    pending_real_purchases = sum(1 for o in real_orders if o.get('order_status') != 'completed')
+    pending_real_purchases = sum(1 for o in real_orders if o.get('order_status') != 'completed') # COUNT PENDING REAL PURCHASES (REAL PURCHASE + NOT COMPLETE)
     
     stats = {
         'unread_contacts': unread_contacts,
@@ -390,35 +383,53 @@ def admin_dashboard(): # MAIN ADMIN DASHBOARD WITH OVERVIEW
         'pending_real_purchases': pending_real_purchases,
         'total_partners': len(partners),
         'recent_contacts': contacts[:5],
-        'recent_orders': orders[:10],  # Show recent orders (all types)
+        'recent_orders': orders[:10],  # SHOW RECENT ORDERS (ALL TYPES)
         'recent_partners': partners[:5]
     }
     
     return render_template("admin_dashboard.html", stats=stats)
 
+
+
 @app.route("/admin/contacts")
 @AdminRequired
-def admin_contacts(): # admin_contacts / VIEW ALL CONTACT SUBMISSIONS
+def admin_contacts(): # VIEW ALL CONTACT SUBMISSIONS
     contacts = GetContactSubmissions()
-    return render_template("admin_contacts.html", contacts=contacts)
+    unread_count = sum(1 for c in contacts if c.get('status') == 'unread')
+    return render_template("admin_contacts.html", contacts=contacts, unread_count=unread_count)
 
 @app.route("/admin/suggestions")
 @AdminRequired
-def admin_suggestions(): #admin_suggestions / VIEW ALL SUGGESTIONS
+def admin_suggestions(): # VIEW ALL SUGGESTIONS
     suggestions = GetSuggestions()
-    return render_template("admin_suggestions.html", suggestions=suggestions)
+    unread_count = sum(1 for s in suggestions if s.get('status', 'unread') == 'unread')
+    return render_template("admin_suggestions.html", suggestions=suggestions, unread_count=unread_count)
 
 @app.route("/admin/orders")
 @AdminRequired
 def admin_orders():# VIEW ALL ORDERS
     orders = GetOrders()
-    return render_template("admin_orders.html", orders=orders)
+    incomplete_count = sum(1 for o in orders if o.get('order_status') != 'completed')
+    return render_template("admin_orders.html", orders=orders, incomplete_count=incomplete_count)
 
 @app.route("/admin/real-purchases")
 @AdminRequired
 def admin_real_purchases(): # VIEW REAL ORDERS ONLY
     real_orders = GetRealOrders()
-    return render_template("admin_real_purchases.html", orders=real_orders)
+    incomplete_count = sum(1 for o in real_orders if o.get('order_status') != 'completed')
+    return render_template("admin_real_purchases.html", orders=real_orders, incomplete_count=incomplete_count)
+
+@app.route("/admin/partners")
+@AdminRequired
+def admin_partners(): # PARTNERSHIP INQUIRIES
+    """View all partnership inquiries"""
+    partners = get_all_partnership_inquiries()
+    new_count = sum(1 for p in partners if p.get('status') == 'new')
+    return render_template("admin_partners.html", partners=partners, new_count=new_count)
+
+
+
+
 
 @app.route("/admin/contact/update-status/<int:submission_id>/<status>", methods=["POST"])
 @AdminRequired
@@ -430,31 +441,59 @@ def update_contact_submission_status(submission_id, status): #UPDATE CONTACT SUB
     
 @app.route("/admin/order/update-status/<int:order_id>/<status>", methods=["POST"])
 @AdminRequired
-def update_order_status_route(order_id, status):
-    """Update order status"""
+def update_order_status_route(order_id, status): # UPDATE ORDER STATUS
     if update_order_status(order_id, status):
-        # Redirect back to the referring page
-        return redirect(request.referrer or url_for('admin_orders'))
+        return redirect(request.referrer or url_for('admin_orders')) # REDIRECT BAC TO REFERRING PAGE
     else:
         return "Error updating status", 500
 
 
 
-@app.route("/admin/partners")
-@AdminRequired
-def admin_partners():
-    """View all partnership inquiries"""
-    partners = get_all_partnership_inquiries()
-    return render_template("admin_partners.html", partners=partners)
 
-@app.route("/admin/partnership/update-status/<int:inquiry_id>/<status>", methods=["POST"])
+
+@app.route("/admin/partnership/update-status/<int:inquiry_id>/<status>", methods=["POST"]) 
 @AdminRequired
-def update_partnership_status_route(inquiry_id, status):
-    """Update partnership inquiry status"""
+def update_partnership_status_route(inquiry_id, status): # UPDATE PARTNERSHIP INQUIRY STATUS
     if update_partnership_status(inquiry_id, status):
         return redirect(url_for('admin_partners'))
     else:
         return "Error updating status", 500
+
+
+
+# SEARCH ORDERS AND UPDATE TRACKING NUMBERS
+
+@app.route("/admin/orders/search", methods=["GET", "POST"])
+@AdminRequired
+def admin_orders_search(): # SEARCH ORDERS
+    """Search orders by order number or email"""
+    if request.method == "POST":
+        search_term = request.form.get("search_term", "").strip()
+        if search_term:
+            orders = search_orders(search_term)
+            incomplete_count = sum(1 for o in orders if o.get('order_status') != 'completed')
+            return render_template("admin_orders.html", 
+                                 orders=orders, 
+                                 incomplete_count=incomplete_count,
+                                 search_term=search_term)
+    
+    # If GET or no search term, redirect to regular orders page
+    return redirect(url_for('admin_orders'))
+
+
+@app.route("/admin/order/update-tracking/<int:order_id>", methods=["POST"])
+@AdminRequired
+def update_tracking(order_id): # UPDATE TRACKING NUMBER
+    """Update tracking number for an order"""
+    tracking_number = request.form.get("tracking_number", "").strip()
+    carrier = request.form.get("carrier", "").strip()
+    
+    if update_order_tracking(order_id, tracking_number, carrier):
+        # Auto-update status to shipped if tracking is added
+        if tracking_number and tracking_number != "":
+            update_order_status(order_id, 'shipped')
+    
+    return redirect(request.referrer or url_for('admin_orders'))
 
 # ============================================ MAIN ============================================
 if __name__ == "__main__":

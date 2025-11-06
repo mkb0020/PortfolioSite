@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Partnership Inquiries ({{ partners|length }})</h1>
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn" style="background-color: #616a8a; color: white; border: none;">← Back to Dashboard</a> <!-- DARK DUSTY PERIWINKLE BUTTON -->
     </div>
 
     {% if partners %}
@@ -16,19 +16,19 @@
             <div class="card-header partner-header">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h4 style="color: #BA55D3; margin: 0;">
-                            🏪 {{ partner.business_name }}
+                        <h4 style="color: #FFFFFF; margin: 0;">
+                            {{ partner.business_name }}
                             <span class="badge badge-partner-{{ partner.status }}">
                                 {{ partner.status }}
                             </span>
                         </h4>
-                        <p style="color: rgba(255, 255, 255, 0.7); margin: 5px 0 0 0;">
+                        <p style="color: rgba(255, 255, 255); margin: 5px 0 0 0;">
                             {{ partner.business_type }}
                         </p>
                     </div>
                     <div class="col-md-4 text-end">
-                        <small style="color: rgba(255, 255, 255, 0.6);">
-                            {{ partner.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+                        <small style="color: rgba(255, 255, 255); font-weight:bold">
+                            {{ partner.submitted_at.strftime('%d-%m-%Y') }}
                         </small>
                     </div>
                 </div>
@@ -36,10 +36,9 @@
             
             <div class="card-body">
                 <div class="row">
-                    <!-- Contact Info -->
-                    <div class="col-md-6">
-                        <div style="background: rgba(78, 223, 121, 0.1); padding: 15px; border-radius: 8px; border: 2px solid #BA55D3; margin-bottom: 20px;"> <!-- MEDIUM ORCHID -->
-                            <h5 style="color: #D891EF; margin-bottom: 15px;">📞 Contact Information</h5> <!-- BRIGHT LILAC -->
+                    <div class="col-md-6"> <!-- CONTACT INFO -->
+                        <div style="background: rgba(78, 223, 121, 0.1); padding: 15px; border-radius: 8px; border: 2px solid #9874D3; margin-bottom: 20px;">  <!-- BRIGHT LILAC -->
+                            <h5 style="color: #FFFFFF; margin-bottom: 15px;">📞 Contact Information</h5> 
                             <p style="color: white; margin-bottom: 8px;">
                                 <strong>Contact Name:</strong> {{ partner.contact_name }}
                             </p>
@@ -59,61 +58,61 @@
                             {% endif %}
                         </div>
 
-                        <h5 style="color: #D891EF;">📍 Market Locations</h5> <!--BRIGHT LILAC-->
-                        <p style="color: white; white-space: pre-wrap; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 5px;">{{ partner.market_locations }}</p>
+                        <h5 style="color: #FFFFFF;"><strong>📍 Market Locations</strong></h5> 
+                        <p style="color: white; white-space: pre-wrap; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 5px; ">{{ partner.market_locations }}</p>
                     </div>
                     
                     <div class="col-md-6"> <!-- PARTNERSHIP DETAILS -->
-                        <h5 style="color: #9874D3;"> Partnership Details</h5> <!-- LILAC BUSH -->
+                        <h5 style="color: #FFFFFF;"> <strong>Partnership Details</strong></h5> <!-- WHITE -->
                         
                         <p style="color: white; margin-bottom: 10px;">
                             <strong>Interest Type:</strong> 
-                            <span class="badge" style="background: #9874D3; color: white;">{{ partner.interest_type }}</span>
+                            <span class="badge" style="background: #A55AFF; color: white;">{{ partner.interest_type }}</span>
                         </p>
                         
                         <p style="color: white; margin-bottom: 10px;">
                             <strong>Estimated Quantity:</strong> 
-                            <span class="badge" style="background: #B784A7; color: white;">{{ partner.estimated_quantity }}</span>
+                            <span class="badge" style="background: #686FFC; color: white;">{{ partner.estimated_quantity }}</span>
                         </p>
 
                         {% if partner.additional_info %}
-                        <h6 style="color: rgba(255, 255, 255, 0.8); margin-top: 20px;">Additional Info:</h6>
+                        <h6 style="color: rgba(255, 255, 255); margin-top: 20px;">Additional Info:</h6>
                         <p style="color: white; white-space: pre-wrap; background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 5px;">{{ partner.additional_info }}</p>
                         {% endif %}
                     </div>
                 </div>
                 
                 <!-- Status Update Buttons -->
-                <div class="mt-4 pt-3" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <h6 style="color: rgba(255, 255, 255, 0.8);">Update Status:</h6>
+                <div class="mt-4 pt-3" style="border-top: 1px solid #9874D3;">
+                    <h6 style="color: rgba(255, 255, 255);">Update Status:</h6>
                     <div class="btn-group" role="group">
                         {% if partner.status != 'new' %}
                         <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='new') }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm" style="background: #D891EF; color: white; border: none;">New</button> <!--BRIGHT LILAC-->
+                            <button type="submit" class="btn btn-sm" style="background: #c356e6; color: white; border: none;">New</button> <!--DARK BRIGHT LILAC-->
                         </form>
                         {% endif %}
                         
                         {% if partner.status != 'contacted' %}
                         <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='contacted') }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm" style="background: #9874D3; color: white; border: none;">Contacted</button>
+                            <button type="submit" class="btn btn-sm" style="background: #5a598c; color: white; border: none;">Contacted</button> <!-- DARK BLUE GREY -->
                         </form>
                         {% endif %}
                         
                         {% if partner.status != 'negotiating' %}
                         <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='negotiating') }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm" style="background: #B784A7; color: white; border: none;">Negotiating</button>
+                            <button type="submit" class="btn btn-sm" style="background: #597396; color: white; border: none;">Negotiating</button> <!-- DARK B:UE MUNSELL -->
                         </form>
                         {% endif %}
                         
                         {% if partner.status != 'partner' %}
                         <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='partner') }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm" style="background: #D891EF; color: white; border: none;">✅ Active Partner</button> <!--BRIGHT LILAC-->
+                            <button type="submit" class="btn btn-sm" style="background: #4edf79; color: white; border: none;">Active Partner</button> <!--DARK MINT GLOW-->
                         </form>
                         {% endif %}
                         
                         {% if partner.status != 'declined' %}
                         <form method="POST" action="{{ url_for('update_partnership_status_route', inquiry_id=partner.inquiry_id, status='declined') }}" style="display: inline;">
-                            <button type="submit" class="btn btn-sm" style="background: #6c757d; color: white; border: none;">Declined</button>
+                            <button type="submit" class="btn btn-sm" style="background: #6c757d; color: white; border: none;">Declined</button> <!--  GREY -->
                         </form>
                         {% endif %}
                     </div>
@@ -142,17 +141,17 @@
     /* Partner card styles */
     .partner-card-new {
         background: rgba(0, 0, 0, 0.3);
-        border: 2px solid #D473D4; /* DEEP MAUVE */
+        border: 4px solid #c51264; 
     }
     
     .partner-card-active {
         background: rgba(0, 0, 0, 0.3);
-        border: 2px solid #E0B0FF; /* #MAUVE */
+        border: 2px solid #12C572; 
     }
     
     .partner-card-default {
         background: rgba(0, 0, 0, 0.3);
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid #9874D3
     }
     
     .partner-header {

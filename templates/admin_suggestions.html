@@ -5,8 +5,8 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 style="color: #fcfcfd;">💡 Suggestions Box ({{ suggestions|length }})</h1>
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-mauve">← Back to Dashboard</a>
+        <h1 class="admin-page-title">Suggestions Box ({{ unread_count }} Unread)</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
     </div>
 
     {% if suggestions %}
@@ -14,32 +14,32 @@
         <div class="row">
         {% for suggestion in suggestions %}
         <div class="col-md-6 mb-4">
-            <div class="card" style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="card suggestion-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title" style="color: #D473D4;"> <!-- FRENCH MAUVE-->
+                        <h5 class="suggestion-name">
                             {{ suggestion.name }}
                         </h5>
-                        <span class="badge bg-{{ 'primary' if suggestion.suggestion_type == 'Design/Aesthetics' else 'success' if suggestion.suggestion_type == 'New Feature' else 'info' if suggestion.suggestion_type == 'Technical Improvement' else 'warning' }}">
+                        <span class="badge badge-suggestion-type-{{ suggestion.suggestion_type|replace('/', '-')|replace(' ', '-')|lower }}">
                             {{ suggestion.suggestion_type }}
                         </span>
                     </div>
                     
                     {% if suggestion.email %}
-                    <p class="card-text" style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
-                        <a href="mailto:{{ suggestion.email }}" style="color: #9874D3;"><!-- LILAC BUSH-->
+                    <p class="suggestion-email">
+                        <a href="mailto:{{ suggestion.email }}" class="email-link">
                             {{ suggestion.email }}
                         </a>
                     </p>
                     {% endif %}
                     
-                    <p class="card-text" style="color: white; white-space: pre-wrap;">
+                    <p class="suggestion-text">
                         {{ suggestion.suggestion }}
                     </p>
                     
-                    <p class="card-text">
-                        <small style="color: rgba(255, 255, 255, 0.5);">
-                            {{ suggestion.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+                    <p class="suggestion-date">
+                        <small>
+                            {{ suggestion.submitted_at.strftime('%m-%d-%Y') }}
                         </small>
                     </p>
                 </div>
@@ -55,15 +55,5 @@
     </div>
     {% endif %}
 </div>
-
-<style>
-    .card {
-        margin-bottom: 20px;
-    }
-    .badge {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-    }
-</style>
 
 {% endblock %}

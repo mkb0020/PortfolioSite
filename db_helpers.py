@@ -7,8 +7,7 @@ from datetime import datetime
 
 load_dotenv()
 
-def ConnectToDB():
-    """Get PostgreSQL database connection"""
+def ConnectToDB(): # CONNECT TO POSTGRES DATABASE
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -21,12 +20,8 @@ def ConnectToDB():
         print(f"❌ Database connection failed: {e}")
         return None
 
-
-# ============================================
-# CONTACT SUBMISSIONS
-# ============================================
-def NewContactSubmission(data):
-    """Add a new contact form submission"""
+# ============================================ CONTACT SUBMISSIONS ============================================
+def NewContactSubmission(data): # ADD A NEW CONTACT FORM SUBMISSION
     conn = ConnectToDB()
     if not conn:
         return False
@@ -58,9 +53,7 @@ def NewContactSubmission(data):
         conn.close()
         return False
 
-
-def GetContactSubmissions():
-    """Get all contact submissions (for admin dashboard)"""
+def GetContactSubmissions(): # GET ALL CONTACT SUBMISSIONS ( FOR DASHBOARD)
     conn = ConnectToDB()
     if not conn:
         return []
@@ -80,9 +73,7 @@ def GetContactSubmissions():
         conn.close()
         return []
 
-
-def update_contact_status(submission_id, new_status):
-    """Update the status of a contact submission"""
+def update_contact_status(submission_id, new_status): # UPDATE THE STATUS OF A CONTACT SUBMISSION
     conn = ConnectToDB()
     if not conn:
         return False
@@ -105,16 +96,11 @@ def update_contact_status(submission_id, new_status):
         conn.close()
         return False
 
-
-# ============================================
-# SUGGESTIONS
-# ============================================
-def NewSuggestion(data):
-    """Add a new suggestion"""
+# ============================================ SUGGESTIONS ============================================
+def NewSuggestion(data): # ADD A NEW SUGGESTION
     conn = ConnectToDB()
     if not conn:
         return False
-    
     try:
         cursor = conn.cursor()
         cursor.execute("""
@@ -140,13 +126,10 @@ def NewSuggestion(data):
         conn.close()
         return False
 
-
-def GetSuggestions():
-    """Get all suggestions (for admin dashboard)"""
+def GetSuggestions(): # GET ALL SUGGESTIONS (FOR DASHBOARD)
     conn = ConnectToDB()
     if not conn:
         return []
-    
     try:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute("""
@@ -162,10 +145,7 @@ def GetSuggestions():
         conn.close()
         return []
 
-
-# ============================================
-# GUESTBOOK
-# ============================================
+# ============================================ GUESTBOOK ============================================
 def NewGuestbook(data):
     """Add a new guestbook entry"""
     conn = ConnectToDB()
@@ -195,8 +175,7 @@ def NewGuestbook(data):
         return False
 
 
-def GetGuestbook():
-    """Get all guestbook entries"""
+def GetGuestbook(): # GET ALL GUESTBOOK ENTRIES
     conn = ConnectToDB()
     if not conn:
         return []
@@ -218,11 +197,8 @@ def GetGuestbook():
         return []
 
 
-# ============================================
-# INVENTORY MANAGEMENT
-# ============================================
-def get_item_by_name(item_name):
-    """Get inventory item by name"""
+# ============================================ INVENTORY MANAGEMENT ============================================
+def get_item_by_name(item_name): # GET INVENTORY ITEM BY NAME
     conn = ConnectToDB()
     if not conn:
         return None
@@ -242,17 +218,13 @@ def get_item_by_name(item_name):
         conn.close()
         return None
 
-
-def CheckAvailability(item_name):
-    """Check if item is available for purchase"""
+def CheckAvailability(item_name): # CHECK IF AN ITEM IS AVAILABLE FOR PURCHASE
     item = get_item_by_name(item_name)
     if not item:
         return False
     return item['is_available'] and item['quantity_available'] > 0
 
-
-def DecreaseInventory(item_name, quantity=1):
-    """Decrease inventory quantity (for jewelry when sold)"""
+def DecreaseInventory(item_name, quantity=1): # DECREASE INVENTORY QTY ( FOR JEWELRY) 
     conn = ConnectToDB()
     if not conn:
         return False
@@ -279,12 +251,8 @@ def DecreaseInventory(item_name, quantity=1):
         conn.close()
         return False
 
-
-# ============================================
-# ORDERS
-# ============================================
-def NewOrderNumber():
-    """Generate unique order number like ORD-20250129-001"""
+# ============================================ ORDERS ============================================
+def NewOrderNumber(): # GENERATE UNIQUE ORDER # LIKE  ORD-20250129-001"
     date_str = datetime.now().strftime("%Y%m%d")
     conn = ConnectToDB()
     if not conn:
@@ -305,9 +273,7 @@ def NewOrderNumber():
         conn.close()
         return f"ORD-{date_str}-001"
 
-
-def NewOrder(order_data, cart_items):
-    """Create a new order with items"""
+def NewOrder(order_data, cart_items): # CREATE A NEW ORDER WITH ITEMS
     conn = ConnectToDB()
     if not conn:
         return None
@@ -315,8 +281,7 @@ def NewOrder(order_data, cart_items):
     try:
         cursor = conn.cursor()
         order_number = NewOrderNumber()
-        
-        # Insert main order
+        # INSERT MAIN ORDER
         cursor.execute("""
             INSERT INTO orders 
             (order_number, customer_name, customer_email, customer_phone,
@@ -338,15 +303,14 @@ def NewOrder(order_data, cart_items):
         ))
         
         order_id = cursor.fetchone()[0]
-        
-        # Insert order items
-        for item in cart_items:
-            # Get item_id from inventory
+
+        for item in cart_items: # INSERT ORDERED ITEMS / GET ITEM ID FROM INVENTORY
             cursor.execute("""
-                SELECT item_id FROM inventory WHERE item_name = %s
+                SELECT item_id, item_type FROM inventory WHERE item_name = %s
             """, (item['name'],))
             result = cursor.fetchone()
             item_id = result[0] if result else None
+            item_type = result[1] if result else None
             
             cursor.execute("""
                 INSERT INTO order_items 
@@ -361,14 +325,12 @@ def NewOrder(order_data, cart_items):
                 item['image']
             ))
             
-            # If real purchase and jewelry, decrease inventory
-            if order_data['real_purchase'] and item_id:
-                cursor.execute("""
-                    SELECT item_type FROM inventory WHERE item_id = %s
-                """, (item_id,))
-                item_type_result = cursor.fetchone()
-                if item_type_result and item_type_result[0] == 'jewelry':
-                    DecreaseInventory(item['name'], 1)
+            # ONLY DECREASE INVENTORY FOR JEWELRY ON REAL PURCHASES
+            if order_data['real_purchase'] and item_type == 'jewelry':
+                DecreaseInventory(item['name'], 1)
+                print(f"✅ Decreased inventory for jewelry item: {item['name']}")
+            elif order_data['real_purchase'] and item_type == 'art':
+                print(f"ℹ️ Art print {item['name']} - inventory not affected (unlimited)")
         
         conn.commit()
         cursor.close()
@@ -383,9 +345,7 @@ def NewOrder(order_data, cart_items):
         conn.close()
         return None
 
-
-def GetOrders():
-    """Get all orders with items (for admin dashboard)"""
+def GetOrders(): # VIEW ALL ORDERS WITH ITEMS ( FOR DASHBOARD )
     conn = ConnectToDB()
     if not conn:
         return []
@@ -415,9 +375,7 @@ def GetOrders():
         conn.close()
         return []
 
-
-def GetRealOrders():
-    """Get only real purchase orders (for quick checking)"""
+def GetRealOrders(): # VIEW ORDER THAT ARE ACTUALLY REAl / NOT DEMO ORDERS
     conn = ConnectToDB()
     if not conn:
         return []
@@ -447,9 +405,7 @@ def GetRealOrders():
         conn.close()
         return []
 
-
-def update_order_status(order_id, new_status):
-    """Update the status of an order"""
+def update_order_status(order_id, new_status): #  UPDATE THE STATUS OF AN ORDER
     conn = ConnectToDB()
     if not conn:
         return False
@@ -473,11 +429,68 @@ def update_order_status(order_id, new_status):
         return False
 
 
-# ============================================
-# PARTNERSHIP INQUIRIES
-# ============================================
-def add_partnership_inquiry(data):
-    """Add a new partnership/wholesale inquiry"""
+# UPDATE ORDER TRACKING
+
+def search_orders(search_term): # SEARCH ORDERS BY ORDER NUMBER OR EMAIL
+    """Search orders by order number or customer email"""
+    conn = ConnectToDB()
+    if not conn:
+        return []
+    
+    try:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        cursor.execute("""
+            SELECT o.*, 
+                   json_agg(
+                       json_build_object(
+                           'item_name', oi.item_name,
+                           'item_price', oi.item_price,
+                           'quantity', oi.quantity
+                       )
+                   ) as items
+            FROM orders o
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            WHERE o.order_number ILIKE %s 
+               OR o.customer_email ILIKE %s
+            GROUP BY o.order_id
+            ORDER BY o.order_date DESC
+        """, (f'%{search_term}%', f'%{search_term}%'))
+        results = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return results
+    except Exception as e:
+        print(f"❌ Error searching orders: {e}")
+        conn.close()
+        return []
+
+def update_order_tracking(order_id, tracking_number, carrier=None): # UPDATE TRACKING INFO FOR AN ORDER
+    """Update tracking number and carrier for an order"""
+    conn = ConnectToDB()
+    if not conn:
+        return False
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE orders 
+            SET tracking_number = %s,
+                shipping_carrier = %s
+            WHERE order_id = %s
+        """, (tracking_number, carrier, order_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"✅ Updated tracking info for order {order_id}")
+        return True
+    except Exception as e:
+        print(f"❌ Error updating tracking info: {e}")
+        conn.rollback()
+        conn.close()
+        return False
+
+# ============================================ PARTNERSHIP INQUIRIES ============================================
+def add_partnership_inquiry(data): # ADD NEW PARTNERSHIP/WHOLESALE INQUIRY
     conn = ConnectToDB()
     if not conn:
         return False
@@ -515,8 +528,7 @@ def add_partnership_inquiry(data):
         return False
 
 
-def get_all_partnership_inquiries():
-    """Get all partnership inquiries (for admin dashboard)"""
+def get_all_partnership_inquiries(): # GET ALL PARTNERSHIP INQUIRIES ( FROM ADMIN DASHBOARD)
     conn = ConnectToDB()
     if not conn:
         return []
@@ -525,7 +537,12 @@ def get_all_partnership_inquiries():
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute("""
             SELECT * FROM partnership_inquiries 
-            ORDER BY submitted_at DESC
+            ORDER BY 
+                CASE 
+                    WHEN status = 'declined' THEN 1 
+                    ELSE 0 
+                END,
+                submitted_at DESC
         """)
         results = cursor.fetchall()
         cursor.close()
@@ -537,8 +554,7 @@ def get_all_partnership_inquiries():
         return []
 
 
-def update_partnership_status(inquiry_id, new_status):
-    """Update the status of a partnership inquiry"""
+def update_partnership_status(inquiry_id, new_status): # UPDATE THE STATUS OF A PARTNERSHIP INQUIRY 
     conn = ConnectToDB()
     if not conn:
         return False

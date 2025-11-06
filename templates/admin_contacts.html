@@ -1,28 +1,25 @@
 <!-- templates/admin_contacts.html -->
+<!-- templates/admin_contacts.html -->
 {% extends "base.html" %}
 {% block title %}Contact Submissions - Admin{% endblock %}
 {% block content %}
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 style="color: #BA55D3;">📧 Contact Submissions ({{ contacts|length }})</h1>
-        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-mauve">← Back to Dashboard</a>
+        <h1 class="admin-page-title">Contact Submissions ({{ unread_count }} Unread)</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
     </div>
 
     {% if contacts %}
     <div class="about-section">
         <div class="table-responsive">
-            <table class="table table-striped table-dark">
+            <table class="table table-striped table-dark admin-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Date</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Inquiry Type</th>
-                        <th>Message</th>
-                        <th>Product</th>
-                        <th>App Details</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -31,40 +28,26 @@
                     {% for contact in contacts %}
                     <tr>
                         <td>{{ contact.submission_id }}</td>
-                        <td>{{ contact.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ contact.submitted_at.strftime('%m-%d-%Y') }}</td>
                         <td><strong>{{ contact.name }}</strong></td>
                         <td>
-                            <a href="mailto:{{ contact.email }}" style="color: #4edf79;">
+                            <a href="mailto:{{ contact.email }}" class="email-link">
                                 {{ contact.email }}
                             </a>
                         </td>
                         <td>
-                            <span class="badge bg-info">{{ contact.inquiry_type }}</span>
-                        </td>
-                        <td>
-                            <div style="max-width: 300px; white-space: pre-wrap;">
-                                {{ contact.message[:100] }}{% if contact.message|length > 100 %}...{% endif %}
-                            </div>
-                        </td>
-                        <td>{{ contact.product_request or '-' }}</td>
-                        <td>
-                            <div style="max-width: 200px; white-space: pre-wrap;">
-                                {{ (contact.app_request[:80] + '...') if contact.app_request and contact.app_request|length > 80 else (contact.app_request or '-') }}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge bg-{{ 'success' if contact.status == 'read' else 'warning' }}">
+                            <span class="badge badge-status-{{ contact.status }}">
                                 {{ contact.status }}
                             </span>
                         </td>
                         <td>
                             {% if contact.status == 'unread' %}
                             <form method="POST" action="{{ url_for('update_contact_submission_status', submission_id=contact.submission_id, status='read') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-success btn-sm">Mark as Read</button>
+                                <button type="submit" class="btn btn-sm btn-action">Mark as Read</button>
                             </form>
                             {% else %}
                             <form method="POST" action="{{ url_for('update_contact_submission_status', submission_id=contact.submission_id, status='unread') }}" style="display: inline;">
-                                <button type="submit" class="btn btn-secondary btn-sm">Mark as Unread</button>
+                                <button type="submit" class="btn btn-sm btn-action">Mark as Unread</button>
                             </form>
                             {% endif %}
                         </td>
@@ -81,19 +64,5 @@
     </div>
     {% endif %}
 </div>
-
-<style>
-    .table-dark {
-        --bs-table-bg: rgba(0, 0, 0, 0.3);
-        --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
-    }
-    .table {
-        color: white;
-    }
-    .badge {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-    }
-</style>
 
 {% endblock %}
