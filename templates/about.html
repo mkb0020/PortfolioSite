@@ -3,77 +3,190 @@
 {% block title %}About Me - MK Barriault{% endblock %}
 {% block content %}
 
+<!-- ======================== PAGE CONTENT ======================== -->
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="profile-circle"> <!-- HEADSHOT -->
+                    <img src="/static/images/about/headshot1.JPEG" alt="This is me">
+                </div>
 
-<div class="hero-section">
-    <div class="hero-content">
-        <div class="profile-circle">
-            <img src="/static/images/about/headshot1.JPEG" alt="This is me"> <!-- HEADSHOT -->
+                <div class="info-circles"> 
+                    <div class="info-item welcome-item" onclick="openAboutModal('welcome')">  <!-- WELCOME BUBBLE -->
+                        <div class="icon-circle">
+                            <img src="/static/images/about/icon3.jpg" alt="Welcome">
+                        </div>
+                        <h2>WELCOME!</h2>
+                    </div>
+                    
+                    <div class="info-item" onclick="openAboutModal('site')"> <!-- ABOUT THE SITE BUBBLE -->               
+                        <div class="icon-circle">
+                            <img src="/static/images/about/icon1.jpg" alt="About">
+                        </div>
+                        <h2>ABOUT THIS SITE</h2>
+                    </div>
+                    
+                    <div class="info-item" onclick="openAboutModal('me')"> <!-- ABOUT ME BUBBLE -->
+                        <div class="icon-circle">
+                            <img src="/static/images/about/icon2.jpg" alt="About me">
+                        </div>
+                        <h2>ABOUT ME</h2>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- LINES (TEMPORARILY REMOVING)
-        <svg class="connecting-lines" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <line x1="37.5%" y1="15%" x2="64%" y2="15%" class="pink-line" />
-            <line x1="44%" y1="50%" x2="64%" y2="50%" class="pink-line" />
-            <line x1="37.5%" y1="85%" x2="64%" y2="85%" class="pink-line" />
-        </svg>
-        -->
-        
-        <div class="info-circles">
-            <div class="info-item welcome-item"
-                 data-bs-toggle="tooltip" 
-                 data-bs-html="true"
-                 data-bs-placement="auto"
-                 title="Thanks for stopping by!">
-                <div class="icon-circle">
-                    <img src="/static/images/about/icon3.jpg" alt="Welcome">
+<!-- ======================== MODALS ======================== -->
+        <div id="welcomeModal" class="about-modal" onclick="closeAboutModal(event)">  <!-- WELCOME MODAL -->
+            <div class="about-modal-content" onclick="event.stopPropagation()">
+                <div class="about-modal-header">
+                    <h2>Welcome to my interactive portfolio!</h2>
+                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
                 </div>
-                <h2>WELCOME!</h2>
-            </div>
-            
-            <div class="info-item" 
-                 data-bs-toggle="tooltip" 
-                 data-bs-html="true"
-                 data-bs-placement="auto"
-                 title="<strong>About This Site</strong><br>This site is both my portfolio and part of my portfolio. Using Python, Flask, JavaScript, Bootstrap, HTML, and CSS, I built it to showcase my work across coding, art, and design — blending the technical with the creative.
-                    <br><br>
-                    Each section highlights a different side of what I do: my coding projects, my jewelry and art (styled as a mock storefront), and my resume for a deeper dive into my experience. 
-                    <br><br>
-                    Even the site’s functionality is a demo of my skills — from custom layouts and interactive elements to a contact form that automatically sends me an email and logs submissions in a Parquet file. The storefront even includes a simulated shopping cart and checkout flow — a hands-on example of how I can design and implement interactive, transactional user experiences.  It’s a living example of how I combine design, data, and automation to create thoughtful, functional experiences.">                
-                <div class="icon-circle">
-                    <img src="/static/images/about/icon1.jpg" alt="About">
+                <div class="about-modal-body">
+                    <p class="welcome-text">
+                        <P>This is my virtual playground where I showcase projects that I've been building throughout my coding journey. There's all kinds of stuff to explore! But don't worry, my Clippy-inspired cat, Niels, is here to guide you along the way! (If he gets anoying, you can always click "SLEEP" and he'll take a little nap) </p>
+                        <p> Close out of here and click on <strong>"About this site"</strong> to learn more about the site itself, or <strong>"About me"</strong> to read my little bio.</p>
+                    </P>
+
                 </div>
-                <h2>ABOUT THIS SITE</h2>
-            </div>
-            
-            <div class="info-item"
-                 data-bs-toggle="tooltip" 
-                 data-bs-html="true"
-                 data-bs-placement="auto"
-                 title="<strong>About Me</strong><br>Hello World! I’m MK — a coder, artist, and perpetual creator based in Atlanta, GA – which is my favorite place in the world!
-                    <br>
-                    <br>I thrive on building things — whether it’s a web app, a piece of jewelry, a data-driven dashboard, or an automation that makes life a little easier. I’m passionate about coding, process improvement, spreadsheets (yes, really!), and exploring how AI can integrate with the human experience.
-                    <br>
-                    <br>Outside of tech, I love art, jewelry-making, yoga, fitness, and nutrition — anything that keeps me grounded and inspired. I’m always learning new skills and diving into new challenges, whether that’s mastering a framework, experimenting with a fresh creative idea, or getting going down an internet rabbit-hole about random topics that pique my interest. 
-                    <br>
-                    <br>If you’ve got a project or idea you’d like to bring to life, I’d love to collaborate! Give me a shout and let’s create together 💡
-                    ">
-                <div class="icon-circle">
-                    <img src="/static/images/about/icon2.jpg" alt="About me">
-                </div>
-                <h2>ABOUT ME</h2>
             </div>
         </div>
-    </div>
+
+        <div id="siteModal" class="about-modal" onclick="closeAboutModal(event)"> <!-- ABOUT SITE MODAL -->
+            <div class="about-modal-content" onclick="event.stopPropagation()">
+                <div class="about-modal-header">
+                    <h2>🌐 About This Site</h2>
+                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
+                </div>
+                <div class="about-modal-body">
+                    <p>
+                        This site is both my portfolio <em>and</em> part of my portfolio. Using <strong>Python, Flask, 
+                        JavaScript, Bootstrap, HTML, and CSS</strong>, I built it to showcase my work across coding, 
+                        art, and design — blending the technical with the creative.
+                    </p>
+                    <h4>What You'll Find Here:</h4>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <span class="feature-icon">💻</span>
+                            <div>
+                                <strong>Coding Projects</strong>
+                                <p>Full-stack applications and interactive demos</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">💎</span>
+                            <div>
+                                <strong>Art / Jewelry</strong>
+                                <p>Mock storefront with shopping cart functionality</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📄</span>
+                            <div>
+                                <strong>Resume & Experience</strong>
+                                <p>Deep dive into my background and skills</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Technical Highlights:</h4>
+                    <ul class="tech-highlights">
+                        <li><strong>Interactive Elements:</strong> Custom layouts and responsive design</li>
+                        <li><strong>Automated Contact Forms:</strong> Sends emails and logs submissions to a database</li>
+                        <li><strong>E-commerce Demo:</strong> Full shopping cart and checkout flow simulation</li>
+                        <li><strong>Admin Dashboard:</strong> Try ouy my order management system with search and tracking</li>
+                        <li><strong>It's all about the friends you male along the way:</strong> Hang out with my cat, Niels, who will show you around the site!</li>
+                    </ul>
+
+                    <p class="closing-text">
+                        It's a living example of how I combine design, data, and automation to create 
+                        thoughtful, functional experiences.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="meModal" class="about-modal" onclick="closeAboutModal(event)"> <!-- ABOUT ME MODAL -->
+            <div class="about-modal-content" onclick="event.stopPropagation()">
+                <div class="about-modal-header">
+                    <h2>About Me</h2>
+                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
+                </div>
+                
+                <div class="about-modal-body">
+                    <p class="intro-text">
+                        <strong>Hello World!</strong> I'm MK — a coder, artist, and perpetual creator based in 
+                        <strong>Atlanta, GA</strong> — which is my favorite place in the world! 🍑
+                    </p>
+
+                    <h4>What I Love:</h4>
+                    <p>
+                        I thrive on <strong>building things</strong> — whether it's a web app, a piece of jewelry, 
+                        a data-driven dashboard, or an automation that makes life a little easier. I'm passionate 
+                        about coding, process improvement, spreadsheets (yes, really!), and exploring how AI can 
+                        integrate with the human experience.
+                    </p>
+
+                    <h4>Beyond Tech:</h4>
+                    <div class="interests-grid">
+                        <div class="interest-item">💎 Art & Making Jewelry</div>
+                        <div class="interest-item">🧘 Yoga & Fitness</div>
+                        <div class="interest-item">🥗 Nutrition</div>
+                        <div class="interest-item">📚 Continuous Learning</div>
+                    </div>
+
+                    <p>
+                        I'm always learning new skills and diving into new challenges, whether that's mastering 
+                        a framework, experimenting with a fresh creative idea, or going down an internet 
+                        rabbit-hole about random topics that pique my interest.
+                    </p>
+
+                    <div class="cta-section">
+                        <h4>Let's Collab!</h4>
+                        <p>
+                            If you have a project or idea you'd like to bring to life, I'd love to collaborate! 
+                        </p>
+                        <a href="{{ url_for('contact') }}" class="btn btn-contact-me">
+                            Contact Me
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- ======================== HERO REVEAL ======================== -->
+<div id="slime-overlay">
+    <canvas id="slime-three"></canvas>
+
+    <button class="skip-btn" onclick="skipAnimation()">Skip</button>
 </div>
 
+<script type="module" src="{{ url_for('static', filename='js/SlimeThree.js') }}"></script>
+
+<!-- ======================== MODAL SCRIPT ======================== -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            html: true
-        });
-    });
+function openAboutModal(type) {
+    let modalId;
+    if (type === 'welcome') modalId = 'welcomeModal';
+    else if (type === 'site') modalId = 'siteModal';
+    else if (type === 'me') modalId = 'meModal';
+    document.getElementById(modalId).style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAboutModal(event) {
+    event.stopPropagation();
+    document.getElementById('welcomeModal').style.display = 'none';
+    document.getElementById('siteModal').style.display = 'none';
+    document.getElementById('meModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('keydown', function(event) { // CLOSE ON ESCAPE KEY
+    if (event.key === 'Escape') {
+        closeAboutModal(event);
+    }
 });
 </script>
+
 {% endblock %}
