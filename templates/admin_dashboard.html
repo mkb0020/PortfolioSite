@@ -11,8 +11,7 @@
         </div>
     </div>
 
-    <!-- STATS OVERVIEW -->
-    <div class="row mb-4">
+    <div class="row mb-4"> <!-- STATS OVERVIEW -->
         <div class="col-md-3">
             <div class="card text-white mb-3" style="background: linear-gradient(135deg, #B879E2, #B879E2);">
                 <div class="card-body">
@@ -57,12 +56,11 @@
     {% if stats.pending_real_purchases > 0 %}
     <div class="alert" style="background: rgba(115,1,50, 0.15); border-left: 4px solid #D473D4; color: white; margin-bottom: 20px;">
         <h4 class="alert-heading">🚨 {{ stats.pending_real_purchases }} Real Purchase Request(s)!</h4>
-        <p>You have customers who want to actually buy your art/jewelry. Check the Real Purchases section!</p>
+        <p>You have customers who want to actually buy stuff. Check the Real Purchases section!</p>
     </div>
     {% endif %}
 
-    <!-- RECENT APP REQUESTS -->
-    {% if stats.recent_app_requests and stats.recent_app_requests|length > 0 %}
+    {% if stats.recent_app_requests and stats.recent_app_requests|length > 0 %} <!-- RECENT APP REQUESTS -->
     <div class="about-section">
     <div class="card mb-4" style="border: 2px solid #9874D3;">
         <div class="card-header" style="background: linear-gradient(135deg, #9874D3, #9874D3);">
@@ -262,9 +260,3 @@
 </style>
 
 {% endblock %}
-
-
-
-
-
-
