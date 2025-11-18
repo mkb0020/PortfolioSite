@@ -1,4 +1,3 @@
-<!-- templates/admin_dashboard.html -->
 {% extends "base.html" %}
 {% block title %}Admin Dashboard - MK Barriault{% endblock %}
 {% block content %}
@@ -6,45 +5,48 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Admin Dashboard</h1>
-        <a href="{{ url_for('admin_logout') }}" class="btn" style="background-color: #730132; color: white; border: none;">Logout</a> <!-- CLARET BUTTON-->
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('admin_wishlist') }}" class="btn" style="background-color: #9874D3; color: white; border: none;">✨ View Wishlist</a>
+            <a href="{{ url_for('admin_logout') }}" class="btn" style="background-color: #730132; color: white; border: none;">Logout</a>
+        </div>
     </div>
 
     <!-- STATS OVERVIEW -->
-    <div class="row mb-4"> <!-- CONTACT SUBMISSIONS -->
+    <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #B879E2, #B879E2);"> <!-- COLOR  -->
+            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #B879E2, #B879E2);">
                 <div class="card-body">
-                    <h5 class="card-title">📧 Contact Submissions</h5>
-                    <h2>{{ stats.unread_contacts }}</h2>
-                    <a href="{{ url_for('admin_contacts') }}" class="btn btn-light btn-sm">View All</a>
+                    <h5 class="card-title">Messages & Suggestions</h5>
+                    <h2>{{ stats.unread_contacts + stats.total_suggestions }}</h2>
+                    <a href="{{ url_for('admin_messages_suggestions') }}" class="btn btn-light btn-sm">View All</a>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-3"> <!-- SUGGESTIONS -->
-            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #9874D3, #9874D3);"> <!-- COLOR -->
+        <div class="col-md-3">
+            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #9874D3, #9874D3);">
                 <div class="card-body">
-                    <h5 class="card-title">💡 Suggestions</h5>
-                    <h2>{{ stats.total_suggestions }}</h2>
-                    <a href="{{ url_for('admin_suggestions') }}" class="btn btn-light btn-sm">View All</a>
+                    <h5 class="card-title">App/Website Requests</h5>
+                    <h2>{{ stats.new_app_requests }}</h2>
+                    <a href="{{ url_for('admin_app_requests') }}" class="btn btn-light btn-sm">View All</a>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-3"> <!-- ORDERS -->
-            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #A55AFF, #A55AFF);"> <!-- COLOR -->
+        <div class="col-md-3">
+            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #A55AFF, #A55AFF);">
                 <div class="card-body">
-                    <h5 class="card-title">🛒 Total Orders</h5>
+                    <h5 class="card-title">Orders</h5>
                     <h2>{{ stats.pending_orders }}</h2>
                     <a href="{{ url_for('admin_orders') }}" class="btn btn-light btn-sm">View All</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3"> <!-- PARTNERSHIPS -->
-            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #938FB7, #938FB7);"> <!-- COLOR -->
+        <div class="col-md-3">
+            <div class="card text-white mb-3" style="background: linear-gradient(135deg, #938FB7, #938FB7);">
                 <div class="card-body">
-                    <h5 class="card-title">🤝 Partnerships</h5>
+                    <h5 class="card-title">Partnerships</h5>
                     <h2>{{ stats.total_partners }}</h2>
                     <a href="{{ url_for('admin_partners') }}" class="btn btn-light btn-sm">View All</a>
                 </div>
@@ -52,17 +54,58 @@
         </div>
     </div>
 
-
-    {% if stats.pending_real_purchases > 0 %} <!-- RECENT REAL PURCHASES ALERT - Only show if there are PENDING real purchases -->
-    <div class="alert" style="background: rgba(115,1,50, 0.15); border-left: 4px solid #D473D4; color: white; margin-bottom: 20px;"> <!-- CLARET BACKGROUND / -->
+    {% if stats.pending_real_purchases > 0 %}
+    <div class="alert" style="background: rgba(115,1,50, 0.15); border-left: 4px solid #D473D4; color: white; margin-bottom: 20px;">
         <h4 class="alert-heading">🚨 {{ stats.pending_real_purchases }} Real Purchase Request(s)!</h4>
         <p>You have customers who want to actually buy your art/jewelry. Check the Real Purchases section!</p>
     </div>
     {% endif %}
 
-    <div class="about-section"> <!-- RECENT CONTACT SUBMISSIONS -->
-    <div class="card mb-4" style="border: 2px solid #918BFC;"> <!-- TRPICAL INDIGO -->
-        <div class="card-header" style="background: linear-gradient(135deg, #B879E2, #B879E2);"> <!-- BRIGHT LILAC  -->
+    <!-- RECENT APP REQUESTS -->
+    {% if stats.recent_app_requests and stats.recent_app_requests|length > 0 %}
+    <div class="about-section">
+    <div class="card mb-4" style="border: 2px solid #9874D3;">
+        <div class="card-header" style="background: linear-gradient(135deg, #9874D3, #9874D3);">
+            <h3 style="color: white; margin: 0;">🚀 Recent App/Website Requests</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in stats.recent_app_requests %}
+                    <tr>
+                        <td>{{ req.submitted_at.strftime('%m-%d-%Y') }}</td>
+                        <td><strong>{{ req.name }}</strong></td>
+                        <td>{{ req.email }}</td>
+                        <td>
+                            <span class="badge" style="background: #9874D3; color: white;">{{ req.request_type }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-request-status-{{ req.status }}">
+                                {{ req.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('admin_app_requests') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #9874D3, #9874D3); color: white; border: none;">View All Requests</a>
+        </div>
+    </div>
+    </div>
+    {% endif %}
+
+    <div class="about-section">
+    <div class="card mb-4" style="border: 2px solid #918BFC;">
+        <div class="card-header" style="background: linear-gradient(135deg, #B879E2, #B879E2);">
             <h3 style="color: white; margin: 0;">Recent Contact Submissions</h3>
         </div>
         <div class="card-body">
@@ -93,7 +136,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{{ url_for('admin_contacts') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #8F93BA, #8F93BA); color: white; border: none;">View All Contacts</a> <!-- DUSTY PERIWINKLE TO DUSTY PERIWINKLE -->
+            <a href="{{ url_for('admin_messages_suggestions') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #8F93BA, #8F93BA); color: white; border: none;">View All Messages</a>
             {% else %}
             <p>No contact submissions yet.</p>
             {% endif %}
@@ -101,10 +144,9 @@
     </div>
     </div>
 
-    <!-- RECENT REAL PURCHASE ORDERS - Only show if there are PENDING real purchases -->
     {% if stats.recent_real_orders and stats.recent_real_orders|length > 0 %}
     <div class="about-section">
-    <div class="card mb-4" style="border: 3px solid #9874D3;"> <!-- LILAC BUSH -->
+    <div class="card mb-4" style="border: 3px solid #9874D3;">
         <div class="card-header" style="background: linear-gradient(135deg, #B879E2, #E0B0FF);">
             <h3 style="color: white; margin: 0;">🔥 Recent Real Purchase Requests</h3>
         </div>
@@ -146,10 +188,10 @@
     </div>
     {% endif %}
 
-    {% if stats.recent_partners %} <!-- RECENT PARTNERSHIP INQUIRIES -->
+    {% if stats.recent_partners %}
     <div class="about-section">
-    <div class="card mb-4" style="border: 2px solid #9874D3;"> <!-- LILAC BUSH -->
-        <div class="card-header" style="background: linear-gradient(135deg, #938FB7, #938FB7);"> <!-- COLOR  -->
+    <div class="card mb-4" style="border: 2px solid #9874D3;">
+        <div class="card-header" style="background: linear-gradient(135deg, #938FB7, #938FB7);">
             <h3 style="color: white; margin: 0;">Recent Partnership Inquiries</h3>
         </div>
         <div class="card-body">
@@ -172,7 +214,7 @@
                         <td>{{ partner.contact_name }}</td>
                         <td>{{ partner.contact_email }}</td>
                         <td>
-                            <span class="badge" style="background: #8F93BA; color: white;">{{ partner.interest_type }}</span> <!-- DUSTY PERIWINKLE -->
+                            <span class="badge" style="background: #8F93BA; color: white;">{{ partner.interest_type }}</span>
                         </td>
                         <td>
                             <span class="badge badge-partner-status-{{ partner.status }}">
@@ -183,7 +225,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{{ url_for('admin_partners') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #8F93BA, #8F93BA); color: white; border: none;">View All Partnership Inquiries</a> <!-- DUSTY PERIWINKLE TO DUSTY PERIWINKLE -->
+            <a href="{{ url_for('admin_partners') }}" class="btn btn-sm" style="background: linear-gradient(135deg, #8F93BA, #8F93BA); color: white; border: none;">View All Partnership Inquiries</a>
         </div>
     </div>
     </div>
@@ -201,6 +243,28 @@
     .badge {
         padding: 5px 10px;
     }
+    .badge-request-status-new {
+        background: #E0B0FF;
+        color: #1a0f2e;
+    }
+    .badge-request-status-contacted {
+        background: #9874D3;
+        color: white;
+    }
+    .badge-request-status-in_progress {
+        background: #A55AFF;
+        color: white;
+    }
+    .badge-request-status-completed {
+        background: #28a745;
+        color: white;
+    }
 </style>
 
 {% endblock %}
+
+
+
+
+
+
