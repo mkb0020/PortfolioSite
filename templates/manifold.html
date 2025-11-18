@@ -1,0 +1,792 @@
+{% extends "base.html" %}
+{% block title %}Calabi-Yau Manifold - MK Barriault{% endblock %}
+{% block content %}
+<!-- ======================== STYLING ======================== -->
+<style>
+
+    body {
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        background-image: url('/static/images/background33.png'); /* BG IMAGE */ 
+        background-color: rgb(32, 6, 53);
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #333;
+        padding-top: 70px;
+}
+
+    .manifold-page {
+        position: relative;
+        min-height: calc(100vh - 140px);
+        height: calc(100vh - 140px);
+        display: flex;
+        gap: 0;
+        background-image: url("{{ url_for('static', filename='images/background4.png') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        backdrop-filter: blur(10px);
+        border-radius: 8px;
+        border: 2px solid rgba(152, 116, 211, 0.5);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        z-index: 10;
+    }
+
+    .manifold-container {
+        flex: 1;
+        position: relative;
+        background: #000510;
+        backdrop-filter: blur(10px);
+        /* Remove display: flex, align-items, justify-center - not needed */
+    }
+    .manifold-controls {
+        width: 380px;
+        background: rgba(31, 21, 32, 0.146);
+        color: white;
+        padding: 30px;
+        border-right: 2px solid #00ffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 4px 0 20px rgba(0, 255, 255, 0.3);
+        z-index: 10;
+        overflow-y: auto;
+        backdrop-filter: blur(10px);
+    }
+  
+    #manifold-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    .manifold-container canvas {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    
+    .manifold-controls h1 {
+        margin: 0 0 13px 0;
+        font-size: 24px;
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .manifold-controls p {
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ffffff;
+    }
+    
+    .control-section {
+        margin-bottom: 9px;
+    }
+    
+    .control-section h3 {
+        color: #ffffff;
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+    }
+    
+    .control-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .control-btn {
+        padding: 5px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        background: linear-gradient(135deg, #9953ef, #854acd);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .control-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+    }
+    
+    .control-btn.secondary {
+        background: linear-gradient(135deg, #029898, #008080);
+    }
+
+    .control-btn.secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+    }
+    
+    .zoom-controls {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .zoom-btn {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        background: linear-gradient(135deg, #8c8ea2, #7a7b8d);
+        color: white;
+    }
+    
+    .zoom-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 255, 255, 0.5);
+    }
+
+    .about-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .about-btn {
+        flex: 1;
+        padding: 5px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        background: linear-gradient(135deg, #b05db6, #b05db6);
+        color: white;
+    }
+    
+    .about-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px #b24fb9;
+    }
+
+    .about-btn.secondary {
+        background: linear-gradient(135deg, #8B3D80, #8B3D80);
+    }
+
+    .about-btn.secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px #883c7e;
+    }
+
+    .slider-control {
+        margin-bottom: 20px;
+    }
+    
+    .slider-control label {
+        display: block;
+        font-size: 14px;
+        color: #00ffff;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .slider-control input[type="range"] {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #333;
+        outline: none;
+    }
+    
+    .slider-control input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #00ffff;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .slider-control input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #00ffff;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .hint {
+        font-size: 12px;
+        color: #888;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #333;
+        line-height: 1.6;
+    }
+    
+    .hint::before {
+        content: "💡 ";
+    }
+    
+    @media (max-width: 768px) { /* RESPONSIVE */
+        .manifold-page {
+            flex-direction: column;
+        }
+        
+        .manifold-controls {
+            width: 100%;
+            border-right: none;
+            border-bottom: 2px solid #00ffff;
+        }
+        
+        .manifold-container {
+            min-height: 500px;
+        }
+    }
+
+  /* ================= MODAL ================= */
+.manifold-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.manifold-modal-content {
+    background:  linear-gradient(135deg, #2a1a4a 0%, #1a0f2e 100%);
+    margin: 5% auto;
+    border-radius: 15px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #9874D3;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.manifold-modal-header {
+    padding: 25px 30px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.manifold-modal-header h2 {
+    color: #CDC6FF;
+    font-weight:bold; 
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.manifold-modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.manifold-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.manifold-modal-body {
+    padding: 20px;
+    color: white;
+}
+
+.manifold-info-section {
+    margin-bottom: 30px;
+}
+
+.manifold-info-section h3 {
+    color: #CDC6FF;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(216, 145, 239, 0.3);
+    padding-bottom: 10px;
+}
+
+.manifold-info-list {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 2;
+    padding-left: 25px;
+}
+
+.manifold-info-list li {
+    margin-bottom: 10px;
+}
+
+.manifold-info-list strong {
+    color: #CDC6FF;
+}
+
+.manifold-note {
+    background: rgba(0, 255, 255, 0.135);
+    border-left: 4px solid #00ffff;
+    padding: 15px;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+.manifold-modal-footer {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    border-radius: 0 0 15px 15px;
+    text-align: center;
+}
+
+.btn-manifold-close {
+    background: linear-gradient(135deg, #56477a, #56477a);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-manifold-close:hover {
+    background: linear-gradient(135deg, #8661be, #a065d0);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(152, 116, 211, 0.4);
+}
+
+</style>
+<!-- ======================== PAGE CONTENT  ======================== -->
+<h1>Calabi-Yau Manifold</h1>
+
+<div class="manifold-page">
+    <div class="manifold-controls">
+        <div class="control-section">
+            <div class="about-buttons">
+                <button class="about-btn" onclick="openManifoldInfo()">About</button>
+                <button class="about-btn secondary" onclick="openControlsInfo()">Controls</button>
+            </div>
+        </div>
+
+        <p><div class="control-section">
+            <div class="control-buttons">
+                <button class="control-btn" id="rotateBtn">
+                    <span>⏸</span>
+                    <span>Pause</span>
+                </button>
+                <button class="control-btn secondary" id="regenerateBtn">
+                    <span>🔄</span> 
+                    <span>Regenerate</span>
+                </button>
+            </div>
+        </div></p>
+
+        <p><div class="control-section">
+            <h3>Zoom</h3>
+            <div class="zoom-controls">
+                <button class="zoom-btn" id="zoomInBtn" title="Zoom In">🔍+</button>
+                <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out">🔍−</button>
+                <button class="zoom-btn" id="resetZoomBtn" title="Reset Zoom">↺</button>
+            </div>
+        </div></p>
+        
+        <p><div class="control-section">
+            <h3>Detail</h3>
+            <div class="slider-control">
+                <label>Mesh Complexity: <span id="complexityValue">60</span></label>
+                <input type="range" id="complexitySlider" min="20" max="100" value="60">
+            </div>
+        </div></p>        
+    </div>
+    
+    <div class="manifold-container">
+        <div id="manifold-canvas"></div>
+    </div>
+</div>
+<!-- ======================== MANIFOLD JS  ======================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script> // MANIFOLD
+    let scene, camera, renderer, manifoldGroup;
+    let isRotating = true;
+    let complexity = 60;
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    const initialCameraZ = 3.5;
+    let currentZoom = initialCameraZ;
+
+    function init() {
+        const container = document.getElementById('manifold-canvas');
+        scene = new THREE.Scene(); // SCENE SETUP
+        scene.background = new THREE.Color(0x000510);
+
+        camera = new THREE.PerspectiveCamera( // CAMERA
+            75,
+            container.clientWidth / container.clientHeight,
+            0.1,
+            1000
+        );
+        camera.position.z = currentZoom;
+
+        renderer = new THREE.WebGLRenderer({ antialias: true }); // RENDERER
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        createManifold(); // CREATE INITIAL MANIFOLD
+
+        const ambientLight = new THREE.AmbientLight(0x404040, 2); // LIGHTING
+        scene.add(ambientLight);
+
+        const pointLight1 = new THREE.PointLight(0x00ffff, 1, 100);
+        pointLight1.position.set(5, 5, 5);
+        scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight(0xff00ff, 1, 100);
+        pointLight2.position.set(-5, -5, -5);
+        scene.add(pointLight2);
+
+        const particlesGeometry = new THREE.BufferGeometry(); // ADD PARTICLE FIELD
+        const particlesCnt = 1000;
+        const posArray = new Float32Array(particlesCnt * 3);
+        
+        for (let i = 0; i < particlesCnt * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 20;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0x8888ff,
+            transparent: true,
+            opacity: 0.6
+        });
+        
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        renderer.domElement.addEventListener('mousedown', handleMouseDown); // MOUSE INTERACTION
+        renderer.domElement.addEventListener('wheel', handleWheel);
+        window.addEventListener('mousemove', handleMouseMove); // LISTEN ON WINDOW FOR MOVE AND UP SO DRAGGING WORKS SMOOTHLY
+        window.addEventListener('mouseup', handleMouseUp);
+        console.log('Mouse listeners attached to:', renderer.domElement);
+        console.log('Canvas element:', renderer.domElement);
+        window.addEventListener('resize', handleResize); // HANDLE WINDOW RESIZE
+        animate(); // START ANIMATION
+    }
+
+    function createCalabiYauGeometry(detail) {
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        const indices = [];
+
+        for (let u = 0; u <= detail; u++) {
+            for (let v = 0; v <= detail; v++) {
+                const theta = (u / detail) * Math.PI * 2;
+                const phi = (v / detail) * Math.PI * 2;
+                
+                const r1 = 1 + 0.3 * Math.sin(3 * theta) * Math.cos(2 * phi);
+                const r2 = 1 + 0.2 * Math.cos(5 * theta) * Math.sin(3 * phi);
+                const r3 = 1 + 0.15 * Math.sin(4 * theta + phi) * Math.cos(2 * theta - phi);
+                
+                const x = r1 * Math.sin(theta) * Math.cos(phi) + 0.2 * Math.sin(7 * theta) * Math.cos(4 * phi);
+                const y = r2 * Math.sin(theta) * Math.sin(phi) + 0.2 * Math.cos(5 * theta) * Math.sin(6 * phi);
+                const z = r3 * Math.cos(theta) + 0.15 * Math.sin(3 * theta) * Math.cos(3 * phi);
+
+                vertices.push(x, y, z);
+            }
+        }
+        for (let u = 0; u < detail; u++) {
+            for (let v = 0; v < detail; v++) {
+                const a = u * (detail + 1) + v;
+                const b = a + detail + 1;
+                const c = a + 1;
+                const d = b + 1;
+
+                indices.push(a, b, c);
+                indices.push(b, d, c);
+            }
+        }
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        geometry.setIndex(indices);
+        geometry.computeVertexNormals();
+        return geometry;
+    }
+
+    function createManifold() {
+        if (manifoldGroup) {
+            scene.remove(manifoldGroup);
+        }
+
+        const geometry = createCalabiYauGeometry(complexity);
+
+        const wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.6
+        });
+
+        const surfaceMaterial = new THREE.MeshPhongMaterial({
+            color: 0x4a0080,
+            emissive: 0x220066,
+            specular: 0x00ffff,
+            shininess: 30,
+            transparent: true,
+            opacity: 0.4,
+            side: THREE.DoubleSide
+        });
+        manifoldGroup = new THREE.Group();
+        const surface = new THREE.Mesh(geometry, surfaceMaterial);
+        const wireframe = new THREE.Mesh(geometry, wireframeMaterial);
+        manifoldGroup.add(surface);
+        manifoldGroup.add(wireframe);
+        scene.add(manifoldGroup);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (isRotating && !isDragging && manifoldGroup) {
+            manifoldGroup.rotation.x += 0.002;
+            manifoldGroup.rotation.y += 0.003;
+            manifoldGroup.rotation.z += 0.001;
+        }
+        renderer.render(scene, camera);
+    }
+
+    function handleMouseDown(event) {
+        console.log('MOUSE DOWN DETECTED!');
+        event.stopPropagation();
+        event.preventDefault();   
+        isDragging = true;
+        previousMousePosition = {
+            x: event.clientX,
+            y: event.clientY
+        };
+    }
+
+    function handleMouseMove(event) {
+        console.log('MOUSE MOVE:', isDragging);
+        if (!isDragging || !manifoldGroup) return;
+        
+        event.stopPropagation(); 
+        event.preventDefault();  
+
+        const deltaX = event.clientX - previousMousePosition.x;
+        const deltaY = event.clientY - previousMousePosition.y;
+
+        manifoldGroup.rotation.y += deltaX * 0.01;
+        manifoldGroup.rotation.x += deltaY * 0.01;
+
+        previousMousePosition = {
+            x: event.clientX,
+            y: event.clientY
+        };
+    }
+
+    function handleMouseUp(event) {
+        console.log('MOUSE UP CALLED!');
+        event.stopPropagation(); 
+        isDragging = false;
+    }
+
+    function handleWheel(event) {
+        console.log('WHEEL EVENT!'); 
+        event.preventDefault();
+        const zoomSpeed = 0.1;     
+        if (event.deltaY < 0) {
+            currentZoom = Math.max(1, currentZoom - zoomSpeed); // ZOOM IN
+        } else {
+            currentZoom = Math.min(10, currentZoom + zoomSpeed); // ZOOM OUT
+        }
+        camera.position.z = currentZoom;
+    }
+
+    function zoomIn() {
+        currentZoom = Math.max(1, currentZoom - 0.5);
+        camera.position.z = currentZoom;
+    }
+
+    function zoomOut() {
+        currentZoom = Math.min(10, currentZoom + 0.5);
+        camera.position.z = currentZoom;
+    }
+
+    function resetZoom() {
+        currentZoom = initialCameraZ;
+        camera.position.z = currentZoom;
+    }
+
+    function handleResize() {
+        const container = document.getElementById('manifold-canvas');
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    document.getElementById('rotateBtn').addEventListener('click', function() { // BUTTON CONTROLS
+        isRotating = !isRotating;
+        const pauseIcon = this.querySelector('span:first-child');
+        const text = this.querySelector('span:last-child');
+        
+        if (isRotating) {
+            pauseIcon.textContent = '⏸';
+            text.textContent = 'Pause Rotation';
+        } else {
+            pauseIcon.textContent = '▶';
+            text.textContent = 'Resume Rotation';
+        }
+    });
+
+    document.getElementById('regenerateBtn').addEventListener('click', function() {
+        createManifold();
+    });
+
+    document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+    document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+    document.getElementById('resetZoomBtn').addEventListener('click', resetZoom);
+
+    document.getElementById('complexitySlider').addEventListener('input', function() {
+        complexity = parseInt(this.value);
+        document.getElementById('complexityValue').textContent = complexity;
+        createManifold();
+    });
+
+    init(); // INITIALIZE ON PAGE LOAD
+</script>
+
+<!-- ======================== ABOUT MODAL ======================== -->
+<div id="ManifoldModal" class="manifold-modal" onclick="closeManifoldInfo(event)">
+    <div class="manifold-modal-content" onclick="event.stopPropagation()">
+        <div class="manifold-modal-header">
+            <h2>A Calabi-What?</h2>
+            <button class="manifold-modal-close" onclick="closeManifoldInfo(event)">&times;</button>
+        </div>
+        <div class="manifold-modal-body">
+            <div class="manifold-info-section">
+                <p class="manifold-note">
+                    Tiny six‑dimensional origami for the universe!</p>
+            </div>
+            <div class="manifold-info-section">
+                    <h3></h3>
+                    <p class="manifold-info-list">
+                        A Calabi‑Yau Manifold is a delicately curved, compact complex shape that’s Ricci‑flat and carries a holomorphic volume form, meaning it has the kind of internal symmetry mathematicians adore. It lives in six real dimensions (three complex dimensions), but we show it here as a 3D projection you can spin, zoom, and explore.
+
+                    </p>
+            </div>
+            <div class="manifold-info-section">
+                    <h3></h3>
+                    <ul class="manifold-info-list">
+                        <li><strong>In geometry</strong> -  Calabi‑Yau spaces are central examples in complex differential geometry and algebraic geometry; they host rich structures like families of deformations (moduli) and special subspaces that mathematicians study to understand shapes and symmetries.</li>
+                        <li><strong>In physics</strong> - They’re the favorite hiding places for extra dimensions in string theory. Different Calabi‑Yau shapes give different patterns of particles and forces when the extra dimensions are compactified, so choosing one is a bit like picking the blueprint for a universe.</li>
+                    </ul>
+            </div>
+
+        </div>
+        <div class="manifold-modal-footer">
+            <button class="btn btn-manifold-close" onclick="openControlsInfo()">View Controls</button>
+            <button class="btn btn-manifold-close" onclick="closeManifoldInfo(event)">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== CONTROLS MODAL ======================== -->
+<div id="ControlsModal" class="manifold-modal" onclick="closeControlsInfo(event)">
+    <div class="manifold-modal-content" onclick="event.stopPropagation()">
+        <div class="manifold-modal-header">
+            <h2>Animation Controls</h2>
+            <button class="manifold-modal-close" onclick="closeControlsInfo(event)">&times;</button>
+        </div>
+        <div class="manifold-modal-body">
+            <div class="manifold-info-section">
+                    <ul class="manifold-info-list">
+                        <li><strong>Rotate</strong> - Drag with your mouse to rotate the manifold manually.</li>
+                        <li><strong>Zoom</strong> - Use the zoom buttons or scroll wheel to zoom in and out.</li>
+                        <li><strong>Details</strong> - Use the slider to increase or decrease mesh complexity</li>
+                    </ul>
+            </div>
+        </div>
+        <div class="manifold-modal-footer">
+            <button class="btn btn-manifold-close" onclick="closeControlsInfo(event)">Close</button>
+        </div>
+    </div>
+</div>
+<!-- ======================== MODAL SCRIPT ======================== -->
+<script> // MODALS
+function openManifoldInfo() {
+    document.getElementById('ManifoldModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // PREVENT BG SCROLLING
+}
+
+function closeManifoldInfo(event) {
+    event.stopPropagation();
+    document.getElementById('ManifoldModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('keydown', function(event) { // CLOSE ON ESCAPE KEY
+    if (event.key === 'Escape') {
+        closeManifoldInfo(event);
+    }
+});
+
+function openControlsInfo() {
+    document.getElementById('ControlsModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // PREVENT BG SCROLLING
+}
+
+function closeControlsInfo(event) {
+    event.stopPropagation();
+    document.getElementById('ControlsModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('keydown', function(event) { // CLOSE ON ESCAPE KEY
+    if (event.key === 'Escape') {
+        closeControlsInfo(event);
+    }
+});
+
+</script>
+
+{% endblock %}
