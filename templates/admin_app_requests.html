@@ -1,0 +1,268 @@
+
+<!-- templates/admin_requests.html -->
+ <!-- FOR ME TO READ SUBMISSIONS TO THE APP / WEBSITE REQUEST PAGE -->
+{% extends "base.html" %}
+{% block title %}App/Website Requests - Admin{% endblock %}
+{% block content %}
+<!-- ======================== TITLE AND BACK BUTTON======================== -->
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="admin-page-title">App/Website Requests ({{ new_count }} New)</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-back">← Back to Dashboard</a>
+    </div>
+<!-- ======================== FILTER BY STATUS======================== -->
+    <div class="about-section mb-4">
+        <div class="order-filter-box">
+            <h5 class="filter-title">Filter by Status</h5>
+            <div class="btn-group" role="group">
+                <a href="{{ url_for('admin_app_requests') }}" 
+                   class="btn btn-sm {% if not filter_status %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    All ({{ all_count }})
+                </a>
+                <a href="{{ url_for('admin_app_requests', filter_status='new') }}" 
+                   class="btn btn-sm {% if filter_status == 'new' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    New ({{ new_count }})
+                </a>
+                <a href="{{ url_for('admin_app_requests', filter_status='contacted') }}" 
+                   class="btn btn-sm {% if filter_status == 'contacted' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Contacted ({{ contacted_count }})
+                </a>
+                <a href="{{ url_for('admin_app_requests', filter_status='in_progress') }}" 
+                   class="btn btn-sm {% if filter_status == 'in_progress' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    In Progress ({{ in_progress_count }})
+                </a>
+                <a href="{{ url_for('admin_app_requests', filter_status='completed') }}" 
+                   class="btn btn-sm {% if filter_status == 'completed' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Completed ({{ completed_count }})
+                </a>
+            </div>
+            {% if filter_status %}
+            <p class="filter-results-text">Showing: <strong>{{ filter_status|title }}</strong> requests</p>
+            {% endif %}
+        </div>
+    </div>
+<!-- ======================== REQUEST CARDS ======================== -->
+    {% if requests %}
+    <div class="about-section">
+        {% for req in requests %}
+        <div class="card mb-4 request-card-{{ req.status }}">
+            <div class="card-header order-card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h4 class="order-title">
+                            🚀 {{ req.request_type }}
+                            <span class="badge badge-request-status-{{ req.status }}">
+                                {{ req.status|replace('_', ' ')|title }}
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="order-date">
+                            {{ req.submitted_at.strftime('%m-%d-%Y') }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="section-title">Contact Information</h5>
+                        <p class="info-text">
+                            <strong>Name:</strong> {{ req.name }}
+                        </p>
+                        <p class="info-text">
+                            <strong>Email:</strong> 
+                            <a href="mailto:{{ req.email }}" class="email-link">
+                                {{ req.email }}
+                            </a>
+                        </p>
+                        {% if req.phone %}
+                        <p class="info-text">
+                            <strong>Phone:</strong> {{ req.phone }}
+                        </p>
+                        {% endif %}
+                        
+                        <h5 class="section-title mt-4">Project Details</h5>
+                        {% if req.timeline %}
+                        <p class="info-text">
+                            <strong>Timeline:</strong> {{ req.timeline }}
+                        </p>
+                        {% endif %}
+                        {% if req.budget %}
+                        <p class="info-text">
+                            <strong>Budget:</strong> {{ req.budget }}
+                        </p>
+                        {% endif %}
+                        
+                        <div class="request-details-box">
+                            <p class="request-details">{{ req.additional_info }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5 class="section-title">Notes</h5>
+                        {% if req.notes %}
+                        <div class="current-notes-box">
+                            <p class="current-notes">{{ req.notes }}</p>
+                        </div>
+                        {% else %}
+                        <p class="info-text2" style="font-style: italic; color: rgba(255, 255, 255, 0.5);">
+                            No notes yet
+                        </p>
+                        {% endif %}
+                        
+                        <!-- ADD/UPDATE NOTES -->
+                        <div class="tracking-section">
+                            <h5 class="section-title">{{ 'Update' if req.notes else 'Add' }} Note</h5>
+                            <form method="POST" action="{{ url_for('update_request_notes_route', request_id=req.request_id) }}" class="tracking-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control form-control-sm" 
+                                                  name="notes" 
+                                                  rows="5"
+                                                  placeholder="Add notes about discussions, quotes, progress, etc...">{{ req.notes if req.notes else '' }}</textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-tracking-update mt-2">
+                                    {{ 'Update' if req.notes else 'Add' }} Note
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer order-card-footer">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div>
+                        <h6 class="update-status-title">Update Status:</h6>
+                        <div class="btn-group btn-group-sm" role="group">
+                            {% if req.status != 'new' %}
+                            <form method="POST" action="{{ url_for('update_request_status_route', request_id=req.request_id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="new">
+                                <button type="submit" class="btn btn-status-new">New</button>
+                            </form>
+                            {% endif %}
+                            
+                            {% if req.status != 'contacted' %}
+                            <form method="POST" action="{{ url_for('update_request_status_route', request_id=req.request_id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="contacted">
+                                <button type="submit" class="btn btn-status-contacted">Contacted</button>
+                            </form>
+                            {% endif %}
+                            
+                            {% if req.status != 'in_progress' %}
+                            <form method="POST" action="{{ url_for('update_request_status_route', request_id=req.request_id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="in_progress">
+                                <button type="submit" class="btn btn-status-in-progress">In Progress</button>
+                            </form>
+                            {% endif %}
+                            
+                            {% if req.status != 'completed' %}
+                            <form method="POST" action="{{ url_for('update_request_status_route', request_id=req.request_id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="completed">
+                                <button type="submit" class="btn btn-status-completed">Completed</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <form method="POST" action="{{ url_for('archive_app_request', request_id=req.request_id) }}" style="display: inline;" onsubmit="return confirm('Archive this request? It will be hidden but remain in the database.');">
+                            <button type="submit" class="btn btn-sm btn-archive-request" title="Archive this request">
+                                📦 Archive
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No requests yet!</h4>
+        <p>{% if filter_status %}No requests with status "{{ filter_status|title }}".{% else %}When visitors submit app/website requests, they'll appear here.{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+<!-- ======================== STYLING ======================== -->
+<style>
+.request-card-new {
+    border-left: 4px solid #E0B0FF;
+}
+
+.request-card-contacted {
+    border-left: 4px solid #9874D3;
+}
+
+.request-card-in_progress {
+    border-left: 4px solid #A55AFF;
+}
+
+.request-card-completed {
+    border-left: 4px solid #28a745;
+}
+
+.badge-request-status-new {
+    background: #E0B0FF;
+    color: #1a0f2e;
+}
+
+.badge-request-status-contacted {
+    background: #9874D3;
+    color: white;
+}
+
+.badge-request-status-in_progress {
+    background: #A55AFF;
+    color: white;
+}
+
+.badge-request-status-completed {
+    background: #28a745;
+    color: white;
+}
+
+.btn-status-new {
+    background: #E0B0FF;
+    color: #1a0f2e;
+    border: none;
+}
+
+.btn-status-contacted {
+    background: #9874D3;
+    color: white;
+    border: none;
+}
+
+.btn-status-in-progress {
+    background: #A55AFF;
+    color: white;
+    border: none;
+}
+
+.btn-status-completed {
+    background: #28a745;
+    color: white;
+    border: none;
+}
+
+.request-details-box {
+    background: rgba(152, 116, 211, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid #9874D3;
+    margin-top: 15px;
+}
+
+.request-details {
+    color: white;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    margin: 0;
+}
+</style>
+
+{% endblock %}
