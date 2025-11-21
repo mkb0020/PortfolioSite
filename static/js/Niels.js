@@ -1,11 +1,11 @@
   document.addEventListener("DOMContentLoaded", () => {
   const bubble = document.getElementById("NielsBubble");
-  const cat = document.getElementById("Niels");
+  const Niels = document.getElementById("Niels");
   const hideBtn = document.getElementById("hideNiels");
   const wakeBtn = document.getElementById("wakeNiels");
   const zzzBubbles = document.querySelectorAll(".zzz-bubble");
 
-  if (!bubble || !cat || !hideBtn || !wakeBtn) return;
+  if (!bubble || !Niels || !hideBtn || !wakeBtn) return;
 
   const messages = bubble.textContent.trim().split("|");
   const danceFrames = [
@@ -27,8 +27,8 @@
   function showMessage() {
     if (localStorage.getItem("nielsState") !== "awake" || isDancing) return;
 
-    cat.src = "/static/images/Niels/NielsPoint.png";
-    cat.classList.add("talking");
+    Niels.src = "/static/images/Niels/NielsPoint.png";
+    Niels.classList.add("talking");
 
     bubble.textContent = messages[index];
     bubble.classList.add("show");
@@ -36,8 +36,8 @@
     setTimeout(() => {
       if (localStorage.getItem("nielsState") === "awake" && !isDancing) {
         bubble.classList.remove("show");
-        cat.src = "/static/images/Niels/NielsAwake.png";
-        cat.classList.remove("talking");
+        Niels.src = "/static/images/Niels/NielsAwake.png";
+        Niels.classList.remove("talking");
       }
     }, 4000);
 
@@ -71,7 +71,7 @@
     isDancing = true;
     stopTalking();
     bubble.classList.remove("show");
-    cat.classList.remove("talking");
+    Niels.classList.remove("talking");
 
     let frame = 0;
     const danceInterval = setInterval(() => {
@@ -81,14 +81,14 @@
         return;
       }
 
-      cat.src = danceFrames[frame];
+      Niels.src = danceFrames[frame];
       frame++;
 
       if (frame >= danceFrames.length) {
         clearInterval(danceInterval);
         isDancing = false;
         if (localStorage.getItem("nielsState") === "awake") {
-          cat.src = "/static/images/Niels/NielsAwake.png";
+          Niels.src = "/static/images/Niels/NielsAwake.png";
           startTalking();
         }
       }
@@ -107,10 +107,10 @@
   }
 
   function swapCatImage(newSrc) {
-    cat.classList.add("fadeSwap");
+    Niels.classList.add("fadeSwap");
     setTimeout(() => {
-      cat.src = newSrc;
-      cat.classList.remove("fadeSwap");
+      Niels.src = newSrc;
+      Niels.classList.remove("fadeSwap");
     }, 150); // FADE DURATION = 150 ms
   }
 
@@ -134,7 +134,7 @@
   });
 
   // =========================== CLICK NIELS  ===========================
-  cat.addEventListener("click", () => {
+  Niels.addEventListener("click", () => {
     const state = localStorage.getItem("nielsState");
     if (state === "awake" && !isDancing) {
       if (Math.random() < 0.25) dance();
