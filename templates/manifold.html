@@ -403,20 +403,20 @@
 
 <div class="manifold-page">
     <div class="manifold-controls">
-        <div class="control-section">
-            <div class="about-buttons">
-                <button class="about-btn" onclick="openManifoldInfo()">About</button>
-                <button class="about-btn secondary" onclick="openControlsInfo()">Controls</button>
-            </div>
+        <div class="control-section text-center">
+           <!-- <div class="quantum-pulse"> -->
+                <button class="btn-quantum-pulse" onclick="openManifoldInfo()">About</button>
+                <button class="btn-quantum-pulse" onclick="openControlsInfo()">Controls</button>
+           <!-- </div> -->
         </div>
 
         <p><div class="control-section">
-            <div class="control-buttons">
-                <button class="control-btn" id="rotateBtn">
+            <div class="control-buttons text-center">
+                <button class="btn-quantum-pulse" id="rotateBtn">
                     <span>⏸</span>
                     <span>Pause</span>
                 </button>
-                <button class="control-btn secondary" id="regenerateBtn">
+                <button class="btn-quantum-pulse" id="regenerateBtn">
                     <span>🔄</span> 
                     <span>Regenerate</span>
                 </button>
@@ -425,10 +425,10 @@
 
         <p><div class="control-section">
             <h3>Zoom</h3>
-            <div class="zoom-controls">
-                <button class="zoom-btn" id="zoomInBtn" title="Zoom In">🔍+</button>
-                <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out">🔍−</button>
-                <button class="zoom-btn" id="resetZoomBtn" title="Reset Zoom">↺</button>
+            <div class="zoom-controls text-center">
+                <button class="btn-quantum-pulse" id="zoomInBtn" title="Zoom In">🔍+</button>
+                <button class="btn-quantum-pulse" id="zoomOutBtn" title="Zoom Out">🔍−</button>
+                <button class="btn-quantum-pulse" id="resetZoomBtn" title="Reset Zoom">↺</button>
             </div>
         </div></p>
         
@@ -724,8 +724,8 @@
 
         </div>
         <div class="manifold-modal-footer">
-            <button class="btn btn-manifold-close" onclick="openControlsInfo()">View Controls</button>
-            <button class="btn btn-manifold-close" onclick="closeManifoldInfo(event)">Close</button>
+            <button class="btn-quantum-pulse" onclick="openControlsInfo()">View Controls</button>
+            <button class="btn-quantum-pulse" onclick="closeManifoldInfo(event)">Close</button>
         </div>
     </div>
 </div>
@@ -747,7 +747,7 @@
             </div>
         </div>
         <div class="manifold-modal-footer">
-            <button class="btn btn-manifold-close" onclick="closeControlsInfo(event)">Close</button>
+            <button class="btn-quantum-pulse" onclick="closeControlsInfo(event)">Close</button>
         </div>
     </div>
 </div>
