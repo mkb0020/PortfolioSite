@@ -1,0 +1,652 @@
+<!-- ===== fractals.html ===== -->
+{% extends "base.html" %}
+{% block title %}FRACTALS{% endblock %}
+{% block content %}
+<!-- ======================== PAGE CONTENT  ======================== -->
+<h1>FRACTAL VISUALIZER</h1>
+
+<div class="fractal-page">
+    <div class="fractal-controls">
+        <div class="control-section text-center">
+                <button class="btn-neon-portal" onclick="openFractalInfo()">About</button>
+                <button class="btn-neon-portal" onclick="openFractalControlsInfo()">Controls</button>
+        </div>
+
+        <p><div class="control-section">
+            <h3>Fractal Type</h3>
+            <select id="fractalSelect" class="control-dropdown">
+                <option value="mandelbrot">Mandelbrot (Classic)</option>
+                <option value="power3">Power 3 Mandelbrot</option>
+                <option value="julia">Julia Set</option>
+                <option value="tricorn">Tricorn (Mandelbar)</option>
+                <option value="burningship">Burning Ship</option>
+            </select>
+        </div></p>
+
+        <p><div class="control-section">
+            <h3>Zoom</h3>
+            <div class="zoom-controls">
+                <button class="btn-quantum-pulse" id="zoomInBtn" title="Zoom In">🔍+</button>
+                <button class="btn-quantum-pulse" id="zoomOutBtn" title="Zoom Out">🔍−</button>
+                <button class="btn-quantum-pulse" id="resetZoomBtn" title="Reset Zoom">↺</button>
+            </div>
+        </div></p>
+        
+      
+    </div>
+    
+    <!-- =========================== FRACTALS =========================== -->
+    <div class="fractal-container">
+        <div id="fractal-canvas"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="{{ url_for('static', filename='js/Fractals.js') }}"></script>
+</div>
+
+<!-- =========================== SYYLING =========================== -->
+<style>
+    body {
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        background-image: url('/static/images/background33.png'); /* BG IMAGE */ 
+        background-color: rgb(32, 6, 53);
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #333;
+        padding-top: 70px;
+}
+
+    .fractal-page {
+        position: relative;
+        min-height: calc(100vh - 140px);
+        height: calc(100vh - 140px);
+        display: flex;
+        gap: 0;
+        background-image: url("{{ url_for('static', filename='images/background4.png') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        backdrop-filter: blur(10px);
+        border-radius: 8px;
+        border: 2px solid rgba(152, 116, 211, 0.5);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        z-index: 10;
+    }
+
+    .fractal-container {
+        flex: 1;
+        position: relative;
+        background: #000510;
+        height: 100%;
+        overflow: hidden; /* IMPORTANT */
+    }
+
+    .fractal-controls {
+        width: 380px;
+        background: rgba(31, 21, 32, 0.146);
+        color: white;
+        padding: 10px;
+        border-right: 2px solid #00ffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 4px 0 20px rgba(0, 255, 255, 0.3);
+        z-index: 10;
+        overflow-y: auto;
+        backdrop-filter: blur(10px);
+    }
+  
+    #fractal-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    .fractal-container canvas {
+        position: relative !important;
+        z-index: 1 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+    
+    .fractal-controls h1 {
+        margin: 0 0 13px 0;
+        font-size: 24px;
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .fractal-controls p {
+        margin: 0 0 20px 0;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ffffff;
+    }
+    
+    .control-section {
+        margin-bottom: 9px;
+    }
+    
+    .control-section h3 {
+        color: #ffffff;
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+    }
+    
+    /* ———  DROPDOWN ——— */
+    #fractalSelect {
+        padding: 10px 35px;
+        font-size: 16px;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        font-weight: 600;
+        border-radius: 16px;                    
+        border: 2px solid transparent;
+        background: rgba(20, 20, 40, 0.85);      
+        color: #e0e0ff;
+        backdrop-filter: blur(10px);             
+        appearance: none; /* ARROW */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23a0a0ff' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), /* GLOW */
+                    0 0 20px rgba(100, 80, 255, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        outline: none;
+    }
+
+    #fractalSelect:hover { /* NEON GLOWS BRIGHTER WHEN YOU HOVER */
+        border-color: #8470ff;
+        box-shadow: 0 0 30px rgba(132, 112, 255, 0.6),
+                    0 8px 32px rgba(0, 0, 0, 0.5);
+        transform: translateY(-2px);
+    }
+
+    #fractalSelect:focus { /* GLOWIER GLOW WHEN CLICKED */
+        border-color: #00ffff;
+        box-shadow: 0 0 35px rgba(160, 160, 255, 0.8),
+                    0 8px 32px rgba(0, 0, 0, 0.5);
+        transform: scale(1.02);
+    }
+
+    #fractalSelect option { /* DROP DOWN OPTIONS */
+        background: #1a1a2e;
+        color: #e0e0ff;
+        padding: 12px;
+        font-weight: 500;
+    }
+    .control-section {
+        background: rgba(164, 72, 240, 0.24);
+        padding: 20px;
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(240, 92, 245, 0.208);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        margin: 15px 0;
+}
+
+    .control-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .control-btn {
+        padding: 5px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        background: linear-gradient(135deg, #9953ef, #854acd);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .control-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+    }
+    
+    .control-btn.secondary {
+        background: linear-gradient(135deg, #029898, #008080);
+    }
+
+    .control-btn.secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+    }
+    
+    .zoom-controls {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .zoom-btn {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        background: linear-gradient(135deg, #8c8ea2, #7a7b8d);
+        color: white;
+    }
+    
+    .zoom-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 255, 255, 0.5);
+    }
+
+    
+    @media (max-width: 768px) { /* RESPONSIVE */
+        .fractal-page {
+            flex-direction: column;
+        }
+        
+        .fractal-controls {
+            width: 100%;
+            border-right: none;
+            border-bottom: 2px solid #00ffff;
+        }
+        
+        .fractal-container {
+            min-height: 500px;
+        }
+    }
+
+  /* ================= MODAL ================= */
+.fractal-modal {
+    display: none; /* HIDDEN BY DEFAULT */
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 0, 29, 0.53);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fractal-modal-content {
+    background:  linear-gradient(135deg, #2a1a4a 0%, #1a0f2e 100%);
+    margin: 5% auto;
+    border-radius: 15px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #9874D3;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.fractal-modal-header {
+    padding: 25px 30px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fractal-modal-header h2 {
+    color: #CDC6FF;
+    font-weight:bold; 
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.fractal-modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.fractal-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.fractal-modal-body {
+    padding: 20px;
+    color: white;
+}
+
+.fractal-info-section {
+    margin-bottom: 30px;
+}
+
+.fractal-info-section h3 {
+    color: #CDC6FF;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(216, 145, 239, 0.3);
+    padding-bottom: 10px;
+}
+
+.fractal-info-list {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 2;
+    padding-left: 25px;
+}
+
+.fractal-info-list li {
+    margin-bottom: 10px;
+}
+
+.fractal-info-list strong {
+    color: #CDC6FF;
+}
+
+.fractal-note {
+    background: rgba(0, 255, 255, 0.135);
+    border-left: 4px solid #00ffff;
+    padding: 15px;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+.fractal-modal-footer {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
+    border-radius: 0 0 15px 15px;
+    text-align: center;
+}
+
+
+.btn-fractal-close {
+    position: relative;
+    background: transparent;
+    color: #E6D9FF;
+    border: 2px solid #9874D3;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+}
+
+.btn-fractal-close::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(152, 116, 255, 0.4), transparent);
+    transition: 0.7s;
+}
+.btn-fractal-close:hover::before {
+    left: 100%;
+}
+
+.btn-fractal-close:hover {
+    border-color: #C8A0FF;
+    color: white;
+    box-shadow: 
+        0 0 30px rgba(200, 160, 255, 0.7),
+        0 0 60px rgba(152, 116, 255, 0.4);
+    transform: translateY(-3px);
+    animation: pulseBorder 3s infinite;
+}
+
+@keyframes pulseBorder {
+    0%, 100% { box-shadow: 0 0 30px rgba(200, 160, 255, 0.7); }
+    50%      { box-shadow: 0 0 50px rgba(200, 160, 255, 1); }
+}
+
+/* =================  FRACTAL FACTS TABLE ================= */
+.fractal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+}
+
+.fractal-table th {
+    background: linear-gradient(90deg, rgba(132, 80, 255, 0.3), rgba(200, 100, 255, 0.2));
+    color: #E6D9FF;
+    padding: 18px 16px;
+    text-align: left;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    border-bottom: 2px solid #9874D3;
+    position: relative;
+    overflow: hidden;
+}
+
+.fractal-table th::before { /* MOVING GLOW UNDER HEADER */
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: 0.7s;
+}
+.fractal-table th:hover::before {
+    left: 100%;
+}
+
+.fractal-table td { /* TABLE ROWS - GLASS CARDS */
+    padding: 18px 16px;
+    background: rgba(30, 20, 60, 0.45);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(152, 112, 255, 0.25);
+    transition: all 0.4s ease;
+}
+
+.fractal-table tr:hover td {
+    background: rgba(60, 40, 100, 0.65);
+    border-color: #B19FFF;
+    box-shadow: 0 0 25px rgba(177, 159, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+.fractal-table td:first-child { /* FIRST COLUMN - BOLD + GLOWIER */
+    color: #D8BFFF;
+    font-weight: 700;
+    font-size: 1.05em;
+    background: rgba(100, 60, 180, 0.3) !important;
+}
+
+.fractal-table td:nth-child(2) { /* SECOND COLUMN */
+    font-family: 'Fira Code', 'Courier New', monospace;
+    color: #A7F3FF;
+    letter-spacing: 0.5px;
+    font-size: 1.3em;
+}
+
+/* ROUNDED CORNERS */
+.fractal-table tr:first-child td:first-child { border-top-left-radius: 12px; }
+.fractal-table tr:first-child td:last-child { border-top-right-radius: 12px; }
+.fractal-table tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+.fractal-table tr:last-child td:last-child { border-bottom-right-radius: 12px; }
+
+/* RESPONSIVE - STACK ON SMALL SCREENS */
+@media (max-width: 700px) {
+    .fractal-table, .fractal-table tbody, .fractal-table tr, .fractal-table td {
+        display: block;
+        width: 100%;
+    }
+    .fractal-table tr {
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    .fractal-table td {
+        border: none;
+        border-bottom: 1px solid rgba(152,112,255,0.3);
+        position: relative;
+        padding-left: 50%;
+    }
+    .fractal-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 16px;
+        width: 45%;
+        font-weight: bold;
+        color: #B19FFF;
+    }
+}
+</style>
+
+<!-- ======================== ABOUT MODAL ======================== -->
+<div id="FractalModal" class="fractal-modal" onclick="closeFractalInfo(event)">
+  <div class="fractal-modal-content" onclick="event.stopPropagation()">
+    <div class="fractal-modal-header">
+      <h2>WHAT IS A FRACTAL?</h2>
+      <button class="fractal-modal-close" onclick="closeFractalInfo(event)">&times;</button>
+    </div>
+    <div class="fractal-modal-body">
+            <div class="fractal-info-section">
+                <p class="fractal-note">
+                    A fractal is a never-ending pattern that repeats at different scales—zoom in, and you’ll keep seeing similar shapes. They’re often generated by simple mathematical rules but produce infinitely complex, self-similar structures. 
+                </p>
+            </div>
+
+            <div class="fractal-info-section">
+                    <h3>Fractal Facts:</h3>
+                    <ul class="fractal-info-list">
+                        <li><strong>Fractals </strong> are geometric figures where each part resembles the whole (self-similarity).</li>
+                        <li>They’re often created by <strong>iterating a function</strong> - repeating a process over and over.</li>
+                        <li>Fractals are found in nature (think<strong> snowflakes</strong> and <strong>broccoli</strong>) and in math!</li>
+                    </ul>
+            </div>
+
+            <table class="fractal-table">
+                <thead>
+                    <tr>
+                        <th>Fractal Type</th>
+                        <th>Formula / Rule</th>
+                        <th>Key Traits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Fractal Type">Mandelbrot Set</td>
+                        <td data-label="Formula">z<sub>n+1</sub> = z<sub>n</sub>² + c<br><small>starting with z₀ = 0</small></td>
+                        <td data-label="Traits">The iconic “bug-shaped” fractal. Maps which complex numbers c produce bounded orbits. Zooming reveals endless detail.</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Fractal Type">Power 3 (Cubic)</td>
+                        <td data-label="Formula">z<sub>n+1</sub> = z<sub>n</sub>³ + c</td>
+                        <td data-label="Traits">Cubic version of Mandelbrot. More lobes, rotational symmetry, and wild spirals.</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Fractal Type">Julia Set</td>
+                        <td data-label="Formula">z<sub>n+1</sub> = z<sub>n</sub>² + c<br><small>c is fixed</small></td>
+                        <td data-label="Traits">Each point in the Mandelbrot set spawns a unique Julia set. Connected or totally disconnected “dust”.</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Fractal Type">Tricorn (Mandelbar)</td>
+                        <td data-label="Formula">z<sub>n+1</sub> = conjugate(z<sub>n</sub>)² + c</td>
+                        <td data-label="Traits">Uses complex conjugate. Mirror-symmetric, three-lobed “tricorn” shape.</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Fractal Type">Burning Ship</td>
+                        <td data-label="Formula">z<sub>n+1</sub> = (|Re(z<sub>n</sub)| + i|Im(z<sub>n</sub)|)² + c</td>
+                        <td data-label="Traits">Absolute values create sharp, flame-like structures rising from the plane.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="fractal-modal-footer">
+            <button class="btn btn-fractal-close" onclick="openFractalControlsInfo(event)">View Controls</button>
+            <button class="btn btn-fractal-close" onclick="closeFractalInfo(event)">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== CONTROLS MODAL ======================== -->
+<div id="FractalControlsModal" class="fractal-modal" onclick="closeFractalControlsInfo(event)">
+  <div class="fractal-modal-content" onclick="event.stopPropagation()">
+    <div class="fractal-modal-header">
+      <h2>FRACTAL CONTROLS</h2>
+      <button class="fractal-modal-close" onclick="closeFractalControlsInfo(event)">&times;</button>
+    </div>
+    <div class="fractal-modal-body">
+            <div class="fractal-info-section">
+                    <ul class="fractal-info-list">
+                        <li><strong>Select</strong> - Use the dropdown menu to view different types of fractals.</li>
+                        <li><strong>Pan</strong> - Drag with your mouse to pan the screen.</li>
+                        <li><strong>Zoom</strong> - Use the zoom buttons to zoom in and out.</li>
+                    </ul>
+            </div>
+        </div>
+        <div class="fractal-modal-footer">
+            <button class="btn btn-fractal-close" onclick="closeFractalControlsInfo(event)">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ======================== MODAL JS SCRIPT ======================== -->
+<script> // MODALS
+function openFractalInfo() {
+  document.getElementById('FractalModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeFractalInfo(event) {
+  event.stopPropagation();
+  document.getElementById('FractalModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+function openFractalControlsInfo() {
+  document.getElementById('FractalControlsModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeFractalControlsInfo(event) {
+  event.stopPropagation();
+  document.getElementById('FractalControlsModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+</script>
+{% endblock %}
