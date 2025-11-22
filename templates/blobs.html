@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Interactive Blob- MK Barriault{% endblock %}
+{% block content %}
+<!-- <h1>BLOBS</h1> -->
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='images/background4.png') }}");
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        padding-top: 70px;
+    }
+</style>
+<div class="JS-page">
+    <div class="JS-controls">
+        <!--<div class="JS-control-section">
+            <h3>Controls</h3>
+            <p></p><button class="btn-small-pulse" id="spawnBlobBtn">Spawn</button>
+            <button class="btn-small-pulse" id="clearBlobBtn">Clear Blobs</button>
+        </div>-->
+
+        <div class="JS-control-section">
+            <p></p><h3>BLOB SETTINGS</h3>
+            <p></p>
+            <p></p><label>Gravity: <span id="gravityValue">30</span></label>
+            <br><input type="range" id="gravitySlider" min="10" max="100" step="1" value="30">
+
+            <br><label>Drip Interval: <span id="dripValue">2000</span> ms</label>
+            <br><input type="range" id="dripSlider" min="1000" max="10000" step="10" value="2000">
+
+            <br><label>Blob Size: <span id="sizeValue">50</span></label>
+            <br><input type="range" id="sizeSlider" min="30" max="70" step="1" value="50">
+
+            <p></p><button class="btn-small-pulse" id="clearBlobBtn">Clear Blobs</button>
+
+            <p></p><button class="btn-rainbow-pulse" id="rainbowToggle">Rainbow Mode</button>
+        </div>
+    </div>
+        <div class="JS-container">
+        <canvas id="JSCanvas"></canvas>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/goo.js') }}"></script>
+{% endblock %}
