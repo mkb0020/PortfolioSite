@@ -1,12 +1,6 @@
 // imageLoader.js  
-
-// imageLoader.js - Smart lazy image loading system
-
-/**
- * ImageLoader - Manages lazy loading and caching of game images
- * Only loads images when needed to improve performance and load times
- */
-export class ImageLoader {
+ //MANAGES LAZY LOADING AND CACHING GAME IMAGES - ONLY LOADS OMAGES AS NEEDED 
+ export class ImageLoader {
     constructor(baseUrl = '/static/') {
         this.baseUrl = baseUrl;
         this.cache = new Map();
@@ -16,23 +10,20 @@ export class ImageLoader {
     }
 
     /**
-     * Load a single image
-     * @param {string} path - Relative path to the image
-     * @returns {Promise<HTMLImageElement>} - Loaded image element
+     * LOAD A SINGLE IMAGE 
+     * @param {string} path - RELATIVE PATH TO IMAGE
+     * @returns {Promise<HTMLImageElement>} - LOADED IMAGE ELEMENT
      */
     async load(path) {
-        // Return cached image if already loaded
-        if (this.cache.has(path)) {
+        if (this.cache.has(path)) { // RETURN CACHED IMAGE IF ALRADY LOADED
             return this.cache.get(path);
         }
 
-        // Return existing promise if already loading
-        if (this.loadingPromises.has(path)) {
+        if (this.loadingPromises.has(path)) { // RETURN EXISTING PROMISE IF ALREADY LOADING
             return this.loadingPromises.get(path);
         }
 
-        // Create new loading promise
-        const loadPromise = new Promise((resolve, reject) => {
+        const loadPromise = new Promise((resolve, reject) => { // CREATE NEW LOADING PROMISE
             const img = new Image();
             
             img.onload = () => {
@@ -59,9 +50,9 @@ export class ImageLoader {
     }
 
     /**
-     * Load multiple images in parallel
-     * @param {string[]} paths - Array of image paths
-     * @returns {Promise<HTMLImageElement[]>} - Array of loaded images
+     *  LOAD MULTIPLE IMAGES IN PARALLEL
+     * @param {string[]} paths - ARRAY OF IMAGE PATHS
+     * @returns {Promise<HTMLImageElement[]>} -  ARRAY OF LOADED IMAGES
      */
     async loadBatch(paths) {
         console.log(`📦 Loading batch of ${paths.length} images...`);
@@ -69,9 +60,9 @@ export class ImageLoader {
     }
 
     /**
-     * Load images with progress callback
-     * @param {string[]} paths - Array of image paths
-     * @param {Function} onProgress - Callback function (loaded, total) => void
+     *  LOAD IMAGES WITH PROGRESS  CALLBACK
+     * @param {string[]} paths -  ARRAY OF IMAGE PATHS
+     * @param {Function} onProgress - CALLBACK FUNCTION (LOADED TOTAL) => VOID
      * @returns {Promise<HTMLImageElement[]>}
      */
     async loadBatchWithProgress(paths, onProgress) {
@@ -91,8 +82,7 @@ export class ImageLoader {
     }
 
     /**
-     * Get cached image (returns null if not loaded)
-     * @param {string} path - Image path
+     * @param {string} path - Image path IMAGE PATH  TO GET CACHED IMAGE (RETURNS NULL IF NOT LOADED)
      * @returns {HTMLImageElement|null}
      */
     get(path) {
@@ -100,8 +90,8 @@ export class ImageLoader {
     }
 
     /**
-     * Check if image is loaded
-     * @param {string} path - Image path
+     * CHECK IF IMAGE IS LOADED
+     * @param {string} path - IMAGE PATH
      * @returns {boolean}
      */
     isLoaded(path) {
@@ -109,8 +99,8 @@ export class ImageLoader {
     }
 
     /**
-     * Check if image is currently loading
-     * @param {string} path - Image path
+     *  CHECK IF IMAGE IS CURRENTLY LOADING
+     * @param {string} path - IMAGE PATH
      * @returns {boolean}
      */
     isLoading(path) {
@@ -118,9 +108,9 @@ export class ImageLoader {
     }
 
     /**
-     * Preload character selection images
-     * Only loads small images for all cats
-     * @param {Array} characters - Array of character configs
+     *  PRELOAD CHARACTER SELECTION IMAGES
+     *  ONLY LOAD SMALL IMAGES FOR ALL CATS
+     * @param {Array} characters - ARRAY OF CHARACTER CONFIGS
      * @returns {Promise<void>}
      */
     async loadCharacterSelectImages(characters) {
@@ -131,9 +121,8 @@ export class ImageLoader {
     }
 
     /**
-     * Load full character sprites for selected character
-     * Loads walk, jump, stand animations
-     * @param {Object} character - Character config
+     *  LOAD FULL CHARACTER SPRITES FOR SELECTED CHARACTER - WALK, JUMP AND STAND
+     * @param {Object} character - CHARACTER CONFIG
      * @returns {Promise<void>}
      */
     async loadCharacterSprites(character) {
@@ -150,21 +139,19 @@ export class ImageLoader {
     }
 
     /**
-     * Load level-specific images
-     * @param {Object} level - Level config
+     * LOAD LEVEL SPECIFIC IMAGES
+     * @param {Object} level -  LEVEL CONFIG
      * @returns {Promise<void>}
      */
     async loadLevelImages(level) {
         console.log(`🎮 Loading Level ${level.id} images...`);
         const paths = [level.background];
 
-        // Load cup sprite if level has cups
-        if (level.cups && level.cups.enabled) {
+        if (level.cups && level.cups.enabled) { // LOAD CUP SPRITE IF LEVEL HAS CUPS
             paths.push('images/CATastrophe/Enemies/Cup.png');
         }
 
-        // Load enemy sprites if level has enemies
-        if (level.enemies && level.enemies.type) {
+        if (level.enemies && level.enemies.type) { // LOAD ENEMY SPRITES IF LEVEL HAS ENEMIES
             paths.push(level.enemies.sprite);
         }
 
@@ -173,8 +160,8 @@ export class ImageLoader {
     }
 
     /**
-     * Load boss battle images
-     * @param {Object} boss - Boss config
+     * LOAD BOSS BATTLE IMAGES
+     * @param {Object} boss - BOSS CONFIG
      * @returns {Promise<void>}
      */
     async loadBossImages(boss) {
@@ -188,7 +175,7 @@ export class ImageLoader {
     }
 
     /**
-     * Load menu/UI images
+     * LOAD MENU / UI IMAGES
      * @returns {Promise<void>}
      */
     async loadMenuImages() {
@@ -202,8 +189,8 @@ export class ImageLoader {
     }
 
     /**
-     * Clear specific images from cache (for memory management)
-     * @param {string[]} paths - Array of paths to clear
+     * CLEAR SPECIFIC IMAGES FROM CACHE
+     * @param {string[]} paths - ARRAAY OF PATHS TO CLEAR
      */
     unload(paths) {
         paths.forEach(path => {
@@ -215,7 +202,7 @@ export class ImageLoader {
     }
 
     /**
-     * Clear all images from cache
+     *  CLEAR AL IMAGES FROM CACHE
      */
     clearCache() {
         console.log('🗑️ Clearing image cache...');
@@ -226,8 +213,8 @@ export class ImageLoader {
     }
 
     /**
-     * Get cache statistics
-     * @returns {Object} Cache stats
+     *  GET CACHE CHARACTERISTICS
+     * @returns {Object}  CACHE STATS
      */
     getStats() {
         return {
@@ -240,12 +227,12 @@ export class ImageLoader {
 }
 
 /**
- * Create and export a singleton instance
+ * CREATE AND EXPORT A SINGLETON INSTANCE
  */
 export const imageLoader = new ImageLoader();
 
 /**
- * Helper function to create image element from cached image
+ *  HELPER FUNCTION TO CREATE IMAGE ELEMENT FROM CACHED IMAGE
  * @param {string} path - Image path
  * @returns {HTMLImageElement|null}
  */
@@ -254,8 +241,8 @@ export function getCachedImage(path) {
 }
 
 /**
- * Preload sequence for game start
- * Only loads menu images initially
+ * PRELOAD SEQUENCE FOR GAME START
+ *  ONLY LOAD MENU IMAGE INSTANTLY
  */
 export async function preloadInitialAssets() {
     console.log('🚀 Preloading initial assets...');
