@@ -131,5 +131,4 @@ export const CHARACTERS = {
       stand: 'DougStand.png'
     }
   },
-  // ... other cats
 };
