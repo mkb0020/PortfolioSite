@@ -14,9 +14,7 @@ function resizeRendererToContainer() {
     uniforms.u_resolution.value.set(width, height);
 }
 
-//
-// FRACTAL FORMULAS
-//
+// ======================== FRACTAL FORMULAS ========================
 const fractalShaders = {
     mandelbrot: `
         z = vec2(
@@ -66,9 +64,7 @@ const fractalShaders = {
     `
 };
 
-//
-// FULL SHADER BUILDER
-//
+// ======================== SHADER BUILDER ========================
 function buildFragmentShader() {
     return `
         uniform float u_time;
@@ -105,9 +101,6 @@ function buildFragmentShader() {
     `;
 }
 
-//
-// INIT
-//
 function init() {
     container = document.getElementById("fractal-canvas");
     container.style.cursor = "grab";
@@ -153,9 +146,7 @@ function animate(t) {
 init();
 animate();
 
-//
-// FRACTAL DROPDOWN
-//
+// ======================== FRACTAL DROPDOWN ========================
 const fractalSelect = document.getElementById("fractalSelect");
 fractalSelect.addEventListener("change", e => {
     currentFractal = e.target.value;
@@ -165,9 +156,7 @@ fractalSelect.addEventListener("change", e => {
 
 window.addEventListener("resize", resizeRendererToContainer);
 
-//
-// ZOOM CONTROLS
-//
+// ======================== ZOOM CONTROLS ========================
 let zoomLevel = 1.0;
 const zoomFactor = 1.5;
 
@@ -187,9 +176,7 @@ document.getElementById("resetZoomBtn").addEventListener("click", () => {
     uniforms.u_offset.value.set(-0.5, 0);
 });
 
-//
-// PAN / DRAG
-//
+// ======================== PAN / DRAG ========================
 let isDragging = false;
 let lastMouse = { x: 0, y: 0 };
 
