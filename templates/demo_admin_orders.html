@@ -1,0 +1,217 @@
+<!-- templates/demo_admin_orders.html -->
+{% extends "base.html" %}
+{% block title %}Demo Orders - Admin{% endblock %}
+{% block content %}
+<div class="demo-banner"> <!-- DEMO MODE BANNER -->
+    <div class="container text-center">
+            <div>
+                <h3>!! INTERACTIVE DEMO MODE !!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="admin-page-title">Customer Orders ({{ incomplete_count }} Incomplete) - Demo</h1>
+        <div>
+            <a href="{{ url_for('demo_admin_dashboard') }}" class="btn btn-back">← Back to Demo Dashboard</a>
+        </div>
+    </div>
+
+    <div class="about-section mb-4"> <!-- SEARCH BOX -->
+        <div class="order-search-box">
+            <h5 class="search-title">🔍 Search Orders (Try it!)</h5>
+            <form method="POST" action="{{ url_for('demo_admin_orders_search') }}" class="search-form">
+                <div class="row align-items-end">
+                    <div class="col-md-9">
+                        <label for="search_term" class="form-label search-label">Search by Order Number or Customer Email</label>
+                        <input type="text" 
+                               class="form-control search-input" 
+                               id="search_term" 
+                               name="search_term" 
+                               placeholder="Try: 'ORD-202' or 'sarah'"
+                               value="{{ search_term if search_term else '' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-search w-100">Search</button>
+                        {% if search_term %}
+                        <a href="{{ url_for('demo_admin_orders') }}" class="btn btn-clear-search w-100 mt-2">Clear Search</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+            {% if search_term %}
+            <p class="search-results-text">Showing results for: <strong>{{ search_term }}</strong></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="about-section mb-4">  <!-- FILTER -->
+        <div class="order-filter-box">
+            <h5 class="filter-title">📊 Filter by Status (click a status below to try it!) </h5>
+            <div class="btn-group" role="group">
+                <a href="{{ url_for('demo_admin_orders') }}" 
+                class="btn btn-sm {% if not filter_status %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    All Orders
+                </a>
+                <a href="{{ url_for('demo_admin_orders', filter_status='pending') }}" 
+                class="btn btn-sm {% if filter_status == 'pending' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Pending
+                </a>
+                <a href="{{ url_for('demo_admin_orders', filter_status='processing') }}" 
+                class="btn btn-sm {% if filter_status == 'processing' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Processing
+                </a>
+                <a href="{{ url_for('demo_admin_orders', filter_status='shipped') }}" 
+                class="btn btn-sm {% if filter_status == 'shipped' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Shipped
+                </a>
+                <a href="{{ url_for('demo_admin_orders', filter_status='completed') }}" 
+                class="btn btn-sm {% if filter_status == 'completed' %}btn-filter-active{% else %}btn-filter{% endif %}">
+                    Completed
+                </a>
+            </div>
+            {% if filter_status %}
+            <p class="filter-results-text">Showing: <strong>{{ filter_status }}</strong> orders</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if orders %}
+    <div class="about-section">
+        {% for order in orders %}
+        <div class="card mb-4 order-card-real">
+            <div class="card-header order-card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h4 class="order-title"> Order #{{ order.order_number }}  </h4>                      
+                    </div>
+                    <div class="col-md-6 text-end">  <span class="order-status-text" ><strong>Status: </strong></span><span class="badge badge-order-{{ order.order_status }}">{{ order.order_status }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="section-title">
+                            <span class="order-status-text"> 
+                                <span class="order-status-text" ><strong>Order Date: </strong></span><span class="badge-Order-Date">{{ order.order_date.strftime('%m-%d-%Y') }}</span>
+                            </span></h5>
+                        <h5 class="section-title">Customer Information</h5>
+                        <p class="info-text2">
+                            <strong>Name:</strong> {{ order.customer_name }}
+                        </p>
+                        <p class="info-text2">
+                            <strong>Email:</strong> 
+                            <a href="mailto:{{ order.customer_email }}" class="email-link">
+                                {{ order.customer_email }}
+                            </a>
+                        </p>
+                        <p class="info-text2">
+                            <strong>Phone:</strong> {{ order.customer_phone }}
+                        </p>
+                        <h5 class="section-title">Order Items</h5>
+                        <ul class="order-items-list">
+                            {% for item in order.order_items %}
+                            <li>{{ item.name }} - ${{ "%.2f"|format(item.price) }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="order-total-box">
+                            <h4 class="total-amount">
+                                <strong>Total: ${{ "%.2f"|format(order.total_amount) }} </strong>
+                            </h4>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6"> 
+                        <h5 class="section-title">Shipping Address</h5>
+                            <p class="info-text address-text">
+                                {{ order.address }}<br>
+                                {{ order.city }}, {{ order.state }} {{ order.zip_code }}
+                            </p>
+
+                            <div class="tracking-section"> <!-- TRACKING INFORMATION -->
+                                <h5 class="section-title">📦 Tracking Information</h5>
+                                {% if order.tracking_number %}
+                                <div class="tracking-display">
+                                    <p class="info-text">
+                                        <strong>Tracking #:</strong> 
+                                        <span class="tracking-number">{{ order.tracking_number }}</span>
+                                    </p>
+                                    {% if order.shipping_carrier %}
+                                    <p class="info-text">
+                                        <strong>Carrier:</strong> {{ order.shipping_carrier }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                
+                                <form method="POST" action="{{ url_for('demo_update_tracking', order_id=order.order_id) }}" class="tracking-form">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <input type="text" 
+                                                class="form-control form-control-sm" 
+                                                name="tracking_number" 
+                                                placeholder="Try adding a tracking number!"
+                                                value="{{ order.tracking_number if order.tracking_number else '' }}">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <select class="form-control form-control-sm" name="carrier">
+                                                <option value="">Select carrier</option>
+                                                <option value="USPS" {% if order.shipping_carrier == 'USPS' %}selected{% endif %}>USPS</option>
+                                                <option value="FedEx" {% if order.shipping_carrier == 'FedEx' %}selected{% endif %}>FedEx</option>
+                                                <option value="UPS" {% if order.shipping_carrier == 'UPS' %}selected{% endif %}>UPS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-tracking-update mt-2">
+                                        {% if order.tracking_number %}Update{% else %}Add{% endif %} Tracking
+                                    </button>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer order-card-footer"> 
+                <h6 class="update-status-title">Update Status (Click a status below to update this order):</h6>
+                <div class="btn-group btn-group-sm" role="group">
+                    {% if order.order_status != 'pending' %}
+                    <form method="POST" action="{{ url_for('demo_update_order_status', order_id=order.order_id, status='pending') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-status-pending">PENDING</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'processing' %}
+                    <form method="POST" action="{{ url_for('demo_update_order_status', order_id=order.order_id, status='processing') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-status-processing">PROCESSING</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'shipped' %}
+                    <form method="POST" action="{{ url_for('demo_update_order_status', order_id=order.order_id, status='shipped') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-status-shipped">SHIPPED</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if order.order_status != 'completed' %}
+                    <form method="POST" action="{{ url_for('demo_update_order_status', order_id=order.order_id, status='completed') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-status-completed">COMPLETED</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>{% if search_term %}No orders found!{% else %}No orders in demo!{% endif %}</h4>
+        <p>{% if search_term %}Try a different search term like "sarah" or "ORD-202".{% else %}Something went wrong with the demo data.{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
