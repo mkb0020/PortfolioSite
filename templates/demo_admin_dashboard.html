@@ -26,19 +26,19 @@
             <div class="holographic-card">
                     <h4>📧 Messages</h4>
                     <h2>Unread: {{ stats.unread_contacts }}</h2>
-                    <a href="{{ url_for('demo_admin_contacts') }}" class="btn btn-demo-info">Try It Out!</a>
+                    <a href="{{ url_for('demo_admin_contacts') }}" class="btn btn-demo-info">View Messages</a>
             </div>
 
             <div class= "holographic-card">
                     <h4>💡 Suggestions Box</h4>
                     <h2>Suggestions: {{ stats.total_suggestions }}</h2>
-                    <a href="{{ url_for('demo_admin_suggestions') }}" class="btn btn-demo-info">Try It Out!</a>
+                    <a href="{{ url_for('demo_admin_suggestions') }}" class="btn btn-demo-info">View Suggestions</a>
             </div>
        
             <div class= "holographic-card">
                     <h4>🛒 Total Orders</h4>
                     <h2>Pending Orders: {{ stats.pending_orders }}</h2>
-                    <a href="{{ url_for('demo_admin_orders') }}" class="btn btn-demo-info">Try It Out!</a>
+                    <a href="{{ url_for('demo_admin_orders') }}" class="btn btn-demo-info">View Orders</a>
                 </div>
             </div>
         </div>
