@@ -1,0 +1,61 @@
+<!-- templates/demo_admin_dashboard.html -->
+{% extends "base.html" %}
+{% block title %}Demo Admin Dashboard{% endblock %}
+{% block content %}
+
+<!-- DEMO MODE BANNER -->
+<div class="demo-banner text-center">
+    <div class="container text-center">
+            <div>
+                <h3>!! INTERACTIVE DEMO MODE !!</h3>
+                <p><br><button class="btn btn-demo-info" data-modal="DemoInfoModal">Interactive Demo Guide</button>
+                <a href="{{ url_for('demo_reset') }}" class="btn btn-demo-info">Reset Demo</a>
+            </p>
+            </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Admin Dashboard (Demo)</h1>
+        <a href="/" class="btn btn-back">← Back to Portfolio</a>
+    </div>
+
+
+        <div class= "holographic-grid">
+            <div class="holographic-card">
+                    <h4>📧 Messages</h4>
+                    <h2>Unread: {{ stats.unread_contacts }}</h2>
+                    <a href="{{ url_for('demo_admin_contacts') }}" class="btn btn-demo-info">Try It Out!</a>
+            </div>
+
+            <div class= "holographic-card">
+                    <h4>💡 Suggestions Box</h4>
+                    <h2>Suggestions: {{ stats.total_suggestions }}</h2>
+                    <a href="{{ url_for('demo_admin_suggestions') }}" class="btn btn-demo-info">Try It Out!</a>
+            </div>
+       
+            <div class= "holographic-card">
+                    <h4>🛒 Total Orders</h4>
+                    <h2>Pending Orders: {{ stats.pending_orders }}</h2>
+                    <a href="{{ url_for('demo_admin_orders') }}" class="btn btn-demo-info">Try It Out!</a>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+
+
+<script type="module">
+    import { openModal } from "{{ url_for('static', filename='js/modal.js') }}";
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.modal;
+                openModal(key);
+            });
+        });
+</script>
+
+{% endblock %}
