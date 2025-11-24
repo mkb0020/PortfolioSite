@@ -1,6 +1,5 @@
 
 <!-- templates/admin_requests.html -->
- <!-- FOR ME TO READ SUBMISSIONS TO THE APP / WEBSITE REQUEST PAGE -->
 {% extends "base.html" %}
 {% block title %}App/Website Requests - Admin{% endblock %}
 {% block content %}
@@ -50,23 +49,26 @@
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h4 class="order-title">
-                            🚀 {{ req.request_type }}
+                            {{ req.request_type }} Request
+                        </h4>
+                    </div>
+                    <div class="col-md-4 text-end"> <span class="order-status-text" ><strong>Status: </strong></span>
                             <span class="badge badge-request-status-{{ req.status }}">
                                 {{ req.status|replace('_', ' ')|title }}
                             </span>
-                        </h4>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <span class="order-date">
-                            {{ req.submitted_at.strftime('%m-%d-%Y') }}
-                        </span>
-                    </div>
+
+                    </div></div> 
                 </div>
             </div>
             
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
+                        <h5 class="section-title">Date Submitted: 
+                            <span class="badge-Order-Date">
+                                {{ req.submitted_at.strftime('%m-%d-%Y') }}
+                            </span> </h5>
+             
                         <h5 class="section-title">Contact Information</h5>
                         <p class="info-text">
                             <strong>Name:</strong> {{ req.name }}
@@ -170,7 +172,7 @@
                     
                     <div>
                         <form method="POST" action="{{ url_for('archive_app_request', request_id=req.request_id) }}" style="display: inline;" onsubmit="return confirm('Archive this request? It will be hidden but remain in the database.');">
-                            <button type="submit" class="btn btn-sm btn-archive-request" title="Archive this request">
+                            <button type="submit" class="btn btn-back secondary" title="Archive this request">
                                 📦 Archive
                             </button>
                         </form>
@@ -187,81 +189,5 @@
     </div>
     {% endif %}
 </div>
-<!-- ======================== STYLING ======================== -->
-<style>
-.request-card-new {
-    border-left: 4px solid #E0B0FF;
-}
 
-.request-card-contacted {
-    border-left: 4px solid #9874D3;
-}
-
-.request-card-in_progress {
-    border-left: 4px solid #A55AFF;
-}
-
-.request-card-completed {
-    border-left: 4px solid #28a745;
-}
-
-.badge-request-status-new {
-    background: #E0B0FF;
-    color: #1a0f2e;
-}
-
-.badge-request-status-contacted {
-    background: #9874D3;
-    color: white;
-}
-
-.badge-request-status-in_progress {
-    background: #A55AFF;
-    color: white;
-}
-
-.badge-request-status-completed {
-    background: #28a745;
-    color: white;
-}
-
-.btn-status-new {
-    background: #E0B0FF;
-    color: #1a0f2e;
-    border: none;
-}
-
-.btn-status-contacted {
-    background: #9874D3;
-    color: white;
-    border: none;
-}
-
-.btn-status-in-progress {
-    background: #A55AFF;
-    color: white;
-    border: none;
-}
-
-.btn-status-completed {
-    background: #28a745;
-    color: white;
-    border: none;
-}
-
-.request-details-box {
-    background: rgba(152, 116, 211, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 3px solid #9874D3;
-    margin-top: 15px;
-}
-
-.request-details {
-    color: white;
-    line-height: 1.8;
-    white-space: pre-wrap;
-    margin: 0;
-}
-</style>
 {% endblock %}
