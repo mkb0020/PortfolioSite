@@ -2,89 +2,40 @@
 {% extends "base.html" %}
 {% block title %}Contact - MK Barriault{% endblock %}
 {% block content %}
-<h1>Get in Touch</h1>
+
 {% if success %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Thank you for your message! I'll get back to you as soon as possible.
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div class="neon-alert success">
+        <span> Thank you for your message! I'll get back to you as soon as possible. </span>
+        <button type="button" class="alert-close" onclick="this.parentElement.remove()">×</button>
     </div>
 {% endif %}
 
+<div class="contact-grid">
+    <div class="cyber-card form-card">
+        <div class="card-glow"></div>
+            <div class="info-content"><h2>Contact Me</h2></div>
+           
+                <form method="POST">
+                    <div class="input-glow">  <!-- NAME OF HUMAN SUBMITTING FORM -->
+                        <label for="name" class="neon-label">Name</label>
+                        <input type="text" class="neon-input" id="HumanName" name="HumanName" required>
+                    </div><p></p>
 
-<!--
-<div class="row mt-5">
-    <div class="col-md-6">
-        <div class="contact-info">
-            <h3>Contact Information</h3>
-            <p><strong>Email:</strong> your.email@example.com</p>
-            <p><strong>Phone:</strong> (XXX) XXX-XXXX</p>
-            <p><strong>Location:</strong> Your City, State</p>
-            <p><strong>Social Media:</strong> 
-                <a href="#">Instagram</a> | 
-                <a href="#">LinkedIn</a> | 
-                <a href="#">GitHub</a>
-            </p>
-        </div>
-    </div>
--->
+                    <p><div class="input-glow"> <!-- EMAIL ADDRESS OF HUMAN SUBMITTING FORM -->
+                        <label for="email" class="neon-label">Email</label>
+                        <input type="email" class="neon-input"" id="EmailAddy" name="EmailAddy" required>
+                    </div></p><p></p>
 
-<div class="row mt-3">
-    <div class="col-md-6">
-        <div class="contact-info">
-            <h5> Give me a shout if you would like to: 
-                <br><br> 💎 Purchase Art Prints or Jewelry 
-                <br> 💻 Request a Desktop Application or Website 
-                <br> ✨ Or have other inquiries 
-                <br><br> I'd love to hear from you!</h5>
+                    <p><div class="input-glow">
+                        <label for="message" class="neon-label">Message</label>
+                        <textarea class="neon-input"l" id="message" name="message" required placeholder=""></textarea>
+                    </div></p><p></p>
 
-        </div>
-    </div>
-
-
-    <div class="col-md-6">
-        <div class="contact-info">
-            <h3> 📧 Contact Me:</h3>
-            <form method="POST">
-                <div class="form-group">  <!-- NAME OF HUMAN SUBMITTING FORM -->
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="HumanName" name="HumanName" required>
-                </div>
-                <div class="form-group"> <!-- EMAIL ADDRESS OF HUMAN SUBMITTING FORM -->
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="EmailAddy" name="EmailAddy" required>
-                </div>
-                <div class="form-group"> <!-- REQUEST -->
-                    <label for="inquiry_type" class="form-label">I would like to:</label>
-                    <select class="form-control" id="Request" name="Request" required onchange="updateFormFields()">
-                        <option value="">Select an option</option>
-                        <option value="Purchase Art / Jewelry">Purchase Art / Jewelry</option>
-                        <option value="Request a Desktop Application or Website">Request a Desktop Application or Website</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <<div class="form-group" id="product-section" style="display: none;"> / CONDITIONAL FIELD - PRODUCT SELECTION 
-                    <label for="product_selection" class="form-label">For Purchases, please select:</label>
-                    <select class="form-control" id="ProductRequest" name="ProductRequest">
-                        <option value="">Select a product</option>
-                        <option value="Print">Art Print</option>
-                        <option value="Jewelry">Jewelry</option>
-                        <option value="Custom Piece">Custom Piece</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="app-section" style="display: none;"> /  CONDITIONAL FIELD - APP REQUIREMENTS 
-                    <label for="AppRequest" class="form-label">Please provide a brief description of the required functionality:</label>
-                    <textarea class="form-control" id="AppRequest" name="AppRequest" placeholder="Describe what you'd like your application to do / your dream website..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" required placeholder="Tell me more about your inquiry..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </form>
-        </div>
+                    <p style="text-align: center; font-size: 2.0rem">
+                    <button type="submit" class="btn pulse-button">SEND</button>
+                    </p>
+                </form>
+             
     </div>
 </div>
 
