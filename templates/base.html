@@ -1,109 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- ======================== CIRCUIT BOARD BG ======================== -->
+    {% if request.endpoint not in ['manifold', 'd20', 'blobs', 'test2', 'CATastrophe', 'circuitboard', 'fractals'] %}
+   <div id="circuit-container"> -- CIRCUIT BOARD BG --
+    </div>
+    {% endif %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if request.endpoint == 'about' or request.endpoint == 'index' %}  
+    <style>
+        /* ONLY apply slime-flash-fix styles on the about/home page */
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Solid slime color background ONLY on the slime page */
+        html, body {
+            background: #735d9a !important;
+        }
+
+        /* Hide everything until slime canvas is ready */
+        body:not(.slime-ready) > *:not(#slime-overlay):not(script):not(style):not(link):not(meta) {
+            opacity: 0 !important;
+        }
+
+
+        /* Slime overlay styles — safe for all pages */
+        #slime-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            background: #735d9a !important;
+            pointer-events: auto;
+            transition: opacity 0.9s ease-out;
+        }
+
+        #slime-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #slime-three {
+            background: transparent !important;
+            display: block;
+        }
+    </style>
+    {% endif %}
+    <!--<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>-->
     <title>{% block title %}MK Barriault - Portfolio{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drip.css') }}">
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"> <!-- TOP MENU -->
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/">About</a></li> <!-- HOME PAGE -->
-        <li class="nav-item"><a class="nav-link" href="/resume">Resume</a></li> <!-- RESUME PAGE -->
-        <li class="nav-item"><a class="nav-link" href="/coding">Coding Portfolio</a></li> <!-- CODING PORTFOLIO PAGE -->
-
-        <li class="nav-item dropdown"> <!-- DROP DOWN WITH ART AND JEWELRY -->
-          <a class="nav-link dropdown-toggle" href="#" id="artDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Art
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="artDropdown">
-            <li><a class="dropdown-item" href="/art">Art Prints</a></li>
-            <li><a class="dropdown-item" href="/jewelry">Jewelry Designs</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/partnerships">Wholesale & Partnerships</a></li>
-          </ul>
-        </li>
-
-
-        <li class="nav-item"><a class="nav-link" href="/guestbook">Guest Book</a></li>
-
-        <li class="nav-item dropdown"> <!-- DROP DOWN WITH CONTACT ME AND SUGGESTIONS BOX-->
-          <a class="nav-link dropdown-toggle" href="#" id="contactDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Contact
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="contactDropdown"> 
-            <li><a class="dropdown-item" href="/contact">Contact Me</a></li>
-            <li><a class="dropdown-item" href="/suggestions">Suggestions Box</a></li>
-          </ul>
-        </li>
-
-
-        <li class="nav-item"><a class="nav-link" href="/cart">🛒 Cart</a></li> <!-- SHOPPING CART -->
-
-
-
-      </ul>
-      <!-- SOCIALS -->
-      <div class="social-links d-flex gap-3"> <!-- LINKEDIN -->
-        <a href="https://www.linkedin.com/in/mkb0020/" target="_blank" rel="noopener noreferrer" class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-          </svg>
+<!-- ======================== STICKY NAVBAR======================== -->
+<nav class="navbar-modern" id="stickyNav"> 
+    <div class="navbar-container">
+        <a href="/" class="nav-icon-link" title="Home"> <!-- HOME ICON -->
+            <img src="{{ url_for('static', filename='images/home.png') }}" alt="Home" class="nav-icon">
         </a>
-        <a href="https://github.com/mkb0020" target="_blank" rel="noopener noreferrer" class="text-white"> <!-- GITHUB -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-        </a>
-        <!-- <a href="https://www.fiverr.com/s/Q711Pre" target="_blank" rel="noopener noreferrer" class="text-white"> -- FIVERR -
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.004 15.588a.995.995 0 1 0 .002-1.99.995.995 0 0 0-.002 1.99zm-.996-3.705h-.85c-.546 0-.84.41-.84 1.092v1.973h-.916v-3.065h.915v.468c.213-.34.578-.545 1.027-.545.134 0 .249.012.348.033zm-3.857 2.43h-2.111c.04.498.396.797.932.797.341 0 .663-.113.899-.334l.466.619a2.348 2.348 0 0 1-1.47.496c-1.178 0-1.93-.776-1.93-1.928 0-1.129.738-1.941 1.858-1.941 1.092 0 1.815.812 1.815 1.935 0 .12-.019.267-.032.356h-.427zm-2.111-.724h1.315c-.027-.466-.308-.773-.693-.773s-.637.307-.693.773h.071zm-2.144-1.545h-.9v2.138c0 .443-.217.656-.608.656a.81.81 0 0 1-.588-.245l-.394.718c.249.227.606.357.992.357.784 0 1.498-.353 1.498-1.427v-2.197zm-.963-1.222a.625.625 0 1 1 0-1.25.625.625 0 0 1 0 1.25zm-1.706 3.214l-.397-.718a1.498 1.498 0 0 1-.915.296c-.699 0-1.073-.383-1.073-.896 0-.542.39-.878 1.313-.878h.673v-.164c0-.436-.27-.666-.766-.666-.37 0-.777.132-1.073.351l-.393-.684c.443-.313 1.022-.486 1.627-.486 1.027 0 1.64.485 1.64 1.486v2.36h-.916v-.301h-.72zm-.673-1.602c-.545 0-.73.177-.73.479 0 .269.216.432.59.432.304 0 .606-.117.813-.317v-.594zM6.863 8.7h1.697v5.85H6.863zm-2.97 4.936a2.953 2.953 0 1 1-.001-5.905 2.953 2.953 0 0 1 .001 5.905z"/>
-          </svg>
-        </a> -->
-        <a href="https://www.youtube.com/@mkb0020" target="_blank" rel="noopener noreferrer" class="text-white"><!-- YOUTUBE -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-          </svg>
-        </a>
-      </div>
+
+        <div class="nav-right-icons"><!-- RIGHT SIDE ICONS -->
+            <a href="#" class="nav-icon-link" id="helpIcon" title="Help" onclick="openAboutSiteModal(); return false;"> <!-- RIGHT SIDE ICONS -->
+                <img src="{{ url_for('static', filename='images/help.png') }}" alt="Help" class="nav-icon">
+            </a>
+
+            <a href="/cart" class="nav-icon-link" title="Shopping Cart"> <!-- CART ICON -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+            </a>
+
+            <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()"> <!-- HAMBURGER MENU -->
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </div>
-  </div>
 </nav>
+<!-- ======================== DROPDOWN MENU ======================== -->
+<div class="mega-menu" id="megaMenu"> 
+    <div class="mega-menu-content">
+        <div class="menu-header"> <!-- HEADER ROW -->
+            <h3>Explore</h3>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/mkb0020/" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/mkb0020" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <!--<a href="https://www.fiverr.com/s/Q711Pre" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M23.004 15.588a.995.995 0 1 0 .002-1.99.995.995 0 0 0-.002 1.99zm-.996-3.705h-.85c-.546 0-.84.41-.84 1.092v1.973h-.916v-3.065h.915v.468c.213-.34.578-.545 1.027-.545.134 0 .249.012.348.033zm-3.857 2.43h-2.111c.04.498.396.797.932.797.341 0 .663-.113.899-.334l.466.619a2.348 2.348 0 0 1-1.47.496c-1.178 0-1.93-.776-1.93-1.928 0-1.129.738-1.941 1.858-1.941 1.092 0 1.815.812 1.815 1.935 0 .12-.019.267-.032.356h-.427zm-2.111-.724h1.315c-.027-.466-.308-.773-.693-.773s-.637.307-.693.773h.071zm-2.144-1.545h-.9v2.138c0 .443-.217.656-.608.656a.81.81 0 0 1-.588-.245l-.394.718c.249.227.606.357.992.357.784 0 1.498-.353 1.498-1.427v-2.197zm-.963-1.222a.625.625 0 1 1 0-1.25.625.625 0 0 1 0 1.25zm-1.706 3.214l-.397-.718a1.498 1.498 0 0 1-.915.296c-.699 0-1.073-.383-1.073-.896 0-.542.39-.878 1.313-.878h.673v-.164c0-.436-.27-.666-.766-.666-.37 0-.777.132-1.073.351l-.393-.684c.443-.313 1.022-.486 1.627-.486 1.027 0 1.64.485 1.64 1.486v2.36h-.916v-.301h-.72zm-.673-1.602c-.545 0-.73.177-.73.479 0 .269.216.432.59.432.304 0 .606-.117.813-.317v-.594zM6.863 8.7h1.697v5.85H6.863zm-2.97 4.936a2.953 2.953 0 1 1-.001-5.905 2.953 2.953 0 0 1 .001 5.905z"/>
+                    </svg>
+                </a> -->
+                <a href="https://www.youtube.com/@mkb0020" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
 
+        <div class="menu-sections"> <!-- MENU SECTIONS -->
+            <div class="menu-section"> <!-- INFO SECTION -->
+                <button class="section-toggle" onclick="toggleSection('infoSection')">
+                    <span>About</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="section-content" id="infoSection">
+                    <a href="/" onclick="closeMenu()">About</a>
+                    <a href="/resume" onclick="closeMenu()">Resume</a>
+                    <!--<a href="https://www.youtube.com/@mkb0020" target="_blank" rel="noopener noreferrer">Watch Video</a>-->
+                </div>
+            </div>
 
-<div class="container"> <!-- MAIN CONTENT -->
-    {% block content %}{% endblock %}
+            <div class="menu-section"> <!-- PORTFOLIO SECTION -->
+                <button class="section-toggle" onclick="toggleSection('portfolioSection')">
+                    <span>Portfolio</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="section-content" id="portfolioSection">
+                    <a href="/coding" onclick="closeMenu()">Projects</a>
+                    <a href="https://www.youtube.com/@mkb0020" target="_blank" rel="noopener noreferrer">Project Demos</a>
+                </div>
+            </div>
+
+            <div class="menu-section"> <!-- INTERACTIVE EXPERIENCES SECTION -->
+                <button class="section-toggle" onclick="toggleSection('interactiveSection')">
+                    <span>Interactive Experiences</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="section-content" id="interactiveSection">
+                    <a href="/guestbook" onclick="closeMenu()">Post a Comment on my Guestbook</a>
+                    <a href="https://mkbarriault.github.io/CATastrophe2/" target="_blank" rel="noopener noreferrer"></a>Fractal Visualizer</a>
+                    <!--<a href="/CATastrophe" onclick="closeMenu()">Play CATastrophe</a>-->
+                    <a href="/jewelry" onclick="closeMenu()">E-Commerce Shopping Experience</a>
+                    <a href="/demo/admin" onclick="closeMenu()">Interactive Demo - Admin Dashboard</a>
+                    <a href="https://mkbarriault.github.io/CalabiYau/" target="_blank" rel="noopener noreferrer"></a>Calabi-Yau Manifold</a>
+                    <!-- <a href="/manifold" onclick="closeMenu()">Calabi-Yau Manifold</a> -->
+                    <a href="https://mkbarriault.github.io/Fractals/" target="_blank" rel="noopener noreferrer"></a>Fractal Visualizer</a>
+                    <!--<a href="/fractals" onclick="closeMenu()">Fractal Visualizer</a> -->
+                    <a href="https://mkbarriault.github.io/Blobs/" target="_blank" rel="noopener noreferrer"></a>Play with Blobs</a>
+                    <!--<a href="/blobs" onclick="closeMenu()">Play with Blobs</a> -->
+                    <a href="https://mkbarriault.github.io/D20/" target="_blank" rel="noopener noreferrer"></a>Roll for Initiative</a>
+                    <!--<a href="/d20" onclick="closeMenu()">Roll for Initiative</a> -->
+                    <a href="/octoMORPH" onclick="closeMenu()">Play octoMORPH <span style="opacity: 0.5;">(Coming Soon)</span></a>
+                    <a href="/CatCafe" onclick="closeMenu()">Shrodinger's Cat Cafe <span style="opacity: 0.5;">(Coming Soon)</span></a>
+                </div>
+            </div>
+
+            <div class="menu-section"> <!-- CONNECT AND COLLAB SECTION -->
+                <button class="section-toggle" onclick="toggleSection('connectSection')">
+                    <span>Connect and Collab</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="section-content" id="connectSection">
+                    <a href="/contact" onclick="closeMenu()">Send me a Message</a>
+                    <!--<a href="/suggestions" onclick="closeMenu()">Suggestions Box</a>-->
+                    <a href="/request" onclick="closeMenu()">Request a Website or App</a>
+                    <!--<a href="/partnerships" onclick="closeMenu()">Partner with Me</a>-->
+                </div>
+            </div>
+
+            <div class="menu-section"> <!-- ADMIN SECTION -->
+                <a href="/admin/login" class="admin-link" onclick="closeMenu()">
+                    <span>🔐 Admin</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- ======================== HELP BUTTON ======================== -->
+<div id="aboutSiteModal" class="about-site-modal" onclick="closeAboutSiteModal(event)">
+    <div class="about-site-modal-content" onclick="event.stopPropagation()">
+        <span class="about-site-modal-close" onclick="closeAboutSiteModal()">&times;</span>
+        <h2>About This Site</h2>
+        <div class="about-site-body">
+            <p><strong>Placeholder content - customize this later!</strong></p>
+            <p>This portfolio site showcases my work as a developer, designer, and creator. Here you'll find:</p>
+            <ul>
+                <li>My coding projects and technical portfolio</li>
+                <li>Interactive experiences and demos</li>
+                <li>E-commerce shopping features</li>
+                <li>Ways to connect and collaborate</li>
+            </ul>
+            <p>Feel free to explore and reach out if you have any questions!</p>
+        </div>
+    </div>
+</div>
 
-<footer class="bg-dark text-white text-center py-4 mt-5"> <!-- FOOTER -->
+<!-- ======================== MAIN CONTENT  ======================== -->
+<div class="main-content"> 
+    {% block content %}
+    {% endblock %}
+</div>
+<!-- ======================== FOOTER  ======================== -->
+
+<footer class="bg-dark text-white text-center py-4 mt-5"> 
     <p>&copy; 2025 MK Barriault. All rights reserved.</p>
 </footer>
-
+<!-- ======================== OTHER STUFF  ======================== -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-
-
-
-
-<div id="imageModal" class="image-modal" onclick="closeModal()"> <!-- IMAGE MODAL / THING THAT MAKES IT GET BIGGER -->
+<div id="imageModal" class="image-modal" onclick="closeModal()"> <!-- IMAGE MODAL -->
     <span class="modal-close">&times;</span>
     <img class="modal-content" id="modalImage">
     <div id="modalCaption"></div>
 </div>
 
-<script>
+<!-- ======================== NIELS  ======================== -->
+{% if request.endpoint not in ['test', 'test2', 'CATastrophe', 'circuitboard', 'blobs', 'fractals'] %}
+<!-- <div id="NielsContainer"> <!- NIELS THE CAT GUIDE --
+    <img id="Niels" src="{{ url_for('static', filename='images/Niels/NielsAwake.png') }}" alt="Niels the Cat Guide">
+    <div class="zzz-bubble" id="zzz1">Z</div>
+    <div class="zzz-bubble" id="zzz2">Z</div>
+    <div class="zzz-bubble" id="zzz3">Z</div>
+    <div id="NielsBubble">{{ Niels_message }}</div>
+    <button id="hideNiels">SLEEP</button>
+    <button id="wakeNiels">WAKE UP</button>
+</div>
 
-function openModal(imgElement) { // OPEN MODAL WHEN CLICKING ON IMAGE
+<script src="{{ url_for('static', filename='js/Niels.js') }}"></script> -->
+{% endif %} 
+
+<!-- ======================== STYLING  ======================== -->
+<style>
+
+body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-modern { /* === STICKY NAVBAR === */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(11, 6, 35, 0.575) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(152, 116, 211, 0.406);
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.nav-icon {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.3s;
+}
+
+.nav-icon-link:hover .nav-icon {
+    transform: scale(1.1);
+}
+
+.nav-right-icons {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.hamburger-btn { /* === HAMBURGER BUTTON === */
+    background: none;
+    border: none;
+    width: 30px;
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0;
+}
+
+.hamburger-btn span {
+    width: 100%;
+    height: 3px;
+    background: white;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.hamburger-btn:hover span {
+    background: #9874D3;
+}
+
+.hamburger-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+.mega-menu { /* === MEGA MENU === */
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #2a1a4a 0%, #1a0f2e 100%);
+    transition: max-height 0.4s ease-in-out;
+    z-index: 10000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.mega-menu.active {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.mega-menu-content {
+    padding: 30px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #9874D3;
+}
+
+.menu-header h3 {
+    color: #E0B0FF;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    transition: transform 0.3s;
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+}
+
+.menu-sections { /* === MENU SECTIONS === */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-section {
+    background: rgba(152, 116, 211, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.section-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.section-toggle:hover {
+    background: rgba(152, 116, 211, 0.2);
+}
+
+.toggle-icon {
+    transition: transform 0.3s;
+    color: #9874D3;
+}
+
+.section-toggle.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-content.active {
+    max-height: 500px;
+}
+
+.section-content a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px 12px 40px;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+.section-content a:hover {
+    background: rgba(152, 116, 211, 0.3);
+    border-left-color: #B879E2;
+    padding-left: 50px;
+}
+
+.admin-link {
+    display: block;
+    color: #E0B0FF;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.admin-link:hover {
+    background: rgba(152, 116, 211, 0.2);
+    color: white;
+}
+
+.about-site-modal { /* === ABOUT SITE MODAL === */
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.3s;
+}
+
+.about-site-modal-content {
+    background: linear-gradient(135deg, #2a1a4a 0%, #1a0f2e 100%);
+    margin: 5% auto;
+    padding: 40px;
+    border: 2px solid #9874D3;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(152, 116, 211, 0.3);
+    animation: slideDown 0.3s;
+}
+
+.about-site-modal-content h2 {
+    color: #E0B0FF;
+    margin-bottom: 20px;
+}
+
+.about-site-body {
+    color: white;
+    line-height: 1.8;
+}
+
+.about-site-body ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.about-site-modal-close {
+    color: #B879E2;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.about-site-modal-close:hover {
+    color: #E0B0FF;
+}
+
+.main-content { /* === MAIN CONTENT === */
+    margin-top: 20px;
+    min-height: calc(100vh - 350px);
+    padding: 0 15px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+@media (max-width: 768px) { /* === MOBILE RESPONSIVE === */
+    .navbar-container {
+        padding: 0 15px;
+    }
+    
+    .mega-menu-content {
+        padding: 20px 15px;
+    }
+    
+    .menu-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+</style>
+
+<!-- ======================== CIRCUIT BOARD JS BG  ======================== -->
+   {% if request.endpoint not in ['manifold', 'd20', 'blobs', 'test2', 'CATastrophe', 'circuitboard', 'fractals'] %}
+
+     <script src="{{ url_for('static', filename='js/circuit-sparks.js') }}"></script>
+
+
+    {% endif %}
+
+<!-- ======================== MENU JS ======================== -->
+<script> // === MENU  ===
+function toggleMenu() { // === MENU TOGGLE ===
+    const menu = document.getElementById('megaMenu');
+    const btn = document.getElementById('hamburgerBtn');
+    menu.classList.toggle('active');
+    btn.classList.toggle('active');
+    
+    if (menu.classList.contains('active')) { // PREVENT BODY SCROLL
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function closeMenu() {
+    const menu = document.getElementById('megaMenu');
+    const btn = document.getElementById('hamburgerBtn');
+    menu.classList.remove('active');
+    btn.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function toggleSection(sectionId) { // === SECTION TOGGLE ===
+    const section = document.getElementById(sectionId);
+    const button = section.previousElementSibling;
+    section.classList.toggle('active');
+    button.classList.toggle('active');
+}
+
+function openAboutSiteModal() { // === ABOUT SITE MODAL ===
+    document.getElementById('aboutSiteModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAboutSiteModal(event) {
+    if (!event || event.target.id === 'aboutSiteModal' || event.target.className === 'about-site-modal-close') {
+        document.getElementById('aboutSiteModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function openModal(imgElement) { // === IMAGE MODAL (existing) ===
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
     const caption = document.getElementById('modalCaption');
@@ -111,27 +601,24 @@ function openModal(imgElement) { // OPEN MODAL WHEN CLICKING ON IMAGE
     modal.style.display = 'flex';
     modalImg.src = imgElement.src;
     caption.innerHTML = imgElement.alt;
-    
-   
-    document.body.style.overflow = 'hidden'; // PREVENT BODY SCROLL WHEN MODAL IS OPEN
+    document.body.style.overflow = 'hidden';
 }
 
-
-function closeModal() { // FUNCTION TO CLOSE MODAL
+function closeModal() {
     const modal = document.getElementById('imageModal');
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
-
-document.addEventListener('keydown', function(event) { // CLOSE MODAL WITH ESCAPE KEY
+document.addEventListener('keydown', function(event) { // === KEYBOARD SHORTCUTS ===
     if (event.key === 'Escape') {
         closeModal();
+        closeAboutSiteModal();
+        closeMenu();
     }
 });
 
-
-document.addEventListener('DOMContentLoaded', function() { // ADD CLICK HANDLERS TO ALL PORTFOLIO IMAGES
+document.addEventListener('DOMContentLoaded', function() {
     const portfolioImages = document.querySelectorAll('.portfolio-card-img img');
     portfolioImages.forEach(img => {
         img.style.cursor = 'pointer';
@@ -142,6 +629,10 @@ document.addEventListener('DOMContentLoaded', function() { // ADD CLICK HANDLERS
 });
 </script>
 
-  
+<!--<script>
+    if (!document.getElementById('slime-overlay')) {
+        document.body.classList.add('slime-ready');
+    }
+</script>-->
 </body>
 </html>
