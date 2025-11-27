@@ -1,153 +1,114 @@
 {% extends "base.html" %}
 {% block title %}Resume - MK Barriault{% endblock %}
 {% block content %}
-<h1>Resume</h1>
+<h1>RESUME</h1>
 
-<div class="text-center mb-4">
-    <a href="{{ url_for('static', filename='resume/ResumeDownload.pdf') }}" download="MK_Barriault_Resume.pdf" class="btn btn-primary">
-        📄 Download PDF Resume
-    </a>
-    <br><br><a href="{{ url_for('static', filename='resume/ResumeDownload.pdf') }}" target="_blank" class="btn btn-success">
-        👁️ View PDF
-    </a>
-</div>
+
+    <div class="text-center mb-4">
+        <a href="{{ url_for('static', filename='resume/ResumeDownload.pdf') }}" download="MK_Barriault_Resume.pdf" class="btn-portal">
+            Download PDF
+        </a>
+        <p>.</p>
+    </div>
+        <!--<a href="{{ url_for('static', filename='resume/ResumeDownload.pdf') }}" target="_blank" class="btn-portal">
+            View PDF
+        </a>-->
+
+
+<p></p>
 
 <div class="about-section">
-
-    
-    <div class="summary-section text-center mb-4"> <!-- PROFESSIONAL SUMMARY ON TOP -->
+    <div class="summary-section text-center mb-4">
         <h4>Summary</h4>
-            <p>I’m super passionate about <strong>process improvement, problem solving, coding, and creating </strong>elegant, usable solutions that make complex operations run effortlessly. I love transforming real-world challenges into smart, scalable tools — blending technical creativity with operational precision.
-            <br><br>With deep hands-on experience managing <strong>Cisco XaaS and SMARTnet lifecycles</strong> across both distributor and reseller environments, I bridge the gap between complex subscription programs and day-to-day execution. I’ve led <strong>onboarding, renewals, true-ups, deal registration, and partner enablement</strong> at scale—coordinating OEMs, distributors, vendors, partners, and end customers to keep everything aligned and efficient.
-            <br><br><strong>Self-taught in coding,</strong> I’ve translated my operational background into <strong>automation and analytics</strong> — building Python and Excel solutions that make quoting, reporting, and fulfillment faster, more accurate, and easier to scale.
-            <br><br>Hover over each item below to see more!
+        <p>
+            I'm super passionate about <strong>process improvement, problem solving, coding, and creating</strong> 
+            elegant, usable solutions that make complex operations run effortlessly. I love transforming real-world 
+            challenges into smart, scalable tools — blending technical creativity with operational precision.
+            <br><br>
+            With deep hands-on experience managing <strong>Cisco XaaS and SMARTnet lifecycles</strong> across both 
+            distributor and reseller environments, I bridge the gap between complex subscription programs and 
+            day-to-day execution. I've led <strong>onboarding, renewals, true-ups, deal registration, and partner 
+            enablement</strong> at scale—coordinating OEMs, distributors, vendors, partners, and end customers to 
+            keep everything aligned and efficient.
+            <br><br>
+            <strong>Self-taught in coding,</strong> I've translated my operational background into 
+            <strong>automation and analytics</strong> — building Python and Excel solutions that make quoting, 
+            reporting, and fulfillment faster, more accurate, and easier to scale.
+            <br><br>
         </p>
     </div>
 
-    <div class="resume-grid"> <!-- GRID FOR TOOL TIPS -->
-        <div class="resume-item"
-             data-bs-toggle="tooltip" 
-             data-bs-html="true"
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>WHAT I BRING TO THE TABLE</div>
-                    <div class='tooltip-body'>
-                        <br>• Subscription and XaaS Operations — Practical lifecycle management for Cisco portfolios across distributor and VAR channels
-                        <br>• Cross Functional Collaboration — Extensive experience partnering with Sales, IT, Finance, Engineering, distributors, OEMs, and end customers
-                        <br>• Pre Sales Technical Support — Quoting, deal registration, RFQ response, and partner enablement for complex technical programs
-                        <br>• Customer Lifecycle Management and Leadership — Renewals, onboarding, true ups, and leading enablement efforts for internal teams and external partners
-                        <br>• Coding - Automation & Data Work / API Integration / self taught coding projects to build data analysis tools and prototype ML models for forecasting and risk detection / Web Development and hobbyist game development projects for creative practice and rapid prototyping
-                        <br>•Training and Enablement — Designed internal / partner-facing self serve guides and recurring trainings that enable others to succeed
-
-                    </div>">
-            <h4>🔎 Highlights</h4>
+    <div class="resume-grid">
+        <div class="btn-holographic-glass" data-modal="Highlights"">
+            <h4>Highlights</h4>
         </div>
         
-        
-        <div class="resume-item"
-             data-bs-toggle="tooltip" 
-             data-bs-html="true"
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>EDUCATION</div>
-                    <div class='tooltip-body'>• B.S. in Industrial and Systems Engineering (2011–2015)</div>">
-            <h4>🎓 Education</h4>
+        <div class="btn-holographic-glass" data-modal="Education"">
+            <h4>Education</h4>
         </div>
 
-        <div class="resume-item"
-             data-bs-toggle="tooltip" 
-             data-bs-html="true"
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>CERTIFICATES</div>
-                    <div class='tooltip-body'>
-                    <br>• Cisco CX Stage 1 – Distributor’s Badge 
-                    <br>• D&H LEAN Change Agent - Green Belt
-                    <br>• Cisco Black Belt: Distribution Success Stage 1
-                    <br>• Cisco Black Belt – Cloud Operations Stage 1
-                    </div>">
-            <h4>🏅 Certificates</h4>
+        <div class="btn-holographic-glass" data-modal="Certificates"">
+            <h4>Certificates</h4>
         </div>
         
-        <div class="resume-item"
-             data-bs-toggle="tooltip"
-             data-bs-html="true" 
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>SKILLS & CAPABILITIES</div>
-                    <div class='tooltip-body'>• Process Development, Documentation, and Improvement
-                        <br>• Data Analysis & Visualization
-                        <br>• Managing long-term client relationships
-                        <br>• Operatinal Process Improvement
-                        <br>• Onsite client visits
-                        <br>• Visual Basic (Microsoft Excel)
-                        <br>• Python (pandas, Matplotlib, scikit-learn, tkinter, numpy, seaborn)
-                        <br>• Website & e-commerce Storefront Creation (Python, Flask, Javascript, Bootstrap, Lightbox, HTML, CSS)
-                        <br>• Subscription Management (Renewals, Modifications, True Ups)
-                        <br>• Cisco Enterprise Agreement Support and Management
-                        <br>• Cross-Functional Ops
-                        <br>• Enablement & Training
-                        <br>• Customer Experience Lifecycle Management
-                        <br>• API Integration
-                        <br>• PostgreSQL
-                        <br>• Cisco Channel Sales Tools: CCW, PXP, DPV, Smart Accounts, Software Central, DevNet; SEWP V/GSA workflows
-                        <br>• Microsoft Office Suite, CRM, ERP, and channel quoting tools</div>">
-            <h4>⚙️ Skills </h4>
+        <div class="btn-holographic-glass" data-modal="Skills">
+            <h4>Skills</h4>
         </div>
     </div>
 
-
-
-    <br><br><div class="summary-section text-center mb-4"> <!-- WORK EXPERIENCE -->
+    <br><br>
+    <div class="summary-section text-center mb-4">
         <h4>💻 Work Experience</h4>
-            <p> Hover over the job titles below for details!
-            </p>
     </div>
 
     <div class="resume-grid">
-
-        <div class="resume-item"
-             data-bs-toggle="tooltip" 
-             data-bs-html="true"
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>SMARTnet and Subscriptions Senior Specialist</div>
-                    <div class='tooltip-body'> D&H Distributing
-                    <br>Harrisburg, PA 
-                    <br>Aug 2022 – Jun 2025
-                    <br>    •  Managed full Cisco subscription lifecycle, including onboarding, upsells, renewals, term changes, and True Forward/Value Shift events.
-                    <br>    • Led partner-facing support and internal training across government, military, corporate, and healthcare accounts.
-                    <br>    • Supported API integration of Cisco quoting tools by collaborating with IT and translating Cisco concepts into actionable technical requirements using DevNet resources.
-                    <br>    • Authored self-serve enablement guides and delivered internal training to Sales, Operations, and Engineering teams.
-                    <br>    • Contributed to LEAN-driven improvements to streamline quoting and lifecycle support across departments.
-                    </div>">
-                    <h4>SMARTnet and Subscriptions Senior Specialist</h4>
+        <div class="btn-holographic-glass" data-modal="Cisco"">
+            <h4>SMARTnet and Subscriptions Senior Specialist</h4>
+            <p style="font-size: 0.9rem; margin-top: 10px; color: rgba(255,255,255,0.7);">
+                D&H Distributing • Aug 2022 – Jun 2025
+            </p>
         </div>
 
-        <div class="resume-item"
-             data-bs-toggle="tooltip" 
-             data-bs-html="true"
-             data-bs-placement="auto"
-             title="<div class='tooltip-title'>Corporate / Healthcare Account Manager</div>
-                    <div class='tooltip-body'>Southern Computer Warehouse 
-                    <br>Marietta, GA 
-                    <br>Mar 2016 – Aug 2022
-                    <br>    • Managed long-term sales relationships with corporate and healthcare clients across the U.S., driving consistent account growth.
-                    <br>    •Assessed customer IT environments to identify technology gaps and opportunities, coordinating with distribution and OEM partners to build proposals.
-                    <br>    •Provided ongoing product knowledge and procurement guidance, positioning tailored solutions to meet business needs.
-                    </div>">
-                    <h4>Corporate / Healthcare Account Manager</h4>
+        <div class="btn-holographic-glass" data-modal="SCW"">
+            <h4>Corporate / Healthcare Account Manager</h4>
+            <p style="font-size: 0.9rem; margin-top: 10px; color: rgba(255,255,255,0.7);">
+                Southern Computer Warehouse • Mar 2016 – Aug 2022
+            </p>
         </div>
-
     </div>
-
-
 </div>
 
-<!-- TOOL TIPS -->
-<script>
-document.addEventListener('DOMContentLoaded', function() { 
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            html: true
+
+
+<script type="module">
+    import { openModal } from "{{ url_for('static', filename='js/modal.js') }}";
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.modal;
+                openModal(key);
+            });
         });
-    });
-});
 </script>
+
+
+
+
+
+
+
+
+<style>
+#aubie {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+#aubie:hover {
+    transform: scale(1.15);
+}
+#aubie:active {
+    transform: scale(1.3) rotate(15deg);
+}
+</style>
+
 {% endblock %}
