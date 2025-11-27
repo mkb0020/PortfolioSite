@@ -11,21 +11,21 @@
                 </div>
 
                 <div class="info-circles"> 
-                    <div class="info-item welcome-item" onclick="openAboutModal('welcome')">  <!-- WELCOME BUBBLE -->
+                    <div class="info-item welcome-item" data-modal="Welcome">  <!-- WELCOME BUBBLE -->
                         <div class="icon-circle">
                             <img src="/static/images/about/icon3.jpg" alt="Welcome">
                         </div>
                         <h2>WELCOME!</h2>
                     </div>
                     
-                    <div class="info-item" onclick="openAboutModal('site')"> <!-- ABOUT THE SITE BUBBLE -->               
+                    <div class="info-item" data-modal="AboutSite"> <!-- ABOUT THE SITE BUBBLE -->               
                         <div class="icon-circle">
                             <img src="/static/images/about/icon1.jpg" alt="About">
                         </div>
                         <h2>ABOUT THIS SITE</h2>
                     </div>
                     
-                    <div class="info-item" onclick="openAboutModal('me')"> <!-- ABOUT ME BUBBLE -->
+                    <div class="info-item" data-modal="AboutMe"> <!-- ABOUT ME BUBBLE -->
                         <div class="icon-circle">
                             <img src="/static/images/about/icon2.jpg" alt="About me">
                         </div>
@@ -35,158 +35,26 @@
             </div>
         </div>
 
-<!-- ======================== MODALS ======================== -->
-        <div id="welcomeModal" class="about-modal" onclick="closeAboutModal(event)">  <!-- WELCOME MODAL -->
-            <div class="about-modal-content" onclick="event.stopPropagation()">
-                <div class="about-modal-header">
-                    <h2>Welcome to my interactive portfolio!</h2>
-                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
-                </div>
-                <div class="about-modal-body">
-                    <p class="welcome-text">
-                        <P>This is my virtual playground where I showcase projects that I've been building throughout my coding journey. There's all kinds of stuff to explore! But don't worry, my Clippy-inspired cat, Niels, is here to guide you along the way! (If he gets anoying, you can always click "SLEEP" and he'll take a little nap) </p>
-                        <p> Close out of here and click on <strong>"About this site"</strong> to learn more about the site itself, or <strong>"About me"</strong> to read my little bio.</p>
-                    </P>
 
-                </div>
-            </div>
-        </div>
-
-        <div id="siteModal" class="about-modal" onclick="closeAboutModal(event)"> <!-- ABOUT SITE MODAL -->
-            <div class="about-modal-content" onclick="event.stopPropagation()">
-                <div class="about-modal-header">
-                    <h2>About This Site</h2>
-                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
-                </div>
-                <div class="about-modal-body">
-                    <p>
-                        This site is both my portfolio <em>and</em> part of my portfolio. Using <strong>Python, Flask, 
-                        JavaScript, HTML, and CSS</strong>, I built it to showcase my work across coding, 
-                        art, and design — blending the technical with the creative.
-                    </p>
-                    <h4>What You'll Find Here:</h4>
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <span class="feature-icon">💻</span>
-                            <div>
-                                <strong>Coding Projects</strong>
-                                <p>Full-stack applications and interactive demos</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">💎</span>
-                            <div>
-                                <strong>Art / Jewelry</strong>
-                                <p>Mock storefront with shopping cart functionality</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">📄</span>
-                            <div>
-                                <strong>Resume & Experience</strong>
-                                <p>Deep dive into my background and skills</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h4>Technical Highlights:</h4>
-                    <ul class="tech-highlights">
-                        <li><strong>Interactive Elements:</strong> Custom layouts and responsive design</li>
-                        <li><strong>Automated Contact Forms:</strong> Sends emails and logs submissions to a database</li>
-                        <li><strong>E-commerce Demo:</strong> Full shopping cart and checkout flow simulation</li>
-                        <li><strong>Admin Dashboard:</strong> Try ouy my order management system with search and tracking</li>
-                        <li><strong>It's all about the friends you male along the way:</strong> Hang out with my cat, Niels, who will show you around the site!</li>
-                    </ul>
-
-                    <p class="closing-text">
-                        It's a living example of how I combine design, data, and automation to create 
-                        thoughtful, functional experiences.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div id="meModal" class="about-modal" onclick="closeAboutModal(event)"> <!-- ABOUT ME MODAL -->
-            <div class="about-modal-content" onclick="event.stopPropagation()">
-                <div class="about-modal-header">
-                    <h2>About Me</h2>
-                    <button class="about-modal-close" onclick="closeAboutModal(event)">&times;</button>
-                </div>
-                
-                <div class="about-modal-body">
-                    <p class="intro-text">
-                        <strong>Hello World!</strong> I'm MK — a coder, artist, and perpetual creator based in 
-                        <strong>Atlanta, GA</strong> — which is my favorite place in the world! 🍑
-                    </p>
-
-                    <h4>What I Love:</h4>
-                    <p>
-                        I thrive on <strong>building things</strong> — whether it's a web app, a piece of jewelry, 
-                        a data-driven dashboard, or an automation that makes life a little easier. I'm passionate 
-                        about coding, process improvement, spreadsheets (yes, really!), and exploring how AI can 
-                        integrate with the human experience.
-                    </p>
-
-                    <h4>Beyond Tech:</h4>
-                    <div class="interests-grid">
-                        <div class="interest-item">💎 Art & Making Jewelry</div>
-                        <div class="interest-item">🧘 Yoga & Fitness</div>
-                        <div class="interest-item">🥗 Nutrition</div>
-                        <div class="interest-item">📚 Continuous Learning</div>
-                    </div>
-
-                    <p>
-                        I'm always learning new skills and diving into new challenges, whether that's mastering 
-                        a framework, experimenting with a fresh creative idea, or going down an internet 
-                        rabbit-hole about random topics that pique my interest.
-                    </p>
-
-                    <div class="cta-section">
-                        <h4>Let's Collab!</h4>
-                        <p>
-                            If you have a project or idea you'd like to bring to life, I'd love to collaborate! 
-                        </p>
-                        <a href="{{ url_for('contact') }}" class="btn btn-contact-me">
-                            Contact Me
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 <!-- ======================== HERO REVEAL ======================== -->
-<div id="slime-overlay">
+<!-- <div id="slime-overlay">
     <canvas id="slime-three"></canvas>
-
     <button class="skip-btn" onclick="skipAnimation()">Skip</button>
 </div>
 
-<script type="module" src="{{ url_for('static', filename='js/SlimeThree.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/SlimeThree.js') }}"></script> -->
 
 <!-- ======================== MODAL SCRIPT ======================== -->
-<script>
-function openAboutModal(type) {
-    let modalId;
-    if (type === 'welcome') modalId = 'welcomeModal';
-    else if (type === 'site') modalId = 'siteModal';
-    else if (type === 'me') modalId = 'meModal';
-    document.getElementById(modalId).style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeAboutModal(event) {
-    event.stopPropagation();
-    document.getElementById('welcomeModal').style.display = 'none';
-    document.getElementById('siteModal').style.display = 'none';
-    document.getElementById('meModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-document.addEventListener('keydown', function(event) { // CLOSE ON ESCAPE KEY
-    if (event.key === 'Escape') {
-        closeAboutModal(event);
-    }
-});
+<script type="module">
+    import { openModal } from "{{ url_for('static', filename='js/modal.js') }}";
+// Instead of writing onclick on every button, do this once:
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.modal;
+                openModal(key);
+            });
+        });
 </script>
 
 {% endblock %}
