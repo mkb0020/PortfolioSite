@@ -1,0 +1,124 @@
+<!-- request.html -->
+{% extends "base.html" %}
+{% block title %}App and Website Requests - MK Barriault{% endblock %}
+{% block content %}
+
+<h1 class="text-center mb-4">App and Website Requests</h1>
+
+    {% if success %}
+        <div class="neon-alert success">
+            <span> Thank you for your message! I'll get back to you as soon as possible. </span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove()">×</button>
+        </div>
+    {% endif %}
+
+<div class="contact-grid2">
+    <div class="cyber-card form-card">
+        <div class="card-glow"></div>
+                            <div class="info-content"><h2>Interested in a custom app or website?</h2></div>
+                <p><p></p>
+                    Fill out the form below and let's connect! I'd love to hear about your project and help bring your vision to life.
+                </p><p></p>
+                
+                <form method="POST">
+                    <div class="input-glow">
+                        <label for="name" class="neon-label">Your Name *</label>
+                        <input type="text" class="neon-input"  id="name" name="name" required placeholder="">
+                    </div><p></p><p></p>
+                    
+                    <div class="input-glow">
+                        <label for="email" class="neon-label">Email *</label>
+                        <input type="email" class="neon-input"  id="email" name="email" required placeholder="">
+                    </div><p></p><p></p>
+                    
+                    <div class="input-glow">
+                        <label for="phone" class="neon-label">Phone Number (Optional)</label>
+                        <input type="tel" class="neon-input"  id="phone" name="phone" placeholder="">
+                    </div><p></p><p></p>
+
+                    <div class="input-glow">
+                        <label for="request_type" class="neon-label">What are you interested in? *</label>
+                        <select class="neon-input"  id="request_type" name="request_type" required>
+                            <option value=""></option>
+                            <option value="Desktop Application">Desktop Application</option>
+                            <option value="Website">Website</option>
+                            <option value="Web Application">Web Application</option>
+                            <!-- <option value="Mobile App">Mobile App</option> -->
+                            <option value="Other">Other</option>
+                        </select>
+                    </div><p></p><p></p>
+
+                    <div class="input-glow">
+                        <label for="timeline" class="neon-label">Estimated Timeline</label>
+                        <select class="neon-input"  id="timeline" name="timeline">
+                            <option value=""></option>
+                            <option value="ASAP">ASAP (Rush Project)</option>
+                            <option value="1-2 months">1-2 months</option>
+                            <option value="3-6 months">3-6 months</option>
+                            <option value="6+ months">6+ months</option>
+                            <option value="Flexible">Flexible</option>
+                        </select>
+                    </div><p></p><p></p>
+
+                    <div class="input-glow">
+                        <label for="budget" class="neon-label">Estimated Budget Range</label>
+                        <select class="neon-input"  id="budget" name="budget">
+                            <option value=""></option>
+                            <option value="Under $1,000">Under $1,000</option>
+                            <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                            <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                            <option value="$10,000+">$10,000+</option>
+                            <option value="To be discussed">To be discussed</option>
+                        </select>
+                    </div><p></p><p></p>
+
+                    <div class="input-glow">
+                        <label for="additional_info" class="neon-label">Project Details *</label>
+                        <textarea class="neon-input"  id="additional_info" name="additional_info" rows="6" required placeholder=""></textarea>
+                    </div><p></p><p></p>
+                    
+                    <p style="text-align: center; font-size: 2.0rem">
+                        <button type="submit" class="btn pulse-button">SEND</button>
+                    </p><p></p>
+                </form>
+            </div>
+        
+
+            <!-- RIGHT SIDE - INFO -->
+    <div class="cyber-card form-card">
+        <div class="card-glow"></div>
+            <div class="info-content"><h2>Let me make you something cool!</h3>
+                <p style="line-height: 1.8;">
+                    Whether you need a sleek website, a powerful desktop application, or a custom web app, I'm here to help bring your ideas to life!
+                </p>
+                
+                <h4 class="mt-4" style="color: #B879E2;">What I Can Build:</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Websites:</strong> Portfolio sites, business websites, landing pages</li>
+                    <li><strong>Web Applications:</strong> E-commerce platforms, dashboards, custom tools</li>
+                    <li><strong>Desktop Applications:</strong> Windows/Mac applications with Python, C++, etc.</li>
+                    <li><strong>Database Solutions:</strong> MySQL, PostgreSQL, SQLite integration</li>
+                    <li><strong>Interactive Experiences:</strong> Games, simulations, creative projects</li>
+                </ul>
+                
+                <h4 class="mt-4" style="color: #B879E2;">My Process:</h4>
+                <ol style="line-height: 2;">
+                    <li><strong>Discovery:</strong> We'll discuss your vision, requirements, and goals</li>
+                    <li><strong>Proposal:</strong> I'll provide a detailed plan, timeline, and quote</li>
+                    <li><strong>Development:</strong> Regular updates and check-ins throughout the process</li>
+                    <li><strong>Delivery:</strong> Testing, revisions, and final handoff</li>
+                    <li><strong>Support:</strong> Ongoing assistance as needed</li>
+                </ol>
+           
+
+                
+                    <h4 style="color: #E0B0FF;">💡 Not sure what you need?</h4>
+                    <p style="line-height: 1.8;">
+                        No problem! Just give me a general idea of what you're trying to accomplish, and I'll help you figure out the best solution. Sometimes the best projects start with "I have this idea, but I'm not sure how to make it work..."
+                    </p>
+                </div>
+            </div>
+</div>
+
+{% endblock %}
+
